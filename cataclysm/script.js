@@ -106,25 +106,41 @@ function renderAvailableCards() {
             addCardToDeck(card);
         });
 
-        cardElement.addEventListener('mouseenter', (e) => {
+        cardElement.addEventListener('mouseenter', () => {
             showTooltip(cardElement, card, 'bottom');
         });
 
         cardElement.addEventListener('mouseleave', () => {
             removeTooltip(cardElement);
         });
+
+        cardElement.setAttribute('draggable', 'true');
+        cardElement.addEventListener('dragstart', (e) => {
+            dragStartHandler(e, card, 'unused');
+        });
+        cardElement.addEventListener('dragend', dragEndHandler);
     });
 
     setupTiltEffect();
 }
 
 function renderDeckSlots() {
-    const slots = document.querySelectorAll('.deck-slot');
-    
-    slots.forEach((slot, index) => {
-        const cardContainer = slot.querySelector('.slot-card');
-        const card = gameState.deckCards[index];
+    const container = document.querySelector('.deck-slots');
+    container.innerHTML = '';
+    for (let i = 0; i < 8; i++) {
+        const slot = document.createElement('div');
+        slot.className = 'deck-slot';
+        slot.dataset.slot = i;
 
+        slot.addEventListener('dragover', dragOverHandler);
+        slot.addEventListener('drop', dropHandler);
+        slot.addEventListener('dragenter', dragEnterHandler);
+        slot.addEventListener('dragleave', dragLeaveHandler);
+
+        const cardContainer = document.createElement('div');
+        cardContainer.className = 'slot-card';
+        slot.appendChild(cardContainer);
+        let card = gameState.deckCards[i];
         if (card) {
             cardContainer.classList.add('filled');
             cardContainer.classList.add(card.getRarityClass());
@@ -132,26 +148,29 @@ function renderDeckSlots() {
             const cardContent = createCardContent(card);
             cardContainer.appendChild(cardContent);
 
-            cardContainer.addEventListener('click', () => {
-                removeCardFromDeck(index);
+            cardContainer.setAttribute('draggable', 'true');
+            cardContainer.addEventListener('dragstart', (e) => {
+                dragStartHandler(e, card, 'deck', i);
             });
-
-            cardContainer.addEventListener('mouseenter', (e) => {
+            cardContainer.addEventListener('dragend', dragEndHandler);
+            cardContainer.addEventListener('click', () => {
+                removeCardFromDeck(i);
+            });
+            cardContainer.addEventListener('mouseenter', () => {
                 const rect = cardContainer.getBoundingClientRect();
                 const isUpper = rect.top < window.innerHeight / 2;
                 showTooltip(cardContainer, card, isUpper ? 'bottom' : 'top');
             });
-
             cardContainer.addEventListener('mouseleave', () => {
                 removeTooltip(cardContainer);
             });
         } else {
             cardContainer.classList.remove('filled');
-            cardContainer.classList.remove(...Array.from(cardContainer.classList).filter(c => c.startsWith('rarity-')));
             cardContainer.innerHTML = '<span>Empty Slot</span>';
+            cardContainer.removeAttribute('draggable');
         }
-    });
-    
+        container.appendChild(slot);
+    }
     setupTiltEffect();
 }
 
@@ -328,3 +347,139 @@ if (document.readyState === 'loading') {
     setupBottomPanelToggle();
 }
 
+
+
+let draggedCard = null;
+let draggedFrom = null; // 'deck' lub 'unused'
+let draggedFromIndex = null; // slot index lub null
+const dragPreview = document.getElementById('dragPreview');
+let dragOffsetX = 0;
+let dragOffsetY = 0;
+
+function dragStartHandler(e, card, from, index = null) {
+    draggedCard = card;
+    draggedFrom = from;
+    draggedFromIndex = index;
+
+    const crt = document.createElement('canvas');
+    crt.width = 0;
+    crt.height = 0;
+    e.dataTransfer.setDragImage(crt, 0, 0);
+
+    dragPreview.style.display = 'block';
+    dragPreview.innerHTML = '';
+    dragPreview.className = '';
+    dragPreview.classList.add(card.getRarityClass());
+    // const img = document.createElement('img');
+    // img.src = card.imgUrl;
+    // img.className = 'card-image';
+    // dragPreview.appendChild(img);
+
+    const firstSlot = document.querySelector('.deck-slot');
+    if (firstSlot) {
+        const rect = firstSlot.getBoundingClientRect();
+        dragPreview.style.width = rect.width + 'px';
+        dragPreview.style.height = rect.height + 'px';
+    }
+
+    const target = e.target.closest('.slot-card, .unused-card');
+    if (!target) return;
+    const rectTarget = target.getBoundingClientRect();
+    dragOffsetX = e.clientX - rectTarget.left;
+    dragOffsetY = e.clientY - rectTarget.top;
+
+    moveDragPreview(e.clientX, e.clientY);
+
+    document.addEventListener('dragover', dragMoveHandler);
+}
+
+function moveDragPreview(x, y) {
+    dragPreview.style.left = (x - dragOffsetX) + 'px';
+    dragPreview.style.top = (y - dragOffsetY) + 'px';
+}
+
+function dragMoveHandler(e) {
+    e.preventDefault();
+    moveDragPreview(e.clientX, e.clientY);
+}
+
+function moveDragPreview(x, y) {
+    dragPreview.style.left = (x - dragOffsetX) + 'px';
+    dragPreview.style.top = (y - dragOffsetY) + 'px';
+}
+
+function dragEndHandler(e) {
+    draggedCard = null;
+    draggedFrom = null;
+    draggedFromIndex = null;
+    dragPreview.style.display = 'none';
+    document.removeEventListener('dragover', dragMoveHandler);
+}
+
+function dragOverHandler(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    e.currentTarget.classList.add('drag-over');
+}
+
+function dragEnterHandler(e) {
+    e.preventDefault();
+    e.currentTarget.classList.add('drag-over');
+}
+
+function dragLeaveHandler(e) {
+    e.currentTarget.classList.remove('drag-over');
+}
+
+function dropHandler(e) {
+    e.preventDefault();
+    e.currentTarget.classList.remove('drag-over');
+    if (!draggedCard) return;
+
+    const slotIndex = +e.currentTarget.dataset.slot;
+    const targetCard = gameState.deckCards[slotIndex];
+
+    if (draggedFrom === 'deck') {
+        if (draggedFromIndex === slotIndex) {
+            dragEndHandler(e);
+            return;
+        }
+        if (targetCard === null) {
+            gameState.deckCards[slotIndex] = draggedCard;
+            gameState.deckCards[draggedFromIndex] = null;
+        } else {
+            gameState.deckCards[slotIndex] = draggedCard;
+            gameState.deckCards[draggedFromIndex] = targetCard;
+        }
+    } else if (draggedFrom === 'unused') {
+        if (targetCard === null) {
+            gameState.deckCards[slotIndex] = draggedCard;
+        } else {
+            gameState.deckCards[slotIndex] = draggedCard;
+        }
+    }
+    renderAvailableCards();
+    renderDeckSlots();
+    dragEndHandler(e);
+}
+
+const unusedCardsGrid = document.getElementById('availableCardsGrid');
+unusedCardsGrid.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    unusedCardsGrid.classList.add('drag-over');
+});
+unusedCardsGrid.addEventListener('dragleave', () => {
+    unusedCardsGrid.classList.remove('drag-over');
+});
+unusedCardsGrid.addEventListener('drop', (e) => {
+    e.preventDefault();
+    unusedCardsGrid.classList.remove('drag-over');
+    if (!draggedCard) return;
+    if (draggedFrom === 'deck' && draggedFromIndex !== null) {
+        gameState.deckCards[draggedFromIndex] = null;
+        renderAvailableCards();
+        renderDeckSlots();
+    }
+    dragEndHandler(e);
+});

@@ -525,9 +525,12 @@ html, body {
 }
 
 .unused-cards-grid {
+    border-radius: 8px;
+    padding: 5px;
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 12px;
+    min-height: 90%;
 }
 
 .unused-card {
@@ -614,4 +617,27 @@ html, body {
 
 #closePanelBtn {
     z-index: 1002;
+}
+
+
+/* Drag preview helper div to show dragged card full size */
+#dragPreview {
+    position: fixed;
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    z-index: 20000;
+    display: none;
+    width: 100px;
+    height: 56px;
+    border-radius: 8px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: drop-shadow(0 0 10px rgba(255,255,255,0.7));
+}
+
+.drag-over {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 10px var(--primary-color);
 }
