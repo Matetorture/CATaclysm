@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CATaclysm</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- TOP PANEL -->
+        <div class="top-panel">
+            <div class="username">Player Name</div>
+            <div class="money-display">1250</div>
+        </div>
+
+        <!-- MAIN PANEL -->
+        <div class="main-panel">
+            <!-- Boss Section -->
+            <div class="boss-section">
+                <div class="boss-container">BOSS</div>
+            </div>
+
+            <!-- Deck Section -->
+            <div class="deck-section">
+                <div class="cards-container">
+                    <div class="deck-slots">
+                        <div class="deck-slot" data-slot="0">
+                            <div class="slot-card"></div>
+                            <div class="slot-modifiers">
+                                <button class="slot-modifier" data-modifier="S">S</button>
+                                <button class="slot-modifier" data-modifier="G">G</button>
+                                <button class="slot-modifier" data-modifier="B">B</button>
+                                <button class="slot-modifier" data-modifier="R">R</button>
+                                <button class="slot-modifier" data-modifier="N">N</button>
+                            </div>
+                        </div>
+                        <div class="deck-slot" data-slot="1">
+                            <div class="slot-card"></div>
+                            <div class="slot-modifiers">
+                                <button class="slot-modifier" data-modifier="S">S</button>
+                                <button class="slot-modifier" data-modifier="G">G</button>
+                                <button class="slot-modifier" data-modifier="B">B</button>
+                                <button class="slot-modifier" data-modifier="R">R</button>
+                                <button class="slot-modifier" data-modifier="N">N</button>
+                            </div>
+                        </div>
+                        <div class="deck-slot" data-slot="2">
+                            <div class="slot-card"></div>
+                            <div class="slot-modifiers">
+                                <button class="slot-modifier" data-modifier="S">S</button>
+                                <button class="slot-modifier" data-modifier="G">G</button>
+                                <button class="slot-modifier" data-modifier="B">B</button>
+                                <button class="slot-modifier" data-modifier="R">R</button>
+                                <button class="slot-modifier" data-modifier="N">N</button>
+                            </div>
+                        </div>
+                        <div class="deck-slot" data-slot="3">
+                            <div class="slot-card"></div>
+                            <div class="slot-modifiers">
+                                <button class="slot-modifier" data-modifier="S">S</button>
+                                <button class="slot-modifier" data-modifier="G">G</button>
+                                <button class="slot-modifier" data-modifier="B">B</button>
+                                <button class="slot-modifier" data-modifier="R">R</button>
+                                <button class="slot-modifier" data-modifier="N">N</button>
+                            </div>
+                        </div>
+                        <div class="deck-slot" data-slot="4">
+                            <div class="slot-card"></div>
+                            <div class="slot-modifiers">
+                                <button class="slot-modifier" data-modifier="S">S</button>
+                                <button class="slot-modifier" data-modifier="G">G</button>
+                                <button class="slot-modifier" data-modifier="B">B</button>
+                                <button class="slot-modifier" data-modifier="R">R</button>
+                                <button class="slot-modifier" data-modifier="N">N</button>
+                            </div>
+                        </div>
+                        <div class="deck-slot" data-slot="5">
+                            <div class="slot-card"></div>
+                            <div class="slot-modifiers">
+                                <button class="slot-modifier" data-modifier="S">S</button>
+                                <button class="slot-modifier" data-modifier="G">G</button>
+                                <button class="slot-modifier" data-modifier="B">B</button>
+                                <button class="slot-modifier" data-modifier="R">R</button>
+                                <button class="slot-modifier" data-modifier="N">N</button>
+                            </div>
+                        </div>
+                        <div class="deck-slot" data-slot="6">
+                            <div class="slot-card"></div>
+                            <div class="slot-modifiers">
+                                <button class="slot-modifier" data-modifier="S">S</button>
+                                <button class="slot-modifier" data-modifier="G">G</button>
+                                <button class="slot-modifier" data-modifier="B">B</button>
+                                <button class="slot-modifier" data-modifier="R">R</button>
+                                <button class="slot-modifier" data-modifier="N">N</button>
+                            </div>
+                        </div>
+                        <div class="deck-slot" data-slot="7">
+                            <div class="slot-card"></div>
+                            <div class="slot-modifiers">
+                                <button class="slot-modifier" data-modifier="S">S</button>
+                                <button class="slot-modifier" data-modifier="G">G</button>
+                                <button class="slot-modifier" data-modifier="B">B</button>
+                                <button class="slot-modifier" data-modifier="R">R</button>
+                                <button class="slot-modifier" data-modifier="N">N</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOTTOM PANEL (Hidden by default, fixed position) -->
+    <div class="bottom-panel" id="bottomPanel">
+        <button class="bottom-panel-close" id="closePanelBtn">✕</button>
+        <!-- Base Section -->
+        <div class="base-section">BASE</div>
+
+        <!-- Unused Cards Section -->
+        <div class="unused-cards-section">
+            <div class="unused-cards-title">Available Cards</div>
+            <div class="unused-cards-grid" id="availableCardsGrid">
+                <!-- Cards will be generated here by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toggle Button for Bottom Panel -->
+    <button class="bottom-panel-toggle" id="togglePanelBtn">^</button>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
