@@ -70,7 +70,8 @@ class CatCard {
 const gameState = {
     ownedCards: [], // All owned cards
     deckCards: [null, null, null, null, null, null, null, null], // 8 deck slots
-    deckModifiers: ['', '', '', '', '', '', '', ''], // S, G, B, R, N for each slot
+    ownedModifiers: ['S', 'G', 'B', 'R', 'N'], // S, G, B, R, N
+    deckModifiers: ['', '', '', '', '', '', '', ''],
     money: 1250
 };
 
@@ -127,7 +128,6 @@ function renderAvailableCards() {
 function renderDeckSlots() {
     const container = document.querySelector('.deck-slots');
     container.innerHTML = '';
-    const modifiers = ['S', 'G', 'B', 'R', 'N'];
 
     for (let i = 0; i < 8; i++) {
         const slot = document.createElement('div');
@@ -174,7 +174,7 @@ function renderDeckSlots() {
 
         const modifiersDiv = document.createElement('div');
         modifiersDiv.className = 'slot-modifiers';
-        modifiers.forEach(mod => {
+        gameState.ownedModifiers.forEach(mod => {
             const btn = document.createElement('button');
             btn.className = 'slot-modifier';
             btn.setAttribute('data-modifier', mod);
