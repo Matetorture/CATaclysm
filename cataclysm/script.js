@@ -127,6 +127,8 @@ function renderAvailableCards() {
 function renderDeckSlots() {
     const container = document.querySelector('.deck-slots');
     container.innerHTML = '';
+    const modifiers = ['S', 'G', 'B', 'R', 'N'];
+
     for (let i = 0; i < 8; i++) {
         const slot = document.createElement('div');
         slot.className = 'deck-slot';
@@ -139,7 +141,7 @@ function renderDeckSlots() {
 
         const cardContainer = document.createElement('div');
         cardContainer.className = 'slot-card';
-        slot.appendChild(cardContainer);
+
         let card = gameState.deckCards[i];
         if (card) {
             cardContainer.classList.add('filled');
@@ -169,6 +171,20 @@ function renderDeckSlots() {
             cardContainer.innerHTML = '<span>Empty Slot</span>';
             cardContainer.removeAttribute('draggable');
         }
+
+        const modifiersDiv = document.createElement('div');
+        modifiersDiv.className = 'slot-modifiers';
+        modifiers.forEach(mod => {
+            const btn = document.createElement('button');
+            btn.className = 'slot-modifier';
+            btn.setAttribute('data-modifier', mod);
+            btn.innerText = mod;
+            modifiersDiv.appendChild(btn);
+        });
+
+        slot.appendChild(cardContainer);
+        slot.appendChild(modifiersDiv);
+
         container.appendChild(slot);
     }
     setupTiltEffect();
@@ -346,8 +362,6 @@ if (document.readyState === 'loading') {
     initGame();
     setupBottomPanelToggle();
 }
-
-
 
 let draggedCard = null;
 let draggedFrom = null; // 'deck' lub 'unused'
