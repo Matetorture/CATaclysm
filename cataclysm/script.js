@@ -179,6 +179,11 @@ function renderDeckSlots() {
             btn.className = 'slot-modifier';
             btn.setAttribute('data-modifier', mod);
             btn.innerText = mod;
+
+            if (gameState.deckModifiers[i] === mod) {
+                btn.classList.add('active');
+            }
+
             modifiersDiv.appendChild(btn);
         });
 
@@ -188,6 +193,7 @@ function renderDeckSlots() {
         container.appendChild(slot);
     }
     setupTiltEffect();
+    setupSlotModifierClicks();
 }
 
 function createCardElement(card, type = 'deck') {
@@ -213,6 +219,31 @@ function createCardContent(card) {
     `;
 
     return container;
+}
+
+function setupSlotModifierClicks() {
+    const modifierButtons = document.querySelectorAll('.slot-modifier');
+    modifierButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const modifier = btn.getAttribute('data-modifier');
+            const slot = btn.closest('.deck-slot');
+            const slotIndex = +slot.dataset.slot;
+
+            const currentSlotWithModifier = gameState.deckModifiers.findIndex(
+                mod => mod === modifier
+            );
+
+            if (currentSlotWithModifier === slotIndex) {
+                gameState.deckModifiers[slotIndex] = '';
+            } else {
+                if (currentSlotWithModifier !== -1) {
+                    gameState.deckModifiers[currentSlotWithModifier] = '';
+                }
+                gameState.deckModifiers[slotIndex] = modifier;
+            }
+            renderDeckSlots();
+        });
+    });
 }
 
 function showTooltip(element, card, position = 'bottom') {
