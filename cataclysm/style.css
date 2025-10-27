@@ -149,7 +149,6 @@ html, body {
 
 .slot-card {
     flex: 1;
-    border: 2px solid var(--border-color);
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -209,7 +208,7 @@ html, body {
         0 0 60px 20px rgba(200, 100, 255, 0.7),
         0 0 90px 30px rgba(255, 100, 220, 0.5),
         0 0 120px 40px rgba(150, 200, 255, 0.4);
-    animation: ultimateGlow 5s ease-in-out infinite;
+    animation: ultimateGlow 4s ease-in-out infinite;
 }
 
 @keyframes ultimateGlow {
@@ -509,7 +508,6 @@ html, body {
 .unused-cards-section {
     flex: 1;
     background-color: var(--dark-tertiary);
-    border: 2px solid var(--border-color);
     border-radius: var(--card-border-radius);
     padding: var(--spacing-unit);
     overflow-y: auto;
@@ -533,7 +531,6 @@ html, body {
 }
 
 .unused-card {
-    border: 2px solid var(--border-color);
     border-radius: 8px;
     padding: 0;
     font-size: 9px;
