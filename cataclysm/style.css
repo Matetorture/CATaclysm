@@ -540,9 +540,8 @@ html, body {
     color: var(--text-secondary);
     cursor: pointer;
     transition: all 0.3s ease;
-    aspect-ratio: 16 / 9;
     width: 100px;
-    height: 56px;
+    height: 100px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -640,4 +639,10 @@ html, body {
 .drag-over {
     border-color: var(--primary-color) !important;
     box-shadow: 0 0 10px var(--primary-color);
+}
+
+img {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    -ms-interpolation-mode: nearest-neighbor;
 }

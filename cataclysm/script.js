@@ -1,8 +1,7 @@
 class CatCard {
-    constructor(id, number, imgUrl, name, collection, rarity, baseAttack, baseSpeed, baseCrit, attackType, copies = 1) {
+    constructor(id, number, name, collection, rarity, baseAttack, baseSpeed, baseCrit, attackType, copies = 1) {
         this.id = id;
         this.number = number; // e.g., "1.1", "1.52", "4.2"
-        this.imgUrl = imgUrl;
         this.name = name;
         this.collection = collection;
         this.rarity = rarity; // Common, Uncommon, Rare, Epic, Legendary, Ultimate
@@ -76,14 +75,14 @@ const gameState = {
 };
 
 const sampleCardsData = [
-    new CatCard(1, '1.1', 'img-1.1', 'Fire Kitten', 'Starter', 'Common', 10, 8, 5, 'Fire', 3),
-    new CatCard(2, '1.2', 'img-1.2', 'Water Paw', 'Starter', 'Uncommon', 8, 10, 4, 'Water', 2),
-    new CatCard(3, '1.3', 'img-1.3', 'Earth Tiger', 'Starter', 'Rare', 12, 7, 6, 'Earth', 6),
-    new CatCard(4, '2.1', 'img-2.1', 'Plant Guardian', 'Forest', 'Epic', 9, 9, 5, 'Plant', 1),
-    new CatCard(5, '2.2', 'img-2.2', 'Air Dancer', 'Sky', 'Legendary', 11, 12, 7, 'Air', 14),
-    new CatCard(6, '3.1', 'img-3.1', 'Electric Spark', 'Thunder', 'Legendary', 13, 11, 8, 'Electric', 30),
-    new CatCard(7, '3.2', 'img-3.2', 'Frost Whisker', 'Frozen', 'Ultimate', 14, 9, 6, 'Ice', 62),
-    new CatCard(8, '4.1', 'img-4.1', 'Legendary Beast', 'Legendary', 'Legendary', 20, 15, 10, 'Fire', 5),
+    new CatCard(1, '1.1', 'Fire Kitten', 'Starter', 'Common', 10, 8, 5, 'Fire', 3),
+    new CatCard(2, '1.2', 'Water Paw', 'Starter', 'Uncommon', 8, 10, 4, 'Water', 2),
+    new CatCard(3, '1.3', 'Earth Tiger', 'Starter', 'Rare', 12, 7, 6, 'Earth', 6),
+    new CatCard(4, '2.1', 'Plant Guardian', 'Forest', 'Epic', 9, 9, 5, 'Plant', 1),
+    new CatCard(5, '2.2', 'Air Dancer', 'Sky', 'Legendary', 11, 12, 7, 'Air', 14),
+    new CatCard(6, '2.3', 'Electric Spark', 'Thunder', 'Legendary', 13, 11, 8, 'Electric', 30),
+    new CatCard(7, '2.4', 'Frost Whisker', 'Frozen', 'Ultimate', 14, 9, 6, 'Ice', 62),
+    new CatCard(8, '2.5', 'Legendary Beast', 'Legendary', 'Legendary', 20, 15, 10, 'Fire', 5),
 ];
 
 function initGame() {
@@ -203,7 +202,7 @@ function createCardElement(card, type = 'deck') {
 
     if (type === 'unused') {
         element.innerHTML = `
-            <div class="unused-card-image">img-${card.number}</div>
+            <img class="unused-card-image" src="img/${card.number}.png" alt="${card.name}">
         `;
     }
 
@@ -215,7 +214,7 @@ function createCardContent(card) {
     container.className = 'card-content';
 
     container.innerHTML = `
-        <div class="card-image">img-${card.number}</div>
+        <img class="card-image" src="img/${card.number}.png" alt="${card.name}">
     `;
 
     return container;
@@ -415,10 +414,10 @@ function dragStartHandler(e, card, from, index = null) {
     dragPreview.innerHTML = '';
     dragPreview.className = '';
     dragPreview.classList.add(card.getRarityClass());
-    // const img = document.createElement('img');
-    // img.src = card.imgUrl;
-    // img.className = 'card-image';
-    // dragPreview.appendChild(img);
+    const img = document.createElement('img');
+    img.src = `img/${card.number}.png`;
+    img.className = 'card-image';
+    dragPreview.appendChild(img);
 
     const firstSlot = document.querySelector('.deck-slot');
     if (firstSlot) {
