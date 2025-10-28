@@ -202,7 +202,7 @@ function createCardElement(card, type = 'deck') {
 
     if (type === 'unused') {
         element.innerHTML = `
-            <img class="unused-card-image" src="img/${card.number}.png" alt="${card.name}">
+            <img class="unused-card-image" src="img/cats/${card.number}.png" alt="${card.name}">
         `;
     }
 
@@ -214,7 +214,7 @@ function createCardContent(card) {
     container.className = 'card-content';
 
     container.innerHTML = `
-        <img class="card-image" src="img/${card.number}.png" alt="${card.name}">
+        <img class="card-image" src="img/cats/${card.number}.png" alt="${card.name}">
     `;
 
     return container;
@@ -421,7 +421,7 @@ function dragStartHandler(e, card, from, index = null) {
     dragPreview.className = '';
     dragPreview.classList.add(card.getRarityClass());
     const img = document.createElement('img');
-    img.src = `img/${card.number}.png`;
+    img.src = `img/cats/${card.number}.png`;
     img.className = 'card-image';
     dragPreview.appendChild(img);
 
