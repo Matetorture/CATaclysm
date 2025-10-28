@@ -8,7 +8,7 @@ class CatCard {
         this.baseAttack = baseAttack;
         this.baseSpeed = baseSpeed;
         this.baseCrit = baseCrit; // in percentage
-        this.attackType = attackType; // Fire, Water, Earth, Plant, Air, Electric, Ice, Holy, Dark
+        this.attackType = attackType; // Fire, Water, Stone, Plant, Air, Electric, Ice, Holy, Dark
         this.copies = copies; // Number of copies owned
     }
 
@@ -77,7 +77,7 @@ const gameState = {
 const sampleCardsData = [
     new CatCard(1, '1.1', 'Fire Kitten', 'Starter', 'Common', 10, 20000, 5, 'Fire', 3),
     new CatCard(2, '1.2', 'Water Paw', 'Starter', 'Uncommon', 8, 20000, 4, 'Water', 2),
-    new CatCard(3, '1.3', 'Earth Tiger', 'Starter', 'Rare', 12, 20000, 6, 'Earth', 6),
+    new CatCard(3, '1.3', 'Stone Tiger', 'Starter', 'Rare', 12, 20000, 6, 'Stone', 6),
     new CatCard(4, '2.1', 'Plant Guardian', 'Forest', 'Epic', 9, 20000, 5, 'Plant', 1),
     new CatCard(5, '2.2', 'Air Dancer', 'Sky', 'Legendary', 11, 20000, 7, 'Air', 14),
     new CatCard(6, '2.3', 'Electric Spark', 'Thunder', 'Legendary', 13, 20000, 8, 'Electric', 30),
@@ -287,7 +287,7 @@ function showTooltip(element, card, position = 'bottom') {
         </div>
 
         <div style="display:flex; justify-content:center; align-items: center; gap:16px;">
-            <div class="${card.getTypeClass()}-text" style="font-size: 11px; font-weight:600;">${card.attackType}</div>
+            <div class="${card.getTypeClass()}-text type-attack-text" style="font-size: 11px; font-weight:600;">${card.attackType}</div>
             <div class="${card.getRarityClass()}-text" style="font-size: 11px; font-weight:600;">${card.rarity}</div>
         </div>
     `;
@@ -577,6 +577,11 @@ function renderBoss() {
   const hpPercent = ((boss.hp / boss.maxHp) * 100).toFixed(1);
   if (!renderBoss.lagHpPercent) renderBoss.lagHpPercent = hpPercent;
 
+  const weaknessHtml = boss.weakness.map(type => {
+    const className = `type-${type.toLowerCase()}-text type-attack-text`;
+    return `<span class="${className}" style="font-weight: 600; margin-right: 6px;">${type}</span>`;
+  }).join('');
+
   bossContainer.innerHTML = `
     <div class="boss-name">${boss.name}</div>
     <div class="boss-image">
@@ -588,7 +593,7 @@ function renderBoss() {
     </div>
     <div class="boss-hp-text">${boss.hp} / ${boss.maxHp} (${hpPercent}%)</div>
     <div class="boss-weakness">
-      Weakness: ${boss.weakness.join(', ')}
+      Weakness: ${weaknessHtml}
       ${boss.onlyWeakness ? '<br><em class="weakness-info">Can only be damaged by its weaknesses</em>' : ''}
     </div>
   `;

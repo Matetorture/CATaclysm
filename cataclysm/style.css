@@ -462,8 +462,8 @@ html, body {
 .type-water-text {
     color: #30cfff;
 }
-.type-earth-text {
-    color: #78a463;
+.type-stone-text {
+    color: #949493;
 }
 .type-plant-text {
     color: #4ace5e;
@@ -476,6 +476,51 @@ html, body {
 }
 .type-ice-text {
     color: #8af6ff;
+}
+.type-holy-text {
+    color: #fff9c4;
+}
+.type-dark-text {
+    color: #a29bfe;
+}
+
+.type-attack-text::before {
+  content: "";
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 4px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  vertical-align: middle;
+}
+
+.type-fire-text::before {
+  background-image: url('img/types/fire.png');
+}
+.type-water-text::before {
+  background-image: url('img/types/water.png');
+}
+.type-stone-text::before {
+  background-image: url('img/types/stone.png');
+}
+.type-plant-text::before {
+  background-image: url('img/types/plant.png');
+}
+.type-air-text::before {
+  background-image: url('img/types/air.png');
+}
+.type-electric-text::before {
+  background-image: url('img/types/electric.png');
+}
+.type-ice-text::before {
+  background-image: url('img/types/ice.png');
+}
+.type-holy-text::before {
+  background-image: url('img/types/holy.png');
+}
+.type-dark-text::before {
+  background-image: url('img/types/dark.png');
 }
 
 .slot-modifiers {
