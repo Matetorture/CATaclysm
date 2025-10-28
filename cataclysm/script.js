@@ -399,11 +399,17 @@ let draggedFromIndex = null; // slot index lub null
 const dragPreview = document.getElementById('dragPreview');
 let dragOffsetX = 0;
 let dragOffsetY = 0;
+let draggedCardElement = null;
 
 function dragStartHandler(e, card, from, index = null) {
     draggedCard = card;
     draggedFrom = from;
     draggedFromIndex = index;
+
+    const target = e.target.closest('.slot-card, .unused-card');
+    if (target) {
+        removeTooltip(target);
+    }
 
     const crt = document.createElement('canvas');
     crt.width = 0;
@@ -426,11 +432,16 @@ function dragStartHandler(e, card, from, index = null) {
         dragPreview.style.height = rect.height + 'px';
     }
 
-    const target = e.target.closest('.slot-card, .unused-card');
-    if (!target) return;
-    const rectTarget = target.getBoundingClientRect();
-    dragOffsetX = e.clientX - rectTarget.left;
-    dragOffsetY = e.clientY - rectTarget.top;
+    if (target) {
+        draggedCardElement = target;
+        draggedCardElement.style.opacity = '0';
+    }
+
+    const rectTarget = target?.getBoundingClientRect();
+    if (rectTarget) {
+        dragOffsetX = e.clientX - rectTarget.left;
+        dragOffsetY = e.clientY - rectTarget.top;
+    }
 
     moveDragPreview(e.clientX, e.clientY);
 
@@ -456,6 +467,12 @@ function dragEndHandler(e) {
     draggedCard = null;
     draggedFrom = null;
     draggedFromIndex = null;
+
+    if (draggedCardElement) {
+        draggedCardElement.style.opacity = '1';
+        draggedCardElement = null;
+    }
+
     dragPreview.style.display = 'none';
     document.removeEventListener('dragover', dragMoveHandler);
 }
