@@ -587,17 +587,30 @@ function renderBoss() {
 }
 
 let attackIntervals = [];
+const cardAttackTimers = new Map();
 
 function clearAttackIntervals() {
   attackIntervals.forEach(id => clearInterval(id));
   attackIntervals = [];
+  cardAttackTimers.clear();
+}
+
+function playAttackAnimation(card) {
+  const deckCardElements = document.querySelectorAll('.deck-slot .slot-card.filled');
+  deckCardElements.forEach(el => {
+    const img = el.querySelector('img.card-image');
+    if (img && img.alt === card.name) {
+      el.classList.add('attack-animation');
+      el.addEventListener('animationend', () => {
+        el.classList.remove('attack-animation');
+      }, { once: true });
+    }
+  });
 }
 
 function attackWithCard(card) {
   const stats = card.getStats();
-
   const critChancePercent = stats.crit;
-
   let damage = stats.attack;
 
   const isCrit = Math.random() * 100 < critChancePercent;
@@ -607,13 +620,12 @@ function attackWithCard(card) {
 
   changeBossHp(-damage);
   console.log(`${card.name} dealt ${damage}${isCrit ? ' (CRIT)' : ''} damage. Boss HP: ${getCurrentBoss().hp}/${getCurrentBoss().maxHp}`);
-}
 
-const cardAttackTimers = new Map();
+  playAttackAnimation(card);
+}
 
 function startDeckContinuousAttacks() {
   clearAttackIntervals();
-  cardAttackTimers.clear();
 
   gameState.deckCards.forEach(card => {
     if (!card) return;
@@ -650,7 +662,6 @@ function updateAttackTimers(timestamp) {
 
     const newTime = Math.min(time + delta, speedMs);
     cardAttackTimers.set(card.id, newTime);
-
     updateCardTooltipAttackTimer(card, newTime, speedMs);
   });
 

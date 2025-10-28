@@ -691,3 +691,17 @@ img {
     image-rendering: crisp-edges;
     -ms-interpolation-mode: nearest-neighbor;
 }
+
+/* Attack animation */
+@keyframes attackTilt {
+  0% { transform: rotate(0deg); filter: drop-shadow(0 0 0 transparent); }
+  30% { transform: rotate(-15deg) scale(1.05); filter: drop-shadow(0 0 15px var(--primary-color)); }
+  60% { transform: rotate(10deg) scale(1.05); filter: drop-shadow(0 0 15px var(--primary-color)); }
+  100% { transform: rotate(0deg); filter: drop-shadow(0 0 0 transparent); }
+}
+
+.attack-animation {
+  animation: attackTilt 300ms ease forwards;
+  z-index: 10;
+  position: relative;
+}
