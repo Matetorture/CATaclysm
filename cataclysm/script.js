@@ -574,16 +574,35 @@ function renderBoss() {
   const boss = getCurrentBoss();
   if (!boss) return;
 
+  const hpPercent = ((boss.hp / boss.maxHp) * 100).toFixed(1);
+  if (!renderBoss.lagHpPercent) renderBoss.lagHpPercent = hpPercent;
+
   bossContainer.innerHTML = `
     <div class="boss-name">${boss.name}</div>
     <div class="boss-image">
       <img src="img/bosses/${boss.id}.png" alt="${boss.name}">
     </div>
-    <div class="boss-lower-info">
-      <div class="boss-hp">HP: ${boss.hp} / ${boss.maxHp}</div>
-      <div class="boss-weakness">Weakness: ${boss.weakness.join(', ')}</div>
+    <div class="boss-hp-bar-container">
+      <div class="boss-hp-bar-lag" style="width: ${renderBoss.lagHpPercent}%;"></div>
+      <div class="boss-hp-bar" style="width: ${hpPercent}%;"></div>
     </div>
+    <div class="boss-hp-text">${boss.hp} / ${boss.maxHp} (${hpPercent}%)</div>
+    <div class="boss-weakness">Weakness: ${boss.weakness.join(', ')}</div>
   `;
+
+  const hpBar = bossContainer.querySelector('.boss-hp-bar');
+  if (hpPercent <= 10) {
+    hpBar.classList.add('red');
+    hpBar.classList.remove('yellow');
+  } else if (hpPercent <= 30) {
+    hpBar.classList.add('yellow');
+    hpBar.classList.remove('red');
+  } else {
+    hpBar.classList.remove('yellow');
+    hpBar.classList.remove('red');
+  }
+
+  animateLagHpBar(parseFloat(hpPercent));
 }
 
 let attackIntervals = [];
@@ -678,4 +697,32 @@ function updateCardTooltipAttackTimer(card, currentMs, maxMs) {
       speedSpan.textContent = `${(currentMs / 1000).toFixed(2)} / ${(maxMs / 1000).toFixed(2)}s`;
     }
   });
+}
+
+function animateLagHpBar(targetPercent) {
+  if (!renderBoss.lagHpPercent) {
+    renderBoss.lagHpPercent = targetPercent;
+    return;
+  }
+
+  const startPercent = renderBoss.lagHpPercent;
+  const duration = 1000;
+  const startTime = performance.now();
+
+  function animate(time) {
+    const elapsed = time - startTime;
+    if (elapsed < duration) {
+      const progress = elapsed / duration;
+      renderBoss.lagHpPercent = startPercent - (startPercent - targetPercent) * progress;
+      const lagBar = document.querySelector('.boss-hp-bar-lag');
+      if (lagBar) lagBar.style.width = `${renderBoss.lagHpPercent}%`;
+
+      requestAnimationFrame(animate);
+    } else {
+      renderBoss.lagHpPercent = targetPercent;
+      const lagBar = document.querySelector('.boss-hp-bar-lag');
+      if (lagBar) lagBar.style.width = `${targetPercent}%`;
+    }
+  }
+  requestAnimationFrame(animate);
 }
