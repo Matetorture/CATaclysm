@@ -89,6 +89,7 @@ function initGame() {
     gameState.ownedCards = [...sampleCardsData];
     renderAvailableCards();
     renderDeckSlots();
+    renderBoss();
 }
 
 function renderAvailableCards() {
@@ -544,3 +545,40 @@ unusedCardsGrid.addEventListener('drop', (e) => {
     }
     dragEndHandler(e);
 });
+
+
+const bosses = [
+  { id: 1, name: "Fire Dragon", maxHp: 5000, hp: 5000, weakness: ["Ice"] },
+  { id: 2, name: "Stone Golem", maxHp: 7000, hp: 7000, weakness: ["Water", "Electric"] },
+  { id: 3, name: "Shadow Wraith", maxHp: 3500, hp: 3500, weakness: ["Plant"] }
+];
+
+let currentBossId = 1;
+
+function getCurrentBoss() {
+  return bosses.find(b => b.id === currentBossId);
+}
+
+function changeBossHp(amount) {
+  const boss = getCurrentBoss();
+  if (!boss) return;
+  boss.hp = Math.max(0, Math.min(boss.maxHp, boss.hp + amount));
+  renderBoss();
+}
+
+function renderBoss() {
+  const bossContainer = document.querySelector('.boss-container');
+  const boss = getCurrentBoss();
+  if (!boss) return;
+
+  bossContainer.innerHTML = `
+    <div class="boss-name">${boss.name}</div>
+    <div class="boss-image">
+      <img src="img/bosses/${boss.id}.png" alt="${boss.name}">
+    </div>
+    <div class="boss-lower-info">
+      <div class="boss-hp">HP: ${boss.hp} / ${boss.maxHp}</div>
+      <div class="boss-weakness">Weakness: ${boss.weakness.join(', ')}</div>
+    </div>
+  `;
+}
