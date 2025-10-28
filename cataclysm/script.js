@@ -269,7 +269,7 @@ function showTooltip(element, card, position = 'bottom') {
             </div>
             <div style="display: flex; flex-direction:column; align-items:center;">
                 <span style="font-size:13px; color:#fff; font-weight:bold;">S</span>
-                <span style="font-size:14px; color:#3cb7fa; font-weight:600;">${(stats.speed / 1000).toFixed(2)}s</span>
+                <span class="speed-timer" style="font-size:14px; color:#3cb7fa; font-weight:600;">0.00 / ${(stats.speed / 1000).toFixed(2)}s</span>
             </div>
             <div style="display: flex; flex-direction:column; align-items:center;">
                 <span style="font-size:13px; color:#fff; font-weight:bold;">C</span>
@@ -609,20 +609,62 @@ function attackWithCard(card) {
   console.log(`${card.name} dealt ${damage}${isCrit ? ' (CRIT)' : ''} damage. Boss HP: ${getCurrentBoss().hp}/${getCurrentBoss().maxHp}`);
 }
 
+const cardAttackTimers = new Map();
+
 function startDeckContinuousAttacks() {
   clearAttackIntervals();
+  cardAttackTimers.clear();
 
   gameState.deckCards.forEach(card => {
     if (!card) return;
 
     const stats = card.getStats();
     const speedMs = stats.speed;
-
     if (speedMs <= 0) return;
 
-    const intervalMs = Math.max(speedMs, 100);
+    cardAttackTimers.set(card.id, 0);
 
-    const intervalId = setInterval(() => attackWithCard(card), intervalMs);
+    const intervalId = setInterval(() => {
+      attackWithCard(card);
+      cardAttackTimers.set(card.id, 0);
+    }, speedMs);
+
     attackIntervals.push(intervalId);
+  });
+
+  requestAnimationFrame(updateAttackTimers);
+}
+
+function updateAttackTimers(timestamp) {
+  if (!updateAttackTimers.last) updateAttackTimers.last = timestamp;
+  const delta = timestamp - updateAttackTimers.last;
+  updateAttackTimers.last = timestamp;
+
+  cardAttackTimers.forEach((time, cardId) => {
+    const card = gameState.ownedCards.find(c => c.id === cardId);
+    if (!card) return;
+
+    const stats = card.getStats();
+    const speedMs = stats.speed;
+    if (speedMs <= 0) return;
+
+    const newTime = Math.min(time + delta, speedMs);
+    cardAttackTimers.set(card.id, newTime);
+
+    updateCardTooltipAttackTimer(card, newTime, speedMs);
+  });
+
+  requestAnimationFrame(updateAttackTimers);
+}
+
+function updateCardTooltipAttackTimer(card, currentMs, maxMs) {
+  const tooltips = document.querySelectorAll('.card-tooltip');
+  tooltips.forEach(tooltip => {
+    if (!tooltip.textContent.includes(card.name)) return;
+
+    const speedSpan = tooltip.querySelector('.speed-timer');
+    if (speedSpan) {
+      speedSpan.textContent = `${(currentMs / 1000).toFixed(2)} / ${(maxMs / 1000).toFixed(2)}s`;
+    }
   });
 }
