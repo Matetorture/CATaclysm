@@ -196,6 +196,12 @@ html, body {
   user-select: none;
 }
 
+.weakness-info {
+    font-size: 0.9rem;
+    color: #FF4C4C;
+    font-weight: 400;
+}
+
 /* Deck Section */
 .deck-section {
     flex: 1;

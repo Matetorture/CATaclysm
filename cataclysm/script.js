@@ -589,7 +589,7 @@ function renderBoss() {
     <div class="boss-hp-text">${boss.hp} / ${boss.maxHp} (${hpPercent}%)</div>
     <div class="boss-weakness">
       Weakness: ${boss.weakness.join(', ')}
-      ${boss.onlyWeakness ? '<br><em>Can only be damaged by these attack types</em>' : ''}
+      ${boss.onlyWeakness ? '<br><em class="weakness-info">Can only be damaged by its weaknesses</em>' : ''}
     </div>
   `;
 
