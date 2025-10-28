@@ -52,7 +52,7 @@ class CatCard {
         const level = this.getLevel();
         return {
             attack: Math.floor(this.baseAttack * level * 2),
-            speed: Math.floor(this.baseSpeed * level * 1.5),
+            speed: Math.floor(this.baseSpeed / ((level + 1))),
             crit: (this.baseCrit * level * 1.5).toFixed(1)
         };
     }
@@ -75,14 +75,14 @@ const gameState = {
 };
 
 const sampleCardsData = [
-    new CatCard(1, '1.1', 'Fire Kitten', 'Starter', 'Common', 10, 8, 5, 'Fire', 3),
-    new CatCard(2, '1.2', 'Water Paw', 'Starter', 'Uncommon', 8, 10, 4, 'Water', 2),
-    new CatCard(3, '1.3', 'Earth Tiger', 'Starter', 'Rare', 12, 7, 6, 'Earth', 6),
-    new CatCard(4, '2.1', 'Plant Guardian', 'Forest', 'Epic', 9, 9, 5, 'Plant', 1),
-    new CatCard(5, '2.2', 'Air Dancer', 'Sky', 'Legendary', 11, 12, 7, 'Air', 14),
-    new CatCard(6, '2.3', 'Electric Spark', 'Thunder', 'Legendary', 13, 11, 8, 'Electric', 30),
-    new CatCard(7, '2.4', 'Frost Whisker', 'Frozen', 'Ultimate', 14, 9, 6, 'Ice', 62),
-    new CatCard(8, '2.5', 'Legendary Beast', 'Legendary', 'Legendary', 20, 15, 10, 'Fire', 5),
+    new CatCard(1, '1.1', 'Fire Kitten', 'Starter', 'Common', 10, 20000, 5, 'Fire', 3),
+    new CatCard(2, '1.2', 'Water Paw', 'Starter', 'Uncommon', 8, 20000, 4, 'Water', 2),
+    new CatCard(3, '1.3', 'Earth Tiger', 'Starter', 'Rare', 12, 20000, 6, 'Earth', 6),
+    new CatCard(4, '2.1', 'Plant Guardian', 'Forest', 'Epic', 9, 20000, 5, 'Plant', 1),
+    new CatCard(5, '2.2', 'Air Dancer', 'Sky', 'Legendary', 11, 20000, 7, 'Air', 14),
+    new CatCard(6, '2.3', 'Electric Spark', 'Thunder', 'Legendary', 13, 20000, 8, 'Electric', 30),
+    new CatCard(7, '2.4', 'Frost Whisker', 'Frozen', 'Ultimate', 14, 20000, 6, 'Ice', 62),
+    new CatCard(8, '2.5', 'Legendary Beast', 'Legendary', 'Legendary', 20, 20000, 10, 'Fire', 5),
 ];
 
 function initGame() {
@@ -90,6 +90,7 @@ function initGame() {
     renderAvailableCards();
     renderDeckSlots();
     renderBoss();
+    startDeckContinuousAttacks();
 }
 
 function renderAvailableCards() {
@@ -268,7 +269,7 @@ function showTooltip(element, card, position = 'bottom') {
             </div>
             <div style="display: flex; flex-direction:column; align-items:center;">
                 <span style="font-size:13px; color:#fff; font-weight:bold;">S</span>
-                <span style="font-size:14px; color:#3cb7fa; font-weight:600;">${stats.speed}</span>
+                <span style="font-size:14px; color:#3cb7fa; font-weight:600;">${(stats.speed / 1000).toFixed(2)}s</span>
             </div>
             <div style="display: flex; flex-direction:column; align-items:center;">
                 <span style="font-size:13px; color:#fff; font-weight:bold;">C</span>
@@ -328,6 +329,7 @@ function addCardToDeck(card) {
         gameState.deckCards[emptySlot] = card;
         renderAvailableCards();
         renderDeckSlots();
+        startDeckContinuousAttacks();
     } else {
         alert('All deck slots are full!');
     }
@@ -338,6 +340,7 @@ function removeCardFromDeck(slotIndex) {
     gameState.deckModifiers[slotIndex] = '';
     renderAvailableCards();
     renderDeckSlots();
+    startDeckContinuousAttacks();
 }
 
 function setupTiltEffect() {
@@ -581,4 +584,45 @@ function renderBoss() {
       <div class="boss-weakness">Weakness: ${boss.weakness.join(', ')}</div>
     </div>
   `;
+}
+
+let attackIntervals = [];
+
+function clearAttackIntervals() {
+  attackIntervals.forEach(id => clearInterval(id));
+  attackIntervals = [];
+}
+
+function attackWithCard(card) {
+  const stats = card.getStats();
+
+  const critChancePercent = stats.crit;
+
+  let damage = stats.attack;
+
+  const isCrit = Math.random() * 100 < critChancePercent;
+  if (isCrit) {
+    damage *= 2;
+  }
+
+  changeBossHp(-damage);
+  console.log(`${card.name} dealt ${damage}${isCrit ? ' (CRIT)' : ''} damage. Boss HP: ${getCurrentBoss().hp}/${getCurrentBoss().maxHp}`);
+}
+
+function startDeckContinuousAttacks() {
+  clearAttackIntervals();
+
+  gameState.deckCards.forEach(card => {
+    if (!card) return;
+
+    const stats = card.getStats();
+    const speedMs = stats.speed;
+
+    if (speedMs <= 0) return;
+
+    const intervalMs = Math.max(speedMs, 100);
+
+    const intervalId = setInterval(() => attackWithCard(card), intervalMs);
+    attackIntervals.push(intervalId);
+  });
 }
