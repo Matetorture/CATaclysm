@@ -269,7 +269,7 @@ function showTooltip(element, card, position = 'bottom') {
             </div>
             <div style="display: flex; flex-direction:column; align-items:center;">
                 <span style="font-size:13px; color:#fff; font-weight:bold;">S</span>
-                <span class="speed-timer" style="font-size:14px; color:#3cb7fa; font-weight:600;">0.00 / ${(stats.speed / 1000).toFixed(2)}s</span>
+                <span class="speed-timer" style="font-size:14px; color:#3cb7fa; font-weight:600;">${(stats.speed / 1000).toFixed(2)}s</span>
             </div>
             <div style="display: flex; flex-direction:column; align-items:center;">
                 <span style="font-size:13px; color:#fff; font-weight:bold;">C</span>
