@@ -8,7 +8,7 @@ class CatCard {
         this.baseAttack = baseAttack;
         this.baseSpeed = baseSpeed;
         this.baseCrit = baseCrit; // in percentage
-        this.attackType = attackType; // Fire, Water, Earth, Plant, Air, Electric, Ice
+        this.attackType = attackType; // Fire, Water, Earth, Plant, Air, Electric, Ice, Holy, Dark
         this.copies = copies; // Number of copies owned
     }
 
