@@ -551,9 +551,9 @@ unusedCardsGrid.addEventListener('drop', (e) => {
 
 
 const bosses = [
-  { id: 1, name: "Fire Dragon", maxHp: 5000, hp: 5000, weakness: ["Ice"] },
-  { id: 2, name: "Stone Golem", maxHp: 7000, hp: 7000, weakness: ["Water", "Electric"] },
-  { id: 3, name: "Shadow Wraith", maxHp: 3500, hp: 3500, weakness: ["Plant"] }
+  { id: 1, name: "Fire Dragon", maxHp: 5000, hp: 5000, weakness: ["Ice"], onlyWeakness: true },
+  { id: 2, name: "Stone Golem", maxHp: 7000, hp: 7000, weakness: ["Water", "Electric"], onlyWeakness: false },
+  { id: 3, name: "Shadow Wraith", maxHp: 3500, hp: 3500, weakness: ["Plant"], onlyWeakness: false }
 ];
 
 let currentBossId = 1;
@@ -587,7 +587,10 @@ function renderBoss() {
       <div class="boss-hp-bar" style="width: ${hpPercent}%;"></div>
     </div>
     <div class="boss-hp-text">${boss.hp} / ${boss.maxHp} (${hpPercent}%)</div>
-    <div class="boss-weakness">Weakness: ${boss.weakness.join(', ')}</div>
+    <div class="boss-weakness">
+      Weakness: ${boss.weakness.join(', ')}
+      ${boss.onlyWeakness ? '<br><em>Can only be damaged by these attack types</em>' : ''}
+    </div>
   `;
 
   const hpBar = bossContainer.querySelector('.boss-hp-bar');
@@ -629,8 +632,22 @@ function playAttackAnimation(card) {
 
 function attackWithCard(card) {
   const stats = card.getStats();
+  const boss = getCurrentBoss();
+  if (!boss) return;
+
   const critChancePercent = stats.crit;
   let damage = stats.attack;
+
+  const isWeaknessMatch = boss.weakness.includes(card.attackType);
+
+  if (boss.onlyWeakness && !isWeaknessMatch) {
+    console.log(`${card.name} cannot damage boss due to type mismatch.`);
+    return;
+  }
+
+  if (isWeaknessMatch) {
+    damage *= 2;
+  }
 
   const isCrit = Math.random() * 100 < critChancePercent;
   if (isCrit) {
@@ -638,7 +655,7 @@ function attackWithCard(card) {
   }
 
   changeBossHp(-damage);
-  console.log(`${card.name} dealt ${damage}${isCrit ? ' (CRIT)' : ''} damage. Boss HP: ${getCurrentBoss().hp}/${getCurrentBoss().maxHp}`);
+  console.log(`${card.name} dealt ${damage}${isCrit ? ' (CRIT)' : ''} damage. Boss HP: ${boss.hp}/${boss.maxHp}`);
 
   playAttackAnimation(card);
 }
