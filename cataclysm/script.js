@@ -615,6 +615,7 @@ function renderBoss() {
     <div class="boss-image">
       <img src="img/bosses/${boss.id}.png" alt="${boss.name}">
     </div>
+    <span class="boss-hp-label">&nbsp;</span>
     <div class="boss-hp-bar-container">
       <div class="boss-hp-bar-lag" style="width: ${renderBoss.lagHpPercent}%;"></div>
       <div class="boss-hp-bar" style="width: ${hpPercent}%;"></div>
@@ -664,33 +665,45 @@ function playAttackAnimation(card) {
 }
 
 function attackWithCard(card) {
-  const stats = card.getStats();
-  const boss = getCurrentBoss();
-  if (!boss) return;
+    const stats = card.getStats();
+    const boss = getCurrentBoss();
+    if (!boss) return;
 
-  const critChancePercent = stats.crit;
-  let damage = stats.attack;
+    const critChancePercent = stats.crit;
+    let damage = stats.attack;
 
-  const isWeaknessMatch = boss.weakness.includes(card.attackType);
+    const isWeaknessMatch = boss.weakness.includes(card.attackType);
 
-  if (boss.onlyWeakness && !isWeaknessMatch) {
-    console.log(`${card.name} cannot damage boss due to type mismatch.`);
-    return;
-  }
+    if (boss.onlyWeakness && !isWeaknessMatch) {
+        const damageElement = showCardInfo(card.name, "NO DAMAGE", true);
+        setTimeout(() => damageElement.remove(), 3000);
+        return;
+    }
 
-  if (isWeaknessMatch) {
-    damage *= 2;
-  }
+    if (isWeaknessMatch) {
+        damage *= 2;
+    }
 
-  const isCrit = Math.random() * 100 < critChancePercent;
-  if (isCrit) {
-    damage *= 2;
-  }
+    const isCrit = Math.random() * 100 < critChancePercent;
+    if (isCrit) {
+        damage *= 2;
+    }
 
-  changeBossHp(-damage);
-  console.log(`${card.name} dealt ${damage}${isCrit ? ' (CRIT)' : ''} damage. Boss HP: ${boss.hp}/${boss.maxHp}`);
+    changeBossHp(-damage);
+    console.log(`${card.name} dealt ${damage}${isCrit ? ' (CRIT)' : ''} damage. Boss HP: ${boss.hp}/${boss.maxHp}`);
 
-  playAttackAnimation(card);
+    playAttackAnimation(card);
+
+    const bossHpBarDamage = document.querySelector('.boss-hp-label');
+    bossHpBarDamage.style.color = isCrit ? '#ff4444' : '#ffffff';
+    bossHpBarDamage.innerText = (isCrit ? 'CRIT! ' : '') + '-' + Math.floor(damage);
+
+    setTimeout(() => {
+      bossHpBarDamage.innerHTML = '&nbsp;';
+    }, 1500);
+
+    const damageElement = showCardInfo(card.name, (isCrit ? 'CRIT! ' : '') + '-' + Math.floor(damage), isCrit);
+    setTimeout(() => damageElement.remove(), 1500);
 }
 
 function startDeckContinuousAttacks() {
@@ -775,4 +788,26 @@ function animateLagHpBar(targetPercent) {
     }
   }
   requestAnimationFrame(animate);
+}
+
+function showCardInfo(cardName, displayText, isCrit = false) {
+  const cardElements = document.querySelectorAll('.slot-card.filled');
+  for (const el of cardElements) {
+    const img = el.querySelector('img.card-image');
+    if (img && img.alt === cardName) {
+      const damageDisplayCard = document.createElement('div');
+      damageDisplayCard.className = 'info-display-card';
+
+      const rect = el.getBoundingClientRect();
+      damageDisplayCard.style.top = (rect.top - 30) + 'px';
+      damageDisplayCard.style.left = (rect.left + rect.width / 2) + 'px';
+      damageDisplayCard.style.color = isCrit ? '#ff4444' : '#ffffff';
+      damageDisplayCard.innerText = displayText;
+
+      document.body.appendChild(damageDisplayCard);
+
+      return damageDisplayCard;
+    }
+  }
+  return null;
 }
