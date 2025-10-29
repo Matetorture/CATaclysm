@@ -435,6 +435,32 @@ html, body {
     font-weight: 600;
 }
 
+.tooltip-dps-columns {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  column-gap: 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  color: var(--primary-color);
+  font-weight: 700;
+  margin-bottom: 12px;
+  align-items: center;
+  justify-content: center;
+}
+
+.tooltip-dps-label {
+  text-align: right;
+  font-weight: 600;
+  color: #ccc;
+}
+
+.tooltip-dps-value {
+  text-align: left;
+  font-weight: 700;
+}
+
 /* Rarity Text Color */
 .rarity-common-text {
     color: #3d3d3d;

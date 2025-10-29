@@ -64,6 +64,25 @@ class CatCard {
     getTypeClass() {
         return `type-${this.attackType.toLowerCase()}`;
     }
+
+    getDPS() {
+        const stats = this.getStats();
+        const attacksPerSecond = 1000 / stats.speed;
+        const critMultiplier = 2;
+        const critChance = stats.crit / 100;
+
+        const damagePerHit = stats.attack;
+
+        const dps = damagePerHit * attacksPerSecond;
+
+        const dpsWithCrit = 
+        (damagePerHit * (1 - critChance) + damagePerHit * critMultiplier * critChance) * attacksPerSecond;
+
+        return {
+        dps: dps.toFixed(2),
+        dpsWithCrit: dpsWithCrit.toFixed(2),
+        };
+    }
 }
 
 const gameState = {
@@ -109,7 +128,7 @@ function renderAvailableCards() {
         });
 
         cardElement.addEventListener('mouseenter', () => {
-            showTooltip(cardElement, card, 'bottom');
+            showTooltip(cardElement, card, 'top');
         });
 
         cardElement.addEventListener('mouseleave', () => {
@@ -247,10 +266,12 @@ function setupSlotModifierClicks() {
     });
 }
 
-function showTooltip(element, card, position = 'bottom') {
+function showTooltip(element, card, position = 'top') {
     removeTooltip(element);
 
     const stats = card.getStats();
+
+    const dpsStats = card.getDPS();
     
     const tooltip = document.createElement('div');
     tooltip.className = `card-tooltip`;
@@ -262,26 +283,33 @@ function showTooltip(element, card, position = 'bottom') {
             ${card.collection} <span style="color:#aaa;">#${card.number}</span>
         </div>
 
-        <div style="display: flex; justify-content: space-around; align-items: center; margin-bottom: 8px;">
-            <div style="display: flex; flex-direction:column; align-items:center;">
+        <div class="tooltip-stats" style="display: flex; margin-bottom: 8px;">
+            <div style="display: flex; flex-direction:column; align-items:center; width:33%;">
                 <span style="font-size:13px; color:#fff; font-weight:bold;">A</span>
                 <span style="font-size:14px; color:#ff6464; font-weight:600;">${stats.attack}</span>
             </div>
-            <div style="display: flex; flex-direction:column; align-items:center;">
+            <div style="display: flex; flex-direction:column; align-items:center; width:33%;">
                 <span style="font-size:13px; color:#fff; font-weight:bold;">S</span>
                 <span class="speed-timer" style="font-size:14px; color:#3cb7fa; font-weight:600;">${(stats.speed / 1000).toFixed(2)}s</span>
             </div>
-            <div style="display: flex; flex-direction:column; align-items:center;">
+            <div style="display: flex; flex-direction:column; align-items:center; width:33%;">
                 <span style="font-size:13px; color:#fff; font-weight:bold;">C</span>
                 <span style="font-size:14px; color:#ffe769; font-weight:600;">${stats.crit}%</span>
             </div>
         </div>
 
-        <div style="display:flex; justify-content: center; gap:22px; margin-bottom: 5px;">
-            <div style="font-size: 11px; color:#aaa;">
+        <div class="tooltip-dps-columns">
+            <div class="tooltip-dps-label">DPS:</div>
+            <div class="tooltip-dps-value-attack" style="color: #ff6464;">${dpsStats.dps}</div>
+            <div class="tooltip-dps-label">Crit DPS:</div>
+            <div class="tooltip-dps-value-crit" style="color: #ffe769;">${dpsStats.dpsWithCrit}</div>
+        </div>
+
+        <div style="display:flex; justify-content: center; gap:22px; margin-bottom: 15px;">
+            <div style="font-size: 12px; color:#aaa;">
                 <span style="color:#ffb862;">${card.getLevelDisplay()}</span>
             </div>
-            <div style="font-size: 11px; color:#aaa;">
+            <div style="font-size: 12px; color:#aaa;">
                 Copies: <span style="color:#dfccff;">${card.getCopiesDisplay()}</span>
             </div>
         </div>
