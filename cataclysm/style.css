@@ -487,8 +487,8 @@ html, body {
 .type-attack-text::before {
   content: "";
   display: inline-block;
-  width: 12px;
-  height: 12px;
+  width: 16px;
+  height: 18px;
   margin-right: 4px;
   background-size: contain;
   background-repeat: no-repeat;
