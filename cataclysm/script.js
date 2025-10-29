@@ -85,6 +85,27 @@ class CatCard {
     }
 }
 
+const cardRarities = [
+  "common",
+  "uncommon",
+  "rare",
+  "epic",
+  "legendary",
+  "ultimate"
+];
+
+const attackTypes = [
+  "fire",
+  "water",
+  "stone",
+  "plant",
+  "air",
+  "electric",
+  "ice",
+  "holy",
+  "dark"
+];
+
 const gameState = {
     ownedCards: [], // All owned cards
     deckCards: [null, null, null, null, null, null, null, null], // 8 deck slots
@@ -106,17 +127,19 @@ const sampleCardsData = [
 
 function initGame() {
     gameState.ownedCards = [...sampleCardsData];
+    setupBottomPanelToggle();
     renderAvailableCards();
     renderDeckSlots();
     renderBoss();
     startDeckContinuousAttacks();
+    generateFilterButtons();
 }
 
-function renderAvailableCards() {
+function renderAvailableCards(cardsToRender = gameState.ownedCards) {
     const container = document.getElementById('availableCardsGrid');
     container.innerHTML = '';
 
-    gameState.ownedCards.forEach((card) => {
+    cardsToRender.forEach((card) => {
         const inDeck = gameState.deckCards.includes(card);
         if (inDeck) return;
 
@@ -143,6 +166,99 @@ function renderAvailableCards() {
     });
 
     setupTiltEffect();
+}
+
+function generateFilterButtons() {
+    const typeContainer = document.querySelector('.card-filter-types');
+    const rarityContainer = document.querySelector('.card-filter-rarity');
+
+    typeContainer.innerHTML = '';
+    rarityContainer.innerHTML = '';
+
+    attackTypes.forEach(type => {
+        const btn = document.createElement('button');
+        btn.className = `type-${type}-text btnFilterType filterBtn`;
+        btn.setAttribute('data-type', type);
+
+        const icon = document.createElement('img');
+        icon.src = `img/types/${type}.png`;
+        icon.alt = type + ' icon';
+        icon.style.width = '16px';
+        icon.style.height = '18px';
+        icon.style.marginRight = '6px';
+        icon.style.verticalAlign = 'middle';
+        icon.style.pointerEvents = 'none';
+
+        btn.appendChild(icon);
+        btn.appendChild(document.createTextNode(type));
+        typeContainer.appendChild(btn);
+    });
+
+    cardRarities.forEach(rarity => {
+        const btn = document.createElement('button');
+        btn.className = `rarity-${rarity}-text btnFilterRarity filterBtn`;
+        btn.setAttribute('data-rarity', rarity);
+        btn.textContent = rarity;
+        rarityContainer.appendChild(btn);
+    });
+
+    setupFilterButtons();
+}
+
+
+function setupFilterButtons() {
+    document.querySelectorAll('.filterBtn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.filterBtn').forEach(b => b.classList.remove('activeFilterBtn'));
+            btn.classList.add('activeFilterBtn');
+        });
+    });
+
+    document.getElementById('btnAll').addEventListener('click', () => {
+        const sorted = sortCardsById(gameState.ownedCards);
+        renderAvailableCards(sorted);
+    });
+
+    document.getElementById('btnSortDPS').addEventListener('click', () => {
+        const sorted = sortCardsByDPSWithCrit(gameState.ownedCards);
+        renderAvailableCards(sorted);
+    });
+
+    document.querySelectorAll('.btnFilterType').forEach(btn => {
+        btn.addEventListener('click', () => {
+        const type = btn.dataset.type;
+        const filtered = filterCardsByAttackType(gameState.ownedCards, type);
+        renderAvailableCards(filtered);
+        });
+    });
+
+    document.querySelectorAll('.btnFilterRarity').forEach(btn => {
+        btn.addEventListener('click', () => {
+        const rarity = btn.dataset.rarity;
+        const filtered = filterCardsByRarity(gameState.ownedCards, rarity);
+        renderAvailableCards(filtered);
+        });
+    });
+}
+
+function sortCardsById(cards) {
+  return cards.slice().sort((a, b) => a.id - b.id);
+}
+
+function sortCardsByDPSWithCrit(cards) {
+  return cards.slice().sort((a, b) => {
+    const dpsA = parseFloat(a.getDPS().dpsWithCrit);
+    const dpsB = parseFloat(b.getDPS().dpsWithCrit);
+    return dpsB - dpsA;
+  });
+}
+
+function filterCardsByAttackType(cards, type) {
+  return cards.filter(card => card.attackType.toLowerCase() === type.toLowerCase());
+}
+
+function filterCardsByRarity(cards, rarity) {
+  return cards.filter(card => card.rarity.toLowerCase() === rarity.toLowerCase());
 }
 
 function renderDeckSlots() {
@@ -418,11 +534,9 @@ function setupBottomPanelToggle() {
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
         initGame();
-        setupBottomPanelToggle();
     });
 } else {
-    initGame();
-    setupBottomPanelToggle();
+    initGame();   
 }
 
 let draggedCard = null;

@@ -38,12 +38,24 @@
         <!-- Base Section -->
         <div class="base-section">BASE</div>
 
-        <!-- Unused Cards Section -->
-        <div class="unused-cards-section">
-            <div class="unused-cards-title">Available Cards</div>
-            <div class="unused-cards-grid" id="availableCardsGrid">
-                <!-- Cards will be generated here by JavaScript -->
+        <!-- Unused Cards With Filters Section -->
+        <div class="unused-cards-with-filters-section">
+            <div class="cards-filter-section">
+                <div class="card-filters">
+                    <button id="btnAll" class="filterBtn activeFilterBtn">ALL</button>
+                    <button id="btnSortDPS" class="filterBtn">CRIT DPS</button>
+                </div>
+        
+                <div class="card-filter-types"></div>
+        
+                <div class="card-filter-rarity"></div>
             </div>
+
+            <div class="unused-cards-section">
+                <div class="unused-cards-title">Available Cards</div>
+                <div class="unused-cards-grid" id="availableCardsGrid"></div>
+            </div>
+        </div>
         </div>
     </div>
 

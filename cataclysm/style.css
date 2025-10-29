@@ -467,51 +467,51 @@ html, body {
 
 /* Rarity Text Color */
 .rarity-common-text {
-    color: #3d3d3d;
+    color: #7e7e7e !important;
 }
 .rarity-uncommon-text {
-    color: #cccccc;
+    color: #cccccc !important;
 }
 .rarity-rare-text {
-    color: #6190ff;
+    color: #6190ff !important;
 }
 .rarity-epic-text {
-    color: #ff6464;
+    color: #ff6464 !important;
 }
 .rarity-legendary-text {
-    color: #ffd166;
+    color: #ffd166 !important;
 }
 .rarity-ultimate-text {
-    color: #b588ff;
+    color: #b588ff !important;
 }
 
 /* Attack Type Text Color */
 .type-fire-text {
-    color: #ff6464;
+    color: #ff6464 !important;
 }
 .type-water-text {
-    color: #30cfff;
+    color: #30cfff !important;
 }
 .type-stone-text {
-    color: #949493;
+    color: #949493 !important;
 }
 .type-plant-text {
-    color: #4ace5e;
+    color: #4ace5e !important;
 }
 .type-air-text {
-    color: #d9ddfd;
+    color: #d9ddfd !important;
 }
 .type-electric-text {
-    color: #ffe769;
+    color: #ffe769 !important;
 }
 .type-ice-text {
-    color: #8af6ff;
+    color: #8af6ff !important;
 }
 .type-holy-text {
-    color: #fff9c4;
+    color: #fff9c4 !important;
 }
 .type-dark-text {
-    color: #a29bfe;
+    color: #a29bfe !important;
 }
 
 .type-attack-text::before {
@@ -683,6 +683,10 @@ html, body {
 }
 
 /* Unused Cards Section */
+.unused-cards-with-filters-section {
+    width: 80%;
+}
+
 .unused-cards-section {
     flex: 1;
     background-color: var(--dark-tertiary);
@@ -767,6 +771,45 @@ html, body {
     border-color: var(--primary-color);
     color: var(--primary-color);
     transform: scale(1.05);
+}
+
+/* Filter Section */
+.cards-filter-section {
+    margin-bottom: 15px;
+    background-color: var(--dark-secondary);
+    color: var(--primary-color);
+}
+
+.cards-filter-section > div {
+    display: inline-block;
+}
+
+.filterBtn {
+    background-color: var(--dark-tertiary);
+    color: var(--primary-color);
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    margin: 6px 3px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    text-transform: uppercase;
+}
+
+.filterBtn:hover {
+    background-color: var(--dark-bg);
+}
+
+.activeFilterBtn {
+    background-color: var(--dark-bg);
+    outline: 2px solid var(--dark-bg);
+    outline-offset: 2px;
+}
+
+.card-filter-types, .card-filter-rarity{
+    border-left: var(--border-color) 2px solid;
+    padding-left: 3px;
 }
 
 /* Scrollbar Styling */
