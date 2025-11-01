@@ -449,7 +449,6 @@ html, body {
   font-size: 14px;
   color: var(--primary-color);
   font-weight: 700;
-  margin-bottom: 12px;
   align-items: center;
   justify-content: center;
 }
@@ -560,6 +559,7 @@ html, body {
     display: flex;
     gap: 4px;
     justify-content: space-between;
+    z-index: 1;
 }
 
 .slot-modifier {
@@ -578,12 +578,6 @@ html, body {
 .slot-modifier:hover {
     border-color: var(--primary-color);
     color: var(--primary-color);
-}
-
-.slot-modifier.active {
-    background-color: var(--primary-color);
-    color: var(--dark-bg);
-    border-color: var(--primary-color);
 }
 
 /* ===== BOTTOM PANEL (40%) ===== */
@@ -893,4 +887,92 @@ img {
     pointer-events: none;
     z-index: 1000;
     user-select: none;
+}
+
+
+/* Slot Modifiers */
+.slot-modifier-tooltip {
+    border: 2px solid rgba(200, 200, 255, 0.7);
+    background: linear-gradient(135deg, rgba(70, 70, 100, 0.8), rgba(50, 50, 80, 0.9));
+    color: #f0f0ff;
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin: 12px 0;
+    box-shadow:
+        inset 0 0 8px rgba(255, 255, 255, 0.2),
+        0 4px 12px rgba(0, 0, 40, 0.6);
+    font-weight: 600;
+    font-size: 13px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* S - Shiny */
+.slot-modifier-effect.active[data-modifier="S"] {
+    border: 2px solid yellow;
+    box-shadow: 0 0 8px 3px yellow;
+    background-color: #ebe9cb;
+    animation: shinyPulse 4s infinite alternate;
+}
+
+@keyframes shinyPulse {
+    0% {
+        background-color: #ebe9cb;
+        box-shadow: 0 0 8px 3px yellow;
+    }
+    100% {
+        background-color: #fffdee;
+        box-shadow: 0 0 15px 6px yellow;
+    }
+}
+
+/* G - Golden */
+.slot-modifier-effect.active[data-modifier="G"] {
+    border: 2px solid #d4af37;
+    background: linear-gradient(145deg, #f9d976, #f39f09);
+    box-shadow: 0 0 10px 2px #d4af37;
+}
+
+/* B - Bloody */
+.slot-modifier-effect.active[data-modifier="B"] {
+    border: 2px solid #8b0000;
+    background-color: #4b0000;
+    box-shadow: 0 0 8px 3px #8b0000;
+}
+
+/* R - Rainbow */
+.slot-modifier-effect.active[data-modifier="R"] {
+    position: relative;
+    overflow: hidden;
+}
+
+.slot-modifier-effect.active[data-modifier="R"]::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: max(200%, 200vh);
+    height: max(200%, 200vh);
+    background: conic-gradient(
+        red, orange, yellow, green, blue, indigo, violet, red
+    );
+    animation: rotateGradient 5s linear infinite;
+    transform-origin: center;
+}
+
+@keyframes rotateGradient {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* N - Negative */
+.slot-modifier-effect.active[data-modifier="N"] {
+    border: 2px solid #403919;
+    background: linear-gradient(135deg, #705e0c, #9b893f);
+    box-shadow: 0 0 10px 3px #9b893f;
+    filter: invert(1);
+}
+button.slot-modifier-effect.active[data-modifier="N"]{
+    background: linear-gradient(135deg, #64b6f0, #8fa6f3);
+    box-shadow: 0 0 10px 3px #8fa6f3;
 }

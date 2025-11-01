@@ -270,6 +270,14 @@ function renderDeckSlots() {
         slot.className = 'deck-slot';
         slot.dataset.slot = i;
 
+        const mod = gameState.deckModifiers[i];
+        if (mod) {
+            slot.className += ' slot-modifier-effect active';
+            slot.setAttribute('data-modifier', mod);
+        } else {
+            slot.removeAttribute('data-modifier');
+        }
+
         slot.addEventListener('dragover', dragOverHandler);
         slot.addEventListener('drop', dropHandler);
         slot.addEventListener('dragenter', dragEnterHandler);
@@ -312,7 +320,7 @@ function renderDeckSlots() {
         modifiersDiv.className = 'slot-modifiers';
         gameState.ownedModifiers.forEach(mod => {
             const btn = document.createElement('button');
-            btn.className = 'slot-modifier';
+            btn.className = 'slot-modifier slot-modifier-effect';
             btn.setAttribute('data-modifier', mod);
             btn.innerText = mod;
 
@@ -378,6 +386,7 @@ function setupSlotModifierClicks() {
                 gameState.deckModifiers[slotIndex] = modifier;
             }
             renderDeckSlots();
+            startDeckContinuousAttacks();
         });
     });
 }
@@ -386,9 +395,24 @@ function showTooltip(element, card, position = 'top') {
     removeTooltip(element);
 
     const stats = card.getStats();
-
     const dpsStats = card.getDPS();
-    
+
+    const slotIndex = gameState.deckCards.findIndex(c => c === card);
+    const slotType = slotIndex !== -1 ? gameState.deckModifiers[slotIndex] : '';
+
+    let modStats = null;
+    if (slotType) {
+        modStats = getModifiedStats(card, slotType);
+        const attacksPerSecond = 1000 / modStats.speed;
+        const critMultiplier = 2;
+        const critChance = modStats.crit / 100;
+        const damagePerHit = modStats.attack;
+        const dps = damagePerHit * attacksPerSecond;
+        const dpsWithCrit = (damagePerHit * (1 - critChance) + damagePerHit * critMultiplier * critChance) * attacksPerSecond;
+        modStats.dps = dps.toFixed(2);
+        modStats.dpsWithCrit = dpsWithCrit.toFixed(2);
+    }
+
     const tooltip = document.createElement('div');
     tooltip.className = `card-tooltip`;
     tooltip.innerHTML = `
@@ -406,7 +430,7 @@ function showTooltip(element, card, position = 'top') {
             </div>
             <div style="display: flex; flex-direction:column; align-items:center; width:33%;">
                 <span style="font-size:13px; color:#fff; font-weight:bold;">S</span>
-                <span class="speed-timer" style="font-size:14px; color:#3cb7fa; font-weight:600;">${(stats.speed / 1000).toFixed(2)}s</span>
+                <span style="font-size:14px; color:#3cb7fa; font-weight:600;">${modStats ? '' : '<span class="speed-timer"></span>'} ${(Number(stats.speed) / 1000).toFixed(2)}s</span>
             </div>
             <div style="display: flex; flex-direction:column; align-items:center; width:33%;">
                 <span style="font-size:13px; color:#fff; font-weight:bold;">C</span>
@@ -421,7 +445,34 @@ function showTooltip(element, card, position = 'top') {
             <div class="tooltip-dps-value-crit" style="color: #ffe769;">${dpsStats.dpsWithCrit}</div>
         </div>
 
-        <div style="display:flex; justify-content: center; gap:22px; margin-bottom: 15px;">
+        ${modStats ? `
+        <div class="slot-modifier-tooltip">
+            <span style="display:block; text-align:center; font-size:12px; color:#aaa; margin-bottom:6px;">WITH MODIFIER:</span>
+            <div class="tooltip-stats" style="display: flex; margin-bottom: 8px;">
+                <div style="display: flex; flex-direction:column; align-items:center; width:33%;">
+                    <span style="font-size:13px; color:#fff; font-weight:bold;">A</span>
+                    <span style="font-size:14px; color:#ff6464; font-weight:600;">${modStats.attack}</span>
+                </div>
+                <div style="display: flex; flex-direction:column; align-items:center; width:33%;">
+                    <span style="font-size:13px; color:#fff; font-weight:bold;">S</span>
+                    <span style="font-size:14px; color:#3cb7fa; font-weight:600;">${modStats ? '<span class="speed-timer"></span>' : ''} ${(Number(modStats.speed) / 1000).toFixed(2)}s</span>
+                </div>
+                <div style="display: flex; flex-direction:column; align-items:center; width:33%;">
+                    <span style="font-size:13px; color:#fff; font-weight:bold;">C</span>
+                    <span style="font-size:14px; color:#ffe769; font-weight:600;">${modStats.crit}%</span>
+                </div>
+            </div>
+
+            <div class="tooltip-dps-columns">
+                <div class="tooltip-dps-label">DPS:</div>
+                <div class="tooltip-dps-value-attack" style="color: #ff6464;">${modStats.dps}</div>
+                <div class="tooltip-dps-label">Crit DPS:</div>
+                <div class="tooltip-dps-value-crit" style="color: #ffe769;">${modStats.dpsWithCrit}</div>
+            </div>
+        </div>
+        ` : ''}
+
+        <div style="display:flex; justify-content: center; gap:22px; margin: 20px;">
             <div style="font-size: 12px; color:#aaa;">
                 <span style="color:#ffb862;">${card.getLevelDisplay()}</span>
             </div>
@@ -693,7 +744,7 @@ unusedCardsGrid.addEventListener('drop', (e) => {
 
 
 const bosses = [
-  { id: 1, name: "Fire Dragon", maxHp: 5000, hp: 5000, weakness: ["Ice"], onlyWeakness: true },
+  { id: 1, name: "Fire Dragon", maxHp: 5000, hp: 5000, weakness: ["Ice"], onlyWeakness: false },
   { id: 2, name: "Stone Golem", maxHp: 7000, hp: 7000, weakness: ["Water", "Electric"], onlyWeakness: false },
   { id: 3, name: "Shadow Wraith", maxHp: 3500, hp: 3500, weakness: ["Plant"], onlyWeakness: false }
 ];
@@ -779,14 +830,18 @@ function playAttackAnimation(card) {
 }
 
 function attackWithCard(card) {
-    const stats = card.getStats();
+    const slotIndex = gameState.deckCards.findIndex(c => c === card);
+    const slotType = slotIndex !== -1 ? gameState.deckModifiers[slotIndex] : '';
+
+    const modifiedStats = getModifiedStats(card, slotType);
     const boss = getCurrentBoss();
     if (!boss) return;
 
-    const critChancePercent = stats.crit;
-    let damage = stats.attack;
+    const critChancePercent = modifiedStats.crit;
+    let damage = modifiedStats.attack;
+    const attackTypeUsed = modifiedStats.modifiedType;
 
-    const isWeaknessMatch = boss.weakness.includes(card.attackType);
+    const isWeaknessMatch = boss.weakness.includes(attackTypeUsed);
 
     if (boss.onlyWeakness && !isWeaknessMatch) {
         const damageElement = showCardInfo(card.name, "NO DAMAGE", true);
@@ -813,7 +868,7 @@ function attackWithCard(card) {
     bossHpBarDamage.innerText = (isCrit ? 'CRIT! ' : '') + '-' + Math.floor(damage);
 
     setTimeout(() => {
-      bossHpBarDamage.innerHTML = '&nbsp;';
+        bossHpBarDamage.innerHTML = '&nbsp;';
     }, 1500);
 
     const damageElement = showCardInfo(card.name, (isCrit ? 'CRIT! ' : '') + '-' + Math.floor(damage), isCrit);
@@ -821,26 +876,28 @@ function attackWithCard(card) {
 }
 
 function startDeckContinuousAttacks() {
-  clearAttackIntervals();
+    clearAttackIntervals();
 
-  gameState.deckCards.forEach(card => {
-    if (!card) return;
+    gameState.deckCards.forEach((card, index) => {
+        if (!card) return;
 
-    const stats = card.getStats();
-    const speedMs = stats.speed;
-    if (speedMs <= 0) return;
+        const slotMod = gameState.deckModifiers[index] || '';
+        const modStats = getModifiedStats(card, slotMod);
+        const attackInterval = modStats.speed;
 
-    cardAttackTimers.set(card.id, 0);
+        if (attackInterval <= 0) return;
 
-    const intervalId = setInterval(() => {
-      attackWithCard(card);
-      cardAttackTimers.set(card.id, 0);
-    }, speedMs);
+        cardAttackTimers.set(card.id, 0);
 
-    attackIntervals.push(intervalId);
-  });
+        const intervalId = setInterval(() => {
+        attackWithCard(card);
+        cardAttackTimers.set(card.id, 0);
+        }, attackInterval);
 
-  requestAnimationFrame(updateAttackTimers);
+        attackIntervals.push(intervalId);
+    });
+
+    requestAnimationFrame(updateAttackTimers);
 }
 
 function updateAttackTimers(timestamp) {
@@ -852,27 +909,30 @@ function updateAttackTimers(timestamp) {
     const card = gameState.ownedCards.find(c => c.id === cardId);
     if (!card) return;
 
-    const stats = card.getStats();
-    const speedMs = stats.speed;
-    if (speedMs <= 0) return;
+    const slotIndex = gameState.deckCards.findIndex(c => c === card);
+    const slotMod = slotIndex !== -1 ? gameState.deckModifiers[slotIndex] : '';
 
-    const newTime = Math.min(time + delta, speedMs);
+    const modStats = getModifiedStats(card, slotMod);
+    const modSpeed = modStats.speed;
+    if (modSpeed <= 0) return;
+
+    const newTime = Math.min(time + delta, modSpeed);
     cardAttackTimers.set(card.id, newTime);
-    updateCardTooltipAttackTimer(card, newTime, speedMs);
+    updateCardTooltipAttackTimer(card, newTime, modSpeed);
   });
 
   requestAnimationFrame(updateAttackTimers);
 }
 
-function updateCardTooltipAttackTimer(card, currentMs, maxMs) {
+function updateCardTooltipAttackTimer(card, currentMs) {
   const tooltips = document.querySelectorAll('.card-tooltip');
   tooltips.forEach(tooltip => {
     if (!tooltip.textContent.includes(card.name)) return;
 
-    const speedSpan = tooltip.querySelector('.speed-timer');
-    if (speedSpan) {
-      speedSpan.textContent = `${(currentMs / 1000).toFixed(2)} / ${(maxMs / 1000).toFixed(2)}s`;
-    }
+    const speedSpans = tooltip.querySelectorAll('.speed-timer');
+    speedSpans.forEach(speedSpan => {
+      speedSpan.textContent = `${(currentMs / 1000).toFixed(2)} /`;
+    });
   });
 }
 
@@ -925,3 +985,34 @@ function showCardInfo(cardName, displayText, isCrit = false) {
   }
   return null;
 }
+
+function getModifiedStats(card, slotType) {
+    const base = card.getStats();
+    let attack = base.attack, speed = base.speed, crit = base.crit;
+    let modifiedType = card.attackType;
+
+    switch(slotType) {
+        case 'S': // Shiny - attack speed / 3
+            speed = Math.floor(speed / 3);
+            break;
+        case 'G': // Golden - crit rate * 2
+            crit = crit * 2;
+            break;
+        case 'B': // Bloody - attack * 3
+            attack = attack * 3;
+            break;
+        case 'R': // Rainbow - all stats boosted
+            attack *= 2;
+            speed = Math.floor(speed / 2);
+            crit *= 1.3;
+            break;
+        case 'N': // Negative - change attack type to boss weakness
+            const boss = getCurrentBoss();
+            if (boss && boss.weakness.length > 0) {
+                modifiedType = boss.weakness[0];
+            }
+            break;
+    }
+    return { attack, speed, crit, modifiedType };
+}
+
