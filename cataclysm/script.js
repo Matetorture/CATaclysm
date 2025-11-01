@@ -843,9 +843,10 @@ function attackWithCard(card) {
 
     const isWeaknessMatch = boss.weakness.includes(attackTypeUsed);
 
+    const infoTime = 4000;
     if (boss.onlyWeakness && !isWeaknessMatch) {
-        const damageElement = showCardInfo(card.name, "NO DAMAGE", true);
-        setTimeout(() => damageElement.remove(), 3000);
+        const damageElement = showCardInfo(card.name, "NO DAMAGE", true, infoTime);
+        setTimeout(() => damageElement.remove(), infoTime);
         return;
     }
 
@@ -859,20 +860,22 @@ function attackWithCard(card) {
     }
 
     changeBossHp(-damage);
-    console.log(`${card.name} dealt ${damage}${isCrit ? ' (CRIT)' : ''} damage. Boss HP: ${boss.hp}/${boss.maxHp}`);
 
     playAttackAnimation(card);
 
     const bossHpBarDamage = document.querySelector('.boss-hp-label');
+    bossHpBarDamage.classList.add('move-up-animation');
+    console.log(boss.hp / boss.maxHp * 100 + '%');
+    bossHpBarDamage.style.left = boss.hp / boss.maxHp * 100 - 50 + '%';
     bossHpBarDamage.style.color = isCrit ? '#ff4444' : '#ffffff';
     bossHpBarDamage.innerText = (isCrit ? 'CRIT! ' : '') + '-' + Math.floor(damage);
 
     setTimeout(() => {
         bossHpBarDamage.innerHTML = '&nbsp;';
-    }, 1500);
+    }, infoTime);
 
-    const damageElement = showCardInfo(card.name, (isCrit ? 'CRIT! ' : '') + '-' + Math.floor(damage), isCrit);
-    setTimeout(() => damageElement.remove(), 1500);
+    const damageElement = showCardInfo(card.name, (isCrit ? 'CRIT! ' : '') + '-' + Math.floor(damage), isCrit, infoTime);
+    setTimeout(() => damageElement.remove(), infoTime);
 }
 
 function startDeckContinuousAttacks() {
@@ -964,7 +967,7 @@ function animateLagHpBar(targetPercent) {
   requestAnimationFrame(animate);
 }
 
-function showCardInfo(cardName, displayText, isCrit = false) {
+function showCardInfo(cardName, displayText, isCrit = false, infoTime) {
   const cardElements = document.querySelectorAll('.slot-card.filled');
   for (const el of cardElements) {
     const img = el.querySelector('img.card-image');
@@ -973,12 +976,20 @@ function showCardInfo(cardName, displayText, isCrit = false) {
       damageDisplayCard.className = 'info-display-card';
 
       const rect = el.getBoundingClientRect();
-      damageDisplayCard.style.top = (rect.top - 30) + 'px';
+      damageDisplayCard.style.top = (rect.top + 30) + 'px';
       damageDisplayCard.style.left = (rect.left + rect.width / 2) + 'px';
       damageDisplayCard.style.color = isCrit ? '#ff4444' : '#ffffff';
       damageDisplayCard.innerText = displayText;
 
       document.body.appendChild(damageDisplayCard);
+
+      damageDisplayCard.animate([
+        { top: (rect.top + 30) + 'px', opacity: 1 },
+        { top: (rect.top) + 'px', opacity: 0 }
+      ], {
+        duration: infoTime,
+        easing: 'ease-out',
+      });
 
       return damageDisplayCard;
     }

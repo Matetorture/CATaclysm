@@ -887,6 +887,26 @@ img {
     pointer-events: none;
     z-index: 1000;
     user-select: none;
+    animation: infoMoveUp 1.5s ease-out forwards;
+}
+
+/* Move Up animation */
+.move-up-animation {
+    position: inherit;
+    top: 20px;
+    animation: MoveUp 1.5s ease-out forwards;
+    pointer-events: none;
+}
+
+@keyframes MoveUp {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-30px);
+        opacity: 0;
+    }
 }
 
 
