@@ -1025,6 +1025,11 @@ function getModifiedStats(card, slotType) {
 function showDeckComparisonTooltip(compareCard) {
     removeDeckComparisonTooltip();
 
+    const hasCardsInDeck = gameState.deckCards.some(card => card !== null);
+    if (!hasCardsInDeck) {
+        return;
+    }
+
     const container = document.createElement('div');
     container.id = 'deck-comparison-tooltip';
 
