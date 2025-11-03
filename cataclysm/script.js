@@ -130,9 +130,9 @@ function initGame() {
     setupBottomPanelToggle();
     renderAvailableCards();
     renderDeckSlots();
-    renderBoss();
     startDeckContinuousAttacks();
     generateFilterButtons();
+    selectBoss(selectedCategoryId);
 }
 
 function renderAvailableCards(cardsToRender = gameState.ownedCards) {
@@ -737,69 +737,217 @@ unusedCardsGrid.addEventListener('drop', (e) => {
     dragEndHandler(e);
 });
 
-
-const bosses = [
-  { id: 1, name: "Fire Dragon", maxHp: 5000, hp: 5000, weakness: ["Ice"], onlyWeakness: false },
-  { id: 2, name: "Stone Golem", maxHp: 7000, hp: 7000, weakness: ["Water", "Electric"], onlyWeakness: false },
-  { id: 3, name: "Shadow Wraith", maxHp: 3500, hp: 3500, weakness: ["Plant"], onlyWeakness: false }
+const bossCategories = [
+    {
+        id: 1,
+        name: 'Fire Lords',
+        img: 'img/bosses/1.png',
+        bosses: [
+            { id: 101, name: 'Fire Dragon', maxHp: 500, hp: 500, weakness: ['Ice'], onlyWeakness: false },
+            { id: 102, name: 'Lava Beast', maxHp: 550, hp: 550, weakness: ['Water'], onlyWeakness: false },
+            { id: 103, name: 'Blazing Phoenix', maxHp: 480, hp: 480, weakness: ['Water'], onlyWeakness: false },
+            { id: 104, name: 'Magma Giant', maxHp: 600, hp: 600, weakness: ['Water', 'Ice'], onlyWeakness: true },
+            { id: 105, name: 'Flame Wraith', maxHp: 400, hp: 400, weakness: ['Stone'], onlyWeakness: false },
+            { id: 106, name: 'Inferno Hound', maxHp: 510, hp: 510, weakness: ['Water'], onlyWeakness: false },
+            { id: 107, name: 'Scorching Serpent', maxHp: 530, hp: 530, weakness: ['Ice'], onlyWeakness: false },
+            { id: 108, name: 'Fire Elemental', maxHp: 470, hp: 470, weakness: ['Water'], onlyWeakness: false },
+            { id: 109, name: 'Cinder Lord', maxHp: 620, hp: 620, weakness: ['Water'], onlyWeakness: false },
+            { id: 110, name: 'Ashen King', maxHp: 640, hp: 640, weakness: ['Water'], onlyWeakness: false }
+        ]
+    },
+    {
+        id: 2,
+        name: 'Stone Titans',
+        img: 'img/bosses/2.png',
+        bosses: [
+            { id: 201, name: 'Stone Golem', maxHp: 7000, hp: 7000, weakness: ['Water', 'Electric'], onlyWeakness: false },
+            { id: 202, name: 'Granite Beast', maxHp: 7200, hp: 7200, weakness: ['Water'], onlyWeakness: false },
+            { id: 203, name: 'Rock Giant', maxHp: 7400, hp: 7400, weakness: ['Plant'], onlyWeakness: false },
+            { id: 204, name: 'Earth Colossus', maxHp: 7600, hp: 7600, weakness: ['Air'], onlyWeakness: false },
+            { id: 205, name: 'Boulder King', maxHp: 7800, hp: 7800, weakness: ['Water'], onlyWeakness: false },
+            { id: 206, name: 'Crag Beast', maxHp: 7500, hp: 7500, weakness: ['Water', 'Electric'], onlyWeakness: false },
+            { id: 207, name: 'Stone Guardian', maxHp: 7100, hp: 7100, weakness: ['Water'], onlyWeakness: false },
+            { id: 208, name: 'Rock Titan', maxHp: 7900, hp: 7900, weakness: ['Water'], onlyWeakness: false },
+            { id: 209, name: 'Stone Lord', maxHp: 8000, hp: 8000, weakness: ['Electric'], onlyWeakness: false },
+            { id: 210, name: 'Crystal Hulk', maxHp: 8200, hp: 8200, weakness: ['Water', 'Electric'], onlyWeakness: true }
+        ]
+    },
+    {
+        id: 3,
+        name: 'Shadow Phantoms',
+        img: 'img/bosses/3.png',
+        bosses: [
+            { id: 301, name: 'Shadow Wraith', maxHp: 3500, hp: 3500, weakness: ['Plant'], onlyWeakness: false },
+            { id: 302, name: 'Dark Specter', maxHp: 3600, hp: 3600, weakness: ['Holy'], onlyWeakness: false },
+            { id: 303, name: 'Night Stalker', maxHp: 3700, hp: 3700, weakness: ['Light'], onlyWeakness: false },
+            { id: 304, name: 'Phantom Lord', maxHp: 3800, hp: 3800, weakness: ['Holy'], onlyWeakness: true },
+            { id: 305, name: 'Ethereal Beast', maxHp: 3900, hp: 3900, weakness: ['Holy'], onlyWeakness: false },
+            { id: 306, name: 'Ghastly Reaper', maxHp: 4000, hp: 4000, weakness: ['Holy'], onlyWeakness: false },
+            { id: 307, name: 'Soul Hunter', maxHp: 4100, hp: 4100, weakness: ['Plant'], onlyWeakness: false },
+            { id: 308, name: 'Deathshade', maxHp: 4200, hp: 4200, weakness: ['Holy'], onlyWeakness: false },
+            { id: 309, name: 'Wraith King', maxHp: 4300, hp: 4300, weakness: ['Plant'], onlyWeakness: false },
+            { id: 310, name: 'Dark Emperor', maxHp: 4400, hp: 4400, weakness: ['Holy'], onlyWeakness: true }
+        ]
+    }
 ];
 
-let currentBossId = 1;
+let selectedCategoryId = bossCategories[0].id;
+let currentBossId = null;
+let currentBossIsRandom = false;
+let bossListVisible = false;
+
+const defeatedBossesByCategory = {};
+bossCategories.forEach(cat => {
+    defeatedBossesByCategory[cat.id] = new Set();
+});
+
+function getCategoryById(catId) {
+    return bossCategories.find(cat => cat.id === catId);
+}
+
+function getNextUndefeatedBoss(category) {
+    return category.bosses.find(b => !defeatedBossesByCategory[category.id].has(b.id));
+}
+
+function selectBoss(categoryId) {
+    const category = getCategoryById(categoryId);
+    if (!category) return;
+    selectedCategoryId = categoryId;
+
+    let boss = category.bosses.find(b => !defeatedBossesByCategory[categoryId].has(b.id));
+
+    if (!boss) {
+        boss = category.bosses[Math.floor(Math.random() * category.bosses.length)];
+        boss.hp = boss.maxHp;
+        currentBossIsRandom = true;
+    } else {
+        currentBossIsRandom = false;
+        if (boss.hp === undefined) {
+            boss.hp = boss.maxHp;
+        }
+    }
+
+    currentBossId = boss.id;
+    renderBoss(boss, currentBossIsRandom);
+}
+
+function renderBoss(bossOverride = null, isRandom = false) {
+    if (!bossOverride) {
+        isRandom = currentBossIsRandom;
+    } else {
+        currentBossIsRandom = isRandom;
+    }
+
+    const bossContainer = document.querySelector('.boss-container');
+    const category = getCategoryById(selectedCategoryId);
+    const boss = bossOverride || category.bosses.find(b => b.id === currentBossId);
+    if (!boss) return;
+
+    const hpPercent = ((boss.hp / boss.maxHp) * 100).toFixed(1);
+    if (!renderBoss.lagHpPercent) renderBoss.lagHpPercent = hpPercent;
+
+    const weaknessHtml = boss.weakness.map(type => {
+        const className = `type-${type.toLowerCase()}-text type-attack-text`;
+        return `<span class="${className}" style="font-weight: 600; margin-right: 6px;">${type}</span>`;
+    }).join('');
+
+    bossContainer.innerHTML = `
+    <div class="boss-container-inner" style="display: flex; gap: 16px;">
+        <div class="boss-category-list ${bossListVisible ? 'visible' : ''}">
+            ${bossCategories.map(cat => {
+            const defeatedCount = defeatedBossesByCategory[cat.id].size;
+            const total = cat.bosses.length;
+            return `
+            <button class="boss-category-button ${cat.id === selectedCategoryId ? 'active' : ''}" data-cat-id="${cat.id}">
+                <img src="${cat.img}" alt="${cat.name}" class="category-img" />
+                <span class="defeated-count">${defeatedCount}/${total}</span>
+            </button>`;
+            }).join('')}
+        </div>
+        <button id="bossToggleBtn" class="boss-list-toggle-btn ${bossListVisible ? 'visible' : ''}">BOSS LIST</button>
+        <div class="boss-details" style="flex: 1;">
+            <div class="boss-name">${boss.name}${isRandom ? ' [R]' : ''}</div>
+            <div class="boss-image">
+            <img src="img/bosses/${boss.id}.png" alt="${boss.name}">
+            </div>
+            <div class="boss-hp-bar-container">
+                <span class="boss-hp-label">&nbsp;</span>
+                <div class="boss-hp-bar-lag" style="width: ${renderBoss.lagHpPercent}%;"></div>
+                <div class="boss-hp-bar" style="width: ${hpPercent}%;"></div>
+            </div>
+            <div class="boss-hp-text">${boss.hp} / ${boss.maxHp} (${hpPercent}%)</div>
+            <div class="boss-weakness">
+            Weakness: ${weaknessHtml}
+            ${boss.onlyWeakness ? '<br><em class="weakness-info">Can only be damaged by its weaknesses</em>' : ''}
+            </div>
+        </div>
+    </div>
+    `;
+
+    const hpBar = bossContainer.querySelector('.boss-hp-bar');
+    if (hpPercent <= 10) {
+        hpBar.classList.add('red');
+        hpBar.classList.remove('yellow');
+    } else if (hpPercent <= 30) {
+        hpBar.classList.add('yellow');
+        hpBar.classList.remove('red');
+    } else {
+        hpBar.classList.remove('yellow');
+        hpBar.classList.remove('red');
+    }
+
+    animateLagHpBar(parseFloat(hpPercent));
+
+    const buttons = bossContainer.querySelectorAll('.boss-category-button');
+    buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const catId = parseInt(btn.dataset.catId);
+            selectBoss(catId);
+        });
+    });
+
+    const bossList = bossContainer.querySelector('.boss-category-list');
+    const toggleBtn = bossContainer.querySelector('#bossToggleBtn');
+    if (toggleBtn && bossList) {
+        toggleBtn.addEventListener('click', (e) => {
+            bossListVisible = !bossListVisible;
+            bossList.classList.toggle('visible');
+            toggleBtn.classList.toggle('visible');
+        });
+    }
+}
 
 function getCurrentBoss() {
-  return bosses.find(b => b.id === currentBossId);
+    const category = getCategoryById(selectedCategoryId);
+    if (!category) return null;
+    return category.bosses.find(b => b.id === currentBossId);
 }
 
 function changeBossHp(amount) {
-  const boss = getCurrentBoss();
-  if (!boss) return;
-  boss.hp = Math.max(0, Math.min(boss.maxHp, boss.hp + amount));
-  renderBoss();
-}
+    const boss = getCurrentBoss();
+    if (!boss) return;
 
-function renderBoss() {
-  const bossContainer = document.querySelector('.boss-container');
-  const boss = getCurrentBoss();
-  if (!boss) return;
+    boss.hp = Math.max(0, Math.min(boss.maxHp, boss.hp + amount));
 
-  const hpPercent = ((boss.hp / boss.maxHp) * 100).toFixed(1);
-  if (!renderBoss.lagHpPercent) renderBoss.lagHpPercent = hpPercent;
+    if (boss.hp === 0) {
+        defeatedBossesByCategory[selectedCategoryId].add(boss.id);
+        const category = getCategoryById(selectedCategoryId);
+        const nextBoss = category.bosses.find(b => !defeatedBossesByCategory[selectedCategoryId].has(b.id));
 
-  const weaknessHtml = boss.weakness.map(type => {
-    const className = `type-${type.toLowerCase()}-text type-attack-text`;
-    return `<span class="${className}" style="font-weight: 600; margin-right: 6px;">${type}</span>`;
-  }).join('');
-
-  bossContainer.innerHTML = `
-    <div class="boss-name">${boss.name}</div>
-    <div class="boss-image">
-      <img src="img/bosses/${boss.id}.png" alt="${boss.name}">
-    </div>
-    <span class="boss-hp-label">&nbsp;</span>
-    <div class="boss-hp-bar-container">
-      <div class="boss-hp-bar-lag" style="width: ${renderBoss.lagHpPercent}%;"></div>
-      <div class="boss-hp-bar" style="width: ${hpPercent}%;"></div>
-    </div>
-    <div class="boss-hp-text">${boss.hp} / ${boss.maxHp} (${hpPercent}%)</div>
-    <div class="boss-weakness">
-      Weakness: ${weaknessHtml}
-      ${boss.onlyWeakness ? '<br><em class="weakness-info">Can only be damaged by its weaknesses</em>' : ''}
-    </div>
-  `;
-
-  const hpBar = bossContainer.querySelector('.boss-hp-bar');
-  if (hpPercent <= 10) {
-    hpBar.classList.add('red');
-    hpBar.classList.remove('yellow');
-  } else if (hpPercent <= 30) {
-    hpBar.classList.add('yellow');
-    hpBar.classList.remove('red');
-  } else {
-    hpBar.classList.remove('yellow');
-    hpBar.classList.remove('red');
-  }
-
-  animateLagHpBar(parseFloat(hpPercent));
+        if (nextBoss) {
+            currentBossId = nextBoss.id;
+            currentBossIsRandom = false;
+            renderBoss();
+        } else {
+            const randomBoss = category.bosses[Math.floor(Math.random() * category.bosses.length)];
+            currentBossId = randomBoss.id;
+            randomBoss.hp = randomBoss.maxHp;
+            currentBossIsRandom = true;
+            renderBoss(randomBoss, true);
+        }
+    } else {
+        renderBoss();
+    }
 }
 
 let attackIntervals = [];
@@ -860,8 +1008,10 @@ function attackWithCard(card) {
 
     const bossHpBarDamage = document.querySelector('.boss-hp-label');
     bossHpBarDamage.classList.add('move-up-animation');
-    console.log(boss.hp / boss.maxHp * 100 + '%');
-    bossHpBarDamage.style.left = boss.hp / boss.maxHp * 100 - 50 + '%';
+    bossHpBarDamage.style.position = 'absolute';
+    bossHpBarDamage.style.zIndex = '1002';
+    bossHpBarDamage.style.left = (boss.hp / boss.maxHp * 100)  + '%';
+    bossHpBarDamage.style.top = '-10px';
     bossHpBarDamage.style.color = isCrit ? '#ff4444' : '#ffffff';
     bossHpBarDamage.innerText = (isCrit ? 'CRIT! ' : '') + '-' + Math.floor(damage);
 

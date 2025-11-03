@@ -87,27 +87,18 @@ html, body {
 }
 
 .boss-container {
-    flex: 1;
     background-color: var(--dark-secondary);
     border: 2px solid var(--border-color);
     border-radius: var(--card-border-radius);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
     padding: 16px;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--primary-color);
     box-shadow: var(--card-shadow);
-    transition: all 0.3s ease;
-    text-align: center;
     position: relative;
+    height: 100%;
 }
 
-.boss-container:hover {
-    border-color: var(--primary-color);
-    transform: scale(1.02);
+.boss-details{
+    text-align: center;
+    padding: 20px;
 }
 
 .boss-name {
@@ -151,36 +142,40 @@ html, body {
     margin-top: 4px;
 }
 
+.boss-hp-label {
+    position: absolute;
+}
+
 .boss-hp-bar-container {
-  position: relative;
-  width: 100%;
-  height: 24px;
-  background-color: #444;
-  border-radius: 12px;
-  overflow: hidden;
-  margin-top: 12px;
-  box-shadow: inset 0 0 5px #222;
+    position: relative;
+    width: 100%;
+    height: 24px;
+    background-color: #444;
+    border-radius: 12px;
+    margin-top: 12px;
+    box-shadow: inset 0 0 5px #222;
 }
 
 .boss-hp-bar, .boss-hp-bar-lag {
-  position: absolute;
-  height: 100%;
-  top: 0;
-  left: 0;
-  border-radius: 12px;
-  transition: background-color 0.3s ease;
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 12px;
+    transition: background-color 0.3s ease;
 }
 
 .boss-hp-bar-lag {
-  background-color: #888888cc;
-  z-index: 1;
-  width: 100%;
+    background-color: #888888cc;
+    z-index: 1;
+    width: 100%;
 }
 
 .boss-hp-bar {
-  background-color: #4CAF50;
-  z-index: 2;
-  transition: width 0.3s ease, background-color 0.3s ease;
+    width: 100%;
+    background-color: #4CAF50;
+    z-index: 2;
+    transition: width 0.3s ease, background-color 0.3s ease;
 }
 
 .boss-hp-bar.yellow {
@@ -204,6 +199,79 @@ html, body {
     font-size: 0.9rem;
     color: #FF4C4C;
     font-weight: 400;
+}
+
+.boss-category-list {
+    position: absolute;
+    top: 50px;
+    left: calc(100% + 2px);
+    display: flex;
+    flex-direction: column;
+    z-index: 1001;
+    width: 0;
+    background-color: var(--dark-secondary);
+    border-radius: 0 0 8px 0;
+    overflow: hidden;
+    transition: width 0.3s ease;
+}
+.boss-category-list.visible {
+    width: 120px;
+}
+
+.boss-category-button {
+    padding: 4px;
+    border: none;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    margin: 5px;
+}
+
+.boss-category-button.active,
+.boss-category-button:hover {
+    background-color: var(--dark-tertiary);
+    color: #fff;
+}
+
+.category-img{
+    width: 64px;
+    height: 64px;
+}
+
+.defeated-count {
+    margin-top: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #bbb;
+}
+
+.boss-list-toggle-btn {
+    position: absolute;
+    top: 8px;
+    right: -130px;
+    z-index: 1100;
+    background: var(--dark-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 0 8px 8px 0;
+    color: var(--border-color);
+    padding: 5px;
+    font-size: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    transition: background 0.2s, border-color 0.2s;
+}
+.boss-list-toggle-btn:hover,
+.boss-list-toggle-btn.visible {
+    background: var(--dark-tertiary);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
 }
 
 /* Deck Section */
