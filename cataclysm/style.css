@@ -996,3 +996,61 @@ button.slot-modifier-effect.active[data-modifier="N"]{
     background: linear-gradient(135deg, #64b6f0, #8fa6f3);
     box-shadow: 0 0 10px 3px #8fa6f3;
 }
+
+/* Deck Comparison Tooltip */
+#deck-comparison-tooltip {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 910px;
+    height: 320px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 12px;
+    padding: 12px;
+    background-color: rgba(35, 33, 60, 0.95);
+    border: 2.5px solid var(--primary-color);
+    border-radius: 16px;
+    z-index: 11000;
+    overflow-y: auto;
+    box-shadow: 0 8px 28px 6px rgba(50, 40, 110, 0.5);
+    pointer-events: auto;
+    overflow: visible;
+}
+
+.comparison-header {
+    color: var(--primary-color);
+    top: -45px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 34px;
+    text-align: center;
+    user-select: none;
+    position: absolute;
+    text-shadow: 
+      2px 2px 4px rgba(0,0,0,0.9),
+      0 0 10px rgba(0,0,0,0.7),
+      0 0 20px rgba(0,0,0,0.5);
+}
+
+.stat-better {
+    color: #4CAF50;
+    font-weight: 700;
+}
+.stat-worse {
+    color: #FF4C4C;
+    font-weight: 700;
+}
+#deck-comparison-tooltip .card-tooltip {
+    background: linear-gradient(135deg, #23213c 0%, #382755 100%);
+    border: 2.5px solid var(--primary-color);
+    border-radius: 16px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--text-primary);
+    box-shadow: 0 8px 28px 6px rgba(50, 40, 110, 0.37), 0 2px 8px 0 rgba(32, 0, 48, 0.06);
+    white-space: normal;
+    pointer-events: auto;
+}

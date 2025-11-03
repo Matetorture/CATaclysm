@@ -146,22 +146,16 @@ function renderAvailableCards(cardsToRender = gameState.ownedCards) {
         const cardElement = createCardElement(card, 'unused');
         container.appendChild(cardElement);
 
-        cardElement.addEventListener('click', () => {
-            addCardToDeck(card);
-        });
+        cardElement.addEventListener('click', () => addCardToDeck(card));
 
-        cardElement.addEventListener('mouseenter', () => {
-            showTooltip(cardElement, card, 'top');
-        });
+        cardElement.addEventListener('mouseenter', (e) => handleUnusedCardMouseEnter(e, card));
 
-        cardElement.addEventListener('mouseleave', () => {
-            removeTooltip(cardElement);
-        });
+        cardElement.addEventListener('mouseleave', handleUnusedCardMouseLeave);
 
         cardElement.setAttribute('draggable', 'true');
-        cardElement.addEventListener('dragstart', (e) => {
-            dragStartHandler(e, card, 'unused');
-        });
+
+        cardElement.addEventListener('dragstart', (e) => dragStartHandler(e, card, 'unused'));
+
         cardElement.addEventListener('dragend', dragEndHandler);
     });
 
@@ -607,6 +601,7 @@ function dragStartHandler(e, card, from, index = null) {
     if (target) {
         removeTooltip(target);
     }
+    removeDeckComparisonTooltip();
 
     const crt = document.createElement('canvas');
     crt.width = 0;
@@ -1027,3 +1022,84 @@ function getModifiedStats(card, slotType) {
     return { attack, speed, crit, modifiedType };
 }
 
+function showDeckComparisonTooltip(compareCard) {
+    removeDeckComparisonTooltip();
+
+    const container = document.createElement('div');
+    container.id = 'deck-comparison-tooltip';
+
+    const header = document.createElement('h2');
+    header.textContent = 'WITHOUT MODIFIERS!';
+    header.classList.add('comparison-header');
+    container.appendChild(header);
+
+    document.body.appendChild(container);
+
+    for(let i=0; i<8; i++) {
+        const deckCard = gameState.deckCards[i];
+        const slotDiv = document.createElement('div');
+        slotDiv.style.display = 'flex';
+        slotDiv.style.justifyContent = 'center';
+        slotDiv.style.alignItems = 'center';
+        if (!deckCard) {
+            slotDiv.innerHTML = '<div style="text-align: center; font-size: 14px; color: #777;">Empty Slot</div>';
+        } else {
+            const tooltip = document.createElement('div');
+            tooltip.className = 'card-tooltip';
+            tooltip.style.width = '210px';
+            tooltip.style.whiteSpace = 'normal';
+
+            const deckStats = deckCard.getStats();
+            const compareStats = compareCard.getStats();
+
+            function getStatClass(statName) {
+                if (deckStats[statName] > compareStats[statName]) return 'stat-better';
+                if (deckStats[statName] < compareStats[statName]) return 'stat-worse';
+                return '';
+            }
+
+            function getDPSClass(deckDpsStr, compareDpsStr) {
+                const deckDps = parseFloat(deckDpsStr);
+                const compareDps = parseFloat(compareDpsStr);
+                if (deckDps > compareDps) return 'stat-better';
+                if (deckDps < compareDps) return 'stat-worse';
+                return '';
+            }
+
+            const deckDPS = deckCard.getDPS();
+            const compareDPS = compareCard.getDPS();
+
+            tooltip.innerHTML = `
+                <div style="text-align:center; font-size: 15px; font-weight: bold; color: var(--primary-color); margin-bottom: 6px;">${deckCard.name}</div>
+                <div style="text-align:center; justify-content: center; font-size: 11px; color: #dfccff; font-weight: 500; margin-bottom: 6px;">${deckCard.collection}</div>
+                <div style="display: flex; justify-content: center; margin-bottom: 6px; font-size: 13px; width: 100%;">
+                    <div class="${getStatClass('attack')}" style="width: 33%; text-align: center;">A:<br>${deckStats.attack}</div>
+                    <div class="${getStatClass('speed')}" style="width: 33%; text-align: center;">S:<br>${(deckStats.speed / 1000).toFixed(2)}s</div>
+                    <div class="${getStatClass('crit')}" style="width: 33%; text-align: center;">C:<br>${deckStats.crit}%</div>
+                </div>
+                <div style="display: flex; justify-content: center; margin-bottom: 6px; font-size: 13px; width: 100%;">
+                    <div class="${getDPSClass(deckDPS.dps, compareDPS.dps)}" style="width: 50%; text-align: center;">DPS:<br>${deckDPS.dps}</div>
+                    <div class="${getDPSClass(deckDPS.dps, compareDPS.dps)}" style="width: 50%; text-align: center;">Crit DPS:<br>${deckDPS.dpsWithCrit}</div>
+                </div>
+            `;
+
+            slotDiv.appendChild(tooltip);
+        }
+        container.appendChild(slotDiv);
+    }
+}
+
+function removeDeckComparisonTooltip() {
+    const container = document.getElementById('deck-comparison-tooltip');
+    if (container) container.remove();
+}
+
+function handleUnusedCardMouseEnter(e, card) {
+    showTooltip(e.currentTarget, card, 'top');
+    showDeckComparisonTooltip(card);
+}
+
+function handleUnusedCardMouseLeave(e) {
+    removeTooltip(e.currentTarget);
+    removeDeckComparisonTooltip();
+}
