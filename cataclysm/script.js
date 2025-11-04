@@ -133,6 +133,7 @@ function initGame() {
     startDeckContinuousAttacks();
     generateFilterButtons();
     selectBoss(selectedCategoryId);
+    updateMoneyDisplay();
 }
 
 function renderAvailableCards(cardsToRender = gameState.ownedCards) {
@@ -743,16 +744,16 @@ const bossCategories = [
         name: 'Fire Lords',
         img: 'img/bosses/1.png',
         bosses: [
-            { id: 101, name: 'Fire Dragon', maxHp: 500, hp: 500, weakness: ['Ice'], onlyWeakness: false },
-            { id: 102, name: 'Lava Beast', maxHp: 550, hp: 550, weakness: ['Water'], onlyWeakness: false },
-            { id: 103, name: 'Blazing Phoenix', maxHp: 480, hp: 480, weakness: ['Water'], onlyWeakness: false },
-            { id: 104, name: 'Magma Giant', maxHp: 600, hp: 600, weakness: ['Water', 'Ice'], onlyWeakness: true },
-            { id: 105, name: 'Flame Wraith', maxHp: 400, hp: 400, weakness: ['Stone'], onlyWeakness: false },
-            { id: 106, name: 'Inferno Hound', maxHp: 510, hp: 510, weakness: ['Water'], onlyWeakness: false },
-            { id: 107, name: 'Scorching Serpent', maxHp: 530, hp: 530, weakness: ['Ice'], onlyWeakness: false },
-            { id: 108, name: 'Fire Elemental', maxHp: 470, hp: 470, weakness: ['Water'], onlyWeakness: false },
-            { id: 109, name: 'Cinder Lord', maxHp: 620, hp: 620, weakness: ['Water'], onlyWeakness: false },
-            { id: 110, name: 'Ashen King', maxHp: 640, hp: 640, weakness: ['Water'], onlyWeakness: false }
+            { id: 101, name: 'Fire Dragon', maxHp: 500, hp: 500, weakness: ['Ice'], onlyWeakness: false, baseRewardMoney: 1120 },
+            { id: 102, name: 'Lava Beast', maxHp: 550, hp: 550, weakness: ['Water'], onlyWeakness: false, baseRewardMoney: 754 },
+            { id: 103, name: 'Blazing Phoenix', maxHp: 480, hp: 480, weakness: ['Water'], onlyWeakness: false, baseRewardMoney: 1014 },
+            { id: 104, name: 'Magma Giant', maxHp: 600, hp: 600, weakness: ['Water', 'Ice'], onlyWeakness: true, baseRewardMoney: 1104 },
+            { id: 105, name: 'Flame Wraith', maxHp: 400, hp: 400, weakness: ['Stone'], onlyWeakness: false, baseRewardMoney: 721 },
+            { id: 106, name: 'Inferno Hound', maxHp: 510, hp: 510, weakness: ['Water'], onlyWeakness: false, baseRewardMoney: 855 },
+            { id: 107, name: 'Scorching Serpent', maxHp: 530, hp: 530, weakness: ['Ice'], onlyWeakness: false, baseRewardMoney: 1164 },
+            { id: 108, name: 'Fire Elemental', maxHp: 470, hp: 470, weakness: ['Water'], onlyWeakness: false, baseRewardMoney: 1232 },
+            { id: 109, name: 'Cinder Lord', maxHp: 620, hp: 620, weakness: ['Water'], onlyWeakness: false, baseRewardMoney: 1313 },
+            { id: 110, name: 'Ashen King', maxHp: 640, hp: 640, weakness: ['Water'], onlyWeakness: false, baseRewardMoney: 1263 }
         ]
     },
     {
@@ -760,16 +761,16 @@ const bossCategories = [
         name: 'Stone Titans',
         img: 'img/bosses/2.png',
         bosses: [
-            { id: 201, name: 'Stone Golem', maxHp: 7000, hp: 7000, weakness: ['Water', 'Electric'], onlyWeakness: false },
-            { id: 202, name: 'Granite Beast', maxHp: 7200, hp: 7200, weakness: ['Water'], onlyWeakness: false },
-            { id: 203, name: 'Rock Giant', maxHp: 7400, hp: 7400, weakness: ['Plant'], onlyWeakness: false },
-            { id: 204, name: 'Earth Colossus', maxHp: 7600, hp: 7600, weakness: ['Air'], onlyWeakness: false },
-            { id: 205, name: 'Boulder King', maxHp: 7800, hp: 7800, weakness: ['Water'], onlyWeakness: false },
-            { id: 206, name: 'Crag Beast', maxHp: 7500, hp: 7500, weakness: ['Water', 'Electric'], onlyWeakness: false },
-            { id: 207, name: 'Stone Guardian', maxHp: 7100, hp: 7100, weakness: ['Water'], onlyWeakness: false },
-            { id: 208, name: 'Rock Titan', maxHp: 7900, hp: 7900, weakness: ['Water'], onlyWeakness: false },
-            { id: 209, name: 'Stone Lord', maxHp: 8000, hp: 8000, weakness: ['Electric'], onlyWeakness: false },
-            { id: 210, name: 'Crystal Hulk', maxHp: 8200, hp: 8200, weakness: ['Water', 'Electric'], onlyWeakness: true }
+            { id: 201, name: 'Stone Golem', maxHp: 7000, hp: 7000, weakness: ['Water', 'Electric'], onlyWeakness: false, baseRewardMoney: 10275 },
+            { id: 202, name: 'Granite Beast', maxHp: 7200, hp: 7200, weakness: ['Water'], onlyWeakness: false, baseRewardMoney: 9562 },
+            { id: 203, name: 'Rock Giant', maxHp: 7400, hp: 7400, weakness: ['Plant'], onlyWeakness: false, baseRewardMoney: 10555 },
+            { id: 204, name: 'Earth Colossus', maxHp: 7600, hp: 7600, weakness: ['Air'], onlyWeakness: false, baseRewardMoney: 11382 },
+            { id: 205, name: 'Boulder King', maxHp: 7800, hp: 7800, weakness: ['Water'], onlyWeakness: false, baseRewardMoney: 9974 },
+            { id: 206, name: 'Crag Beast', maxHp: 7500, hp: 7500, weakness: ['Water', 'Electric'], onlyWeakness: false, baseRewardMoney: 10652 },
+            { id: 207, name: 'Stone Guardian', maxHp: 7100, hp: 7100, weakness: ['Water'], onlyWeakness: false, baseRewardMoney: 9405 },
+            { id: 208, name: 'Rock Titan', maxHp: 7900, hp: 7900, weakness: ['Water'], onlyWeakness: false, baseRewardMoney: 10844 },
+            { id: 209, name: 'Stone Lord', maxHp: 8000, hp: 8000, weakness: ['Electric'], onlyWeakness: false, baseRewardMoney: 10406 },
+            { id: 210, name: 'Crystal Hulk', maxHp: 8200, hp: 8200, weakness: ['Water', 'Electric'], onlyWeakness: true, baseRewardMoney: 10351 }
         ]
     },
     {
@@ -777,16 +778,16 @@ const bossCategories = [
         name: 'Shadow Phantoms',
         img: 'img/bosses/3.png',
         bosses: [
-            { id: 301, name: 'Shadow Wraith', maxHp: 3500, hp: 3500, weakness: ['Plant'], onlyWeakness: false },
-            { id: 302, name: 'Dark Specter', maxHp: 3600, hp: 3600, weakness: ['Holy'], onlyWeakness: false },
-            { id: 303, name: 'Night Stalker', maxHp: 3700, hp: 3700, weakness: ['Light'], onlyWeakness: false },
-            { id: 304, name: 'Phantom Lord', maxHp: 3800, hp: 3800, weakness: ['Holy'], onlyWeakness: true },
-            { id: 305, name: 'Ethereal Beast', maxHp: 3900, hp: 3900, weakness: ['Holy'], onlyWeakness: false },
-            { id: 306, name: 'Ghastly Reaper', maxHp: 4000, hp: 4000, weakness: ['Holy'], onlyWeakness: false },
-            { id: 307, name: 'Soul Hunter', maxHp: 4100, hp: 4100, weakness: ['Plant'], onlyWeakness: false },
-            { id: 308, name: 'Deathshade', maxHp: 4200, hp: 4200, weakness: ['Holy'], onlyWeakness: false },
-            { id: 309, name: 'Wraith King', maxHp: 4300, hp: 4300, weakness: ['Plant'], onlyWeakness: false },
-            { id: 310, name: 'Dark Emperor', maxHp: 4400, hp: 4400, weakness: ['Holy'], onlyWeakness: true }
+            { id: 301, name: 'Shadow Wraith', maxHp: 3500, hp: 3500, weakness: ['Plant'], onlyWeakness: false, baseRewardMoney: 7056 },
+            { id: 302, name: 'Dark Specter', maxHp: 3600, hp: 3600, weakness: ['Holy'], onlyWeakness: false, baseRewardMoney: 6831 },
+            { id: 303, name: 'Night Stalker', maxHp: 3700, hp: 3700, weakness: ['Light'], onlyWeakness: false, baseRewardMoney: 6867 },
+            { id: 304, name: 'Phantom Lord', maxHp: 3800, hp: 3800, weakness: ['Holy'], onlyWeakness: true, baseRewardMoney: 7297 },
+            { id: 305, name: 'Ethereal Beast', maxHp: 3900, hp: 3900, weakness: ['Holy'], onlyWeakness: false, baseRewardMoney: 6633 },
+            { id: 306, name: 'Ghastly Reaper', maxHp: 4000, hp: 4000, weakness: ['Holy'], onlyWeakness: false, baseRewardMoney: 7119 },
+            { id: 307, name: 'Soul Hunter', maxHp: 4100, hp: 4100, weakness: ['Plant'], onlyWeakness: false, baseRewardMoney: 6480 },
+            { id: 308, name: 'Deathshade', maxHp: 4200, hp: 4200, weakness: ['Holy'], onlyWeakness: false, baseRewardMoney: 6682 },
+            { id: 309, name: 'Wraith King', maxHp: 4300, hp: 4300, weakness: ['Plant'], onlyWeakness: false, baseRewardMoney: 6934 },
+            { id: 310, name: 'Dark Emperor', maxHp: 4400, hp: 4400, weakness: ['Holy'], onlyWeakness: true, baseRewardMoney: 6833 }
         ]
     }
 ];
@@ -931,6 +932,11 @@ function changeBossHp(amount) {
 
     if (boss.hp === 0) {
         defeatedBossesByCategory[selectedCategoryId].add(boss.id);
+
+        const rewardMoney = calculateRewardMoney(boss.baseRewardMoney);
+        gameState.money += rewardMoney;
+        updateMoneyDisplay();
+
         const category = getCategoryById(selectedCategoryId);
         const nextBoss = category.bosses.find(b => !defeatedBossesByCategory[selectedCategoryId].has(b.id));
 
@@ -948,6 +954,18 @@ function changeBossHp(amount) {
     } else {
         renderBoss();
     }
+}
+
+function calculateRewardMoney(baseAmount) {
+    const variation = 0.3; // ±30%
+    const min = baseAmount * (1 - variation);
+    const max = baseAmount * (1 + variation);
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function updateMoneyDisplay() {
+    const moneyDisplay  = document.querySelector('.money-display');
+    moneyDisplay.textContent = gameState.money;
 }
 
 let attackIntervals = [];
