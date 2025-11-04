@@ -1276,3 +1276,65 @@ function handleUnusedCardMouseLeave(e) {
     removeTooltip(e.currentTarget);
     removeDeckComparisonTooltip();
 }
+
+function openCenteredIframe(url, displayTime) {
+    const existingWrapper = document.getElementById('iframeWrapper');
+    if (existingWrapper) {
+        existingWrapper.remove();
+        clearInterval(window.iframeProgressInterval);
+    }
+
+    const wrapper = document.createElement('div');
+    wrapper.id = 'iframeWrapper';
+
+    wrapper.addEventListener('click', (e) => {
+        if (e.target === wrapper) {
+            closeIframe();
+        }
+    });
+
+    const iframeContainer = document.createElement('div');
+    iframeContainer.className = 'iframe-container';
+
+    const closeBtn = document.createElement('button');
+    closeBtn.innerHTML = '×';
+    closeBtn.className = 'iframe-close-btn';
+    closeBtn.setAttribute('aria-label', 'Close iframe');
+    closeBtn.addEventListener('click', closeIframe);
+
+    const iframe = document.createElement('iframe');
+    iframe.src = url;
+    iframe.className = 'iframe-pure';
+
+    const progressBar = document.createElement('div');
+    progressBar.className = 'iframe-bar';
+
+    iframeContainer.appendChild(closeBtn);
+    iframeContainer.appendChild(iframe);
+    iframeContainer.appendChild(progressBar);
+    wrapper.appendChild(iframeContainer);
+    document.body.appendChild(wrapper);
+
+    function closeIframe() {
+        clearInterval(window.iframeProgressInterval);
+        wrapper.remove();
+    }
+
+    if (displayTime && typeof displayTime === 'number' && displayTime > 0) {
+        let timeLeft = displayTime * 1000;
+        const intervalDuration = 100;
+        const totalIntervals = timeLeft / intervalDuration;
+        let intervalsPassed = 0;
+
+        window.iframeProgressInterval = setInterval(() => {
+            intervalsPassed++;
+            const progressPercent = 100 - (intervalsPassed / totalIntervals) * 100;
+            progressBar.style.width = progressPercent + '%';
+            if (intervalsPassed >= totalIntervals) {
+                closeIframe();
+            }
+        }, intervalDuration);
+    } else {
+        progressBar.style.width = '100%';
+    }
+}
