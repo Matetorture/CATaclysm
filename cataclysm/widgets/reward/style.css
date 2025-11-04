@@ -1,0 +1,69 @@
+body {
+    margin: 0;
+    height: 100dvh;
+    background: var(--dark-bg);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Arial Black', Arial, sans-serif;
+    color: var(--text-primary);
+    position: relative;
+}
+
+#boss-info {
+    position: fixed;
+    top: 10dvh;
+    width: 100dvw;
+    text-align: center;
+    font-size: 6dvw;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px #000000;
+    user-select: none;
+    z-index: 10;
+}
+
+#money {
+    width: 80dvw;
+    padding: 2dvw;
+    max-width: 96dvw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 900;
+    color: gold;
+    text-align: center;
+    text-shadow:
+        0 0 10px #ccb300,
+        0 0 20px #ccb300,
+        0 0 30px #b38f00,
+        0 0 40px #ccb300;
+    user-select: none;
+    font-family: "Tiny5", sans-serif;
+    z-index: 10;
+}
+
+.dollar {
+    position: fixed;
+    top: -130px;
+    color: #4bc180;
+    font-size: 16px;
+    user-select: none;
+    pointer-events: none;
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.8;
+}
+
+@keyframes spin-right {
+    to {
+        transform: translateY(110dvh) rotate(360deg);
+        opacity: 0;
+    }
+}
+@keyframes spin-left {
+    to {
+        transform: translateY(110dvh) rotate(-360deg);
+        opacity: 0;
+    }
+}

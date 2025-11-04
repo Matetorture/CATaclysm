@@ -931,9 +931,11 @@ function changeBossHp(amount) {
     boss.hp = Math.max(0, Math.min(boss.maxHp, boss.hp + amount));
 
     if (boss.hp === 0) {
+        
         defeatedBossesByCategory[selectedCategoryId].add(boss.id);
-
+        
         const rewardMoney = calculateRewardMoney(boss.baseRewardMoney);
+        openCenteredIframe('widgets/reward/index.html?amount=' + rewardMoney, 10);
         gameState.money += rewardMoney;
         updateMoneyDisplay();
 
