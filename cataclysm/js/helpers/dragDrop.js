@@ -1,0 +1,159 @@
+import { gameState } from '../data/gameState.js';
+import { renderAvailableCards, renderDeckSlots } from '../ui/cardRenderer.js';
+import { removeTooltip, removeDeckComparisonTooltip } from '../ui/tooltips.js';
+import { startDeckContinuousAttacks } from '../game/combat.js';
+
+let draggedCard = null;
+let draggedFrom = null; // 'deck' or 'unused'
+let draggedFromIndex = null; // Slot index or null
+const dragPreview = document.getElementById('dragPreview');
+let dragOffsetX = 0;
+let dragOffsetY = 0;
+let draggedCardElement = null;
+
+export function dragStartHandler(e, card, from, index = null) {
+    draggedCard = card;
+    draggedFrom = from;
+    draggedFromIndex = index;
+
+    const target = e.target.closest('.slot-card, .unused-card');
+    if (target) {
+        removeTooltip(target);
+    }
+    removeDeckComparisonTooltip();
+
+    const crt = document.createElement('canvas');
+    crt.width = 0;
+    crt.height = 0;
+    e.dataTransfer.setDragImage(crt, 0, 0);
+
+    dragPreview.style.display = 'block';
+    dragPreview.innerHTML = '';
+    dragPreview.className = '';
+    dragPreview.classList.add(card.getRarityClass());
+    const img = document.createElement('img');
+    img.src = `img/cats/${card.number}.png`;
+    img.className = 'card-image';
+    dragPreview.appendChild(img);
+
+    const firstSlot = document.querySelector('.deck-slot');
+    if (firstSlot) {
+        const rect = firstSlot.getBoundingClientRect();
+        dragPreview.style.width = rect.width + 'px';
+        dragPreview.style.height = rect.height + 'px';
+    }
+
+    if (target) {
+        draggedCardElement = target;
+        draggedCardElement.style.opacity = '0';
+    }
+
+    const rectTarget = target?.getBoundingClientRect();
+    if (rectTarget) {
+        dragOffsetX = e.clientX - rectTarget.left;
+        dragOffsetY = e.clientY - rectTarget.top;
+    }
+
+    moveDragPreview(e.clientX, e.clientY);
+
+    document.addEventListener('dragover', dragMoveHandler);
+}
+
+function moveDragPreview(x, y) {
+    dragPreview.style.left = (x - dragOffsetX) + 'px';
+    dragPreview.style.top = (y - dragOffsetY) + 'px';
+}
+
+function dragMoveHandler(e) {
+    e.preventDefault();
+    moveDragPreview(e.clientX, e.clientY);
+}
+
+export function dragEndHandler(e) {
+    draggedCard = null;
+    draggedFrom = null;
+    draggedFromIndex = null;
+
+    if (draggedCardElement) {
+        draggedCardElement.style.opacity = '1';
+        draggedCardElement = null;
+    }
+
+    dragPreview.style.display = 'none';
+    document.removeEventListener('dragover', dragMoveHandler);
+}
+
+export function dragOverHandler(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    e.currentTarget.classList.add('drag-over');
+}
+
+export function dragEnterHandler(e) {
+    e.preventDefault();
+    e.currentTarget.classList.add('drag-over');
+}
+
+export function dragLeaveHandler(e) {
+    e.currentTarget.classList.remove('drag-over');
+}
+
+export function dropHandler(e) {
+    e.preventDefault();
+    e.currentTarget.classList.remove('drag-over');
+    if (!draggedCard) return;
+
+    const slotIndex = +e.currentTarget.dataset.slot;
+    const targetCard = gameState.deckCards[slotIndex];
+
+    if (draggedFrom === 'deck') {
+        if (draggedFromIndex === slotIndex) {
+            dragEndHandler(e);
+            return;
+        }
+        if (targetCard === null) {
+            gameState.deckCards[slotIndex] = draggedCard;
+            gameState.deckCards[draggedFromIndex] = null;
+        } else {
+            gameState.deckCards[slotIndex] = draggedCard;
+            gameState.deckCards[draggedFromIndex] = targetCard;
+        }
+    } else if (draggedFrom === 'unused') {
+        if (targetCard === null) {
+            gameState.deckCards[slotIndex] = draggedCard;
+        } else {
+            gameState.deckCards[slotIndex] = draggedCard;
+        }
+    }
+    renderAvailableCards();
+    renderDeckSlots();
+    startDeckContinuousAttacks();
+    dragEndHandler(e);
+}
+
+export function setupUnusedCardsDropZone() {
+    const unusedCardsGrid = document.getElementById('availableCardsGrid');
+    
+    unusedCardsGrid.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        unusedCardsGrid.classList.add('drag-over');
+    });
+    
+    unusedCardsGrid.addEventListener('dragleave', () => {
+        unusedCardsGrid.classList.remove('drag-over');
+    });
+    
+    unusedCardsGrid.addEventListener('drop', (e) => {
+        e.preventDefault();
+        unusedCardsGrid.classList.remove('drag-over');
+        if (!draggedCard) return;
+        if (draggedFrom === 'deck' && draggedFromIndex !== null) {
+            gameState.deckCards[draggedFromIndex] = null;
+            renderAvailableCards();
+            renderDeckSlots();
+            startDeckContinuousAttacks();
+        }
+        dragEndHandler(e);
+    });
+}
