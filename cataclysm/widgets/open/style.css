@@ -1,0 +1,230 @@
+html, body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 10px;
+}
+
+h1 {
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+}
+
+.main-content {
+    display: flex;
+    justify-content: center;
+    width: 100dvw;
+    height: 100dvh;
+    overflow-y: auto;
+}
+
+.left-section {
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.right-section {
+    width: 10%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+button {
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    background-color: var(--dark-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: var(--dark-tertiary);
+    border-color: var(--text-secondary);
+}
+
+#draw-button {
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    background-color: var(--primary-color);
+    color: var(--dark-bg);
+    border: none;
+    font-weight: bold;
+}
+
+#draw-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+}
+
+#draw-result {
+    margin: 10px 0;
+    padding: 20px;
+    background-color: var(--dark-secondary);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--card-shadow);
+    width: 900px;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#pull-counter {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: var(--text-secondary);
+}
+
+#drawn-card-container {
+    width: 100%;
+    min-height: 550px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.guarantee-button {
+    margin: auto;
+    width: 140px;
+    background-color: var(--dark-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    position: relative;
+}
+
+.guarantee-button:hover {
+    border-color: var(--text-secondary);
+    transform: translateY(-2px);
+}
+
+.guarantee-button h3 {
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+.guarantee-button small {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    display: block;
+    margin-bottom: 8px;
+}
+
+.guarantee-button.rare { border-color: #2196f3; }
+.guarantee-button.epic { border-color: #9c27b0; }
+.guarantee-button.legendary { border-color: #ff9800; }
+.guarantee-button.ultimate { border-color: #e91e63; }
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background-color: var(--dark-secondary);
+    border-radius: var(--card-border-radius);
+    padding: 40px;
+    max-width: 1200px;
+    width: 90vw;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modal-header h2 {
+    font-size: 1.5rem;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+}
+
+.modal-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
+    justify-items: center;
+}
+
+.modal-card {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    padding: 5px;
+}
+
+.modal-card:hover {
+    transform: scale(1.05);
+    border-color: var(--text-primary);
+}
+
+#drawn-card-container .unused-card {
+    width: 525px;
+    height: 525px;
+}
+
+.modal-cards-grid .unused-card {
+    width: 150px;
+    height: 150px;
+}
+
+.selected-card-preview {
+    width: 100%;
+    height: 120px;
+    background-color: var(--dark-tertiary);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.selected-card-preview .unused-card {
+    width: 120px;
+    height: 120px;
+}
+
+.card-info {
+    display: none;
+}

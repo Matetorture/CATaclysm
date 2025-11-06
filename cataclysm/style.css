@@ -313,83 +313,7 @@
     border-color: var(--primary-color);
 }
 
-/* Rarity Styles - Non-transparent */
-.rarity-common {
-    background: linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 100%);
-}
-
-.rarity-uncommon {
-    background: linear-gradient(135deg, #6a6a6a 0%, #5a5a5a 100%);
-}
-
-.rarity-rare {
-    background: linear-gradient(135deg, #1a3a6a 0%, #0a2a5a 100%);
-    box-shadow: inset 0 0 20px rgba(100, 150, 255, 0.3), 0 0 15px rgba(100, 150, 255, 0.2);
-}
-
-.rarity-epic {
-    background: linear-gradient(135deg, #7a1a1a 0%, #5a0a1a 100%);
-    box-shadow: inset 0 0 20px rgba(255, 80, 80, 0.33), 0 0 15px rgba(255, 60, 60, 0.22);
-}
-
-.rarity-legendary {
-    background: linear-gradient(135deg, #ebd197 0%, #b48811 60%, #a2790d 100%);
-    box-shadow: 
-        inset 0 0 25px 10px rgba(255, 239, 160, 0.7),
-        0 0 20px 8px rgba(245, 207, 72, 0.6),
-        0 0 35px 12px rgba(255, 255, 200, 0.4),
-        0 0 50px 16px rgba(238, 200, 60, 0.3);
-}
-
-
-.rarity-ultimate {
-    background: linear-gradient(135deg, #a75cff 0%, #5a2a7a 60%, #4a1a6a 100%);
-    box-shadow: 
-        inset 0 0 60px 20px rgba(255, 150, 255, 0.8),
-        0 0 60px 20px rgba(200, 100, 255, 0.7),
-        0 0 90px 30px rgba(255, 100, 220, 0.5),
-        0 0 120px 40px rgba(150, 200, 255, 0.4);
-    animation: ultimateGlow 4s ease-in-out infinite;
-}
-
-@keyframes ultimateGlow {
-    0% {
-        box-shadow: 
-        inset 0 0 50px 16px rgba(255, 200, 255, 0.7),
-        0 0 50px 16px rgba(200, 100, 255, 0.7),
-        0 0 70px 22px rgba(255, 100, 220, 0.5),
-        0 0 90px 24px rgba(160, 220, 255, 0.5);
-    }
-    50% {
-        box-shadow: 
-        inset 0 0 90px 30px rgba(255, 255, 255, 0.9),
-        0 0 100px 38px rgba(250, 180, 255, 0.8),
-        0 0 135px 47px rgba(255, 100, 240, 0.7),
-        0 0 155px 50px rgba(150, 240, 255, 0.7);
-    }
-    100% {
-        box-shadow: 
-        inset 0 0 50px 16px rgba(255, 200, 255, 0.7),
-        0 0 50px 16px rgba(200, 100, 255, 0.7),
-        0 0 70px 22px rgba(255, 100, 220, 0.5),
-        0 0 90px 24px rgba(160, 220, 255, 0.5);
-    }
-}
-
-.card-content {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    text-align: center;
-    font-size: 8px;
-    gap: 0;
-    overflow: hidden;
-    position: relative;
-}
+/* Rarity styles and card styles moved to css/card.css */
 
 .card-collection {
     display: none;
@@ -397,21 +321,6 @@
 
 .card-number {
     display: none;
-}
-
-.card-image {
-    width: 100%;
-    height: 100%;
-    aspect-ratio: 16 / 9;
-    background-color: transparent;
-    border: none;
-    border-radius: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    color: var(--text-secondary);
-    flex-shrink: 0;
 }
 
 .card-name-attack {
@@ -440,114 +349,6 @@
 
 .card-copies {
     display: none;
-}
-
-/* Card Tooltip */
-.card-tooltip {
-    position: absolute;
-    background: linear-gradient(135deg, #23213c 0%, #382755 100%);
-    border: 2.5px solid var(--primary-color);
-    border-radius: 16px;
-    padding: 16px 18px 14px 18px;
-    font-size: 13px;
-    color: var(--text-primary);
-    z-index: 10000;
-    min-width: 210px;
-    box-shadow: 0 8px 28px 6px rgba(50,40,110,0.37), 0 2px 8px 0 rgba(32,0,48,0.06);
-    pointer-events: none;
-    white-space: nowrap;
-    transition: box-shadow 0.2s, background 0.3s;
-}
-
-.tooltip-row {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    margin: 2px 0;
-}
-
-.tooltip-label {
-    color: var(--text-secondary);
-    font-weight: 600;
-}
-
-.tooltip-value {
-    color: var(--primary-color);
-    font-weight: 600;
-}
-
-.tooltip-dps-columns {
-  display: grid;
-  grid-template-columns: auto auto auto auto;
-  column-gap: 12px;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 8px;
-  padding: 8px 16px;
-  font-size: 14px;
-  color: var(--primary-color);
-  font-weight: 700;
-  align-items: center;
-  justify-content: center;
-}
-
-.tooltip-dps-label {
-  text-align: right;
-  font-weight: 600;
-  color: #ccc;
-}
-
-.tooltip-dps-value {
-  text-align: left;
-  font-weight: 700;
-}
-
-/* Rarity Text Color */
-.rarity-common-text {
-    color: #7e7e7e !important;
-}
-.rarity-uncommon-text {
-    color: #cccccc !important;
-}
-.rarity-rare-text {
-    color: #6190ff !important;
-}
-.rarity-epic-text {
-    color: #ff6464 !important;
-}
-.rarity-legendary-text {
-    color: #ffd166 !important;
-}
-.rarity-ultimate-text {
-    color: #b588ff !important;
-}
-
-/* Attack Type Text Color */
-.type-fire-text {
-    color: #ff6464 !important;
-}
-.type-water-text {
-    color: #30cfff !important;
-}
-.type-stone-text {
-    color: #949493 !important;
-}
-.type-plant-text {
-    color: #4ace5e !important;
-}
-.type-air-text {
-    color: #d9ddfd !important;
-}
-.type-electric-text {
-    color: #ffe769 !important;
-}
-.type-ice-text {
-    color: #8af6ff !important;
-}
-.type-holy-text {
-    color: #fff9c4 !important;
-}
-.type-dark-text {
-    color: #a29bfe !important;
 }
 
 .type-attack-text::before {
@@ -746,63 +547,7 @@
     min-height: 90%;
 }
 
-.unused-card {
-    border-radius: 8px;
-    padding: 0;
-    font-size: 9px;
-    color: var(--text-secondary);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    width: 100px;
-    height: 100px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0;
-    transform-style: preserve-3d;
-    overflow: hidden;
-    position: relative;
-    background-size: cover;
-    background-position: center;
-}
-
-.unused-card-collection {
-    display: none;
-}
-
-.unused-card-number {
-    display: none;
-}
-
-.unused-card-image {
-    width: 100%;
-    height: 100%;
-    aspect-ratio: 16 / 9;
-    background-color: transparent;
-    border: none;
-    border-radius: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    color: var(--text-secondary);
-    flex-shrink: 0;
-}
-
-.unused-card-name {
-    display: none;
-}
-
-.unused-card-copies {
-    display: none;
-}
-
-.unused-card:hover {
-    border-color: var(--primary-color);
-    color: var(--primary-color);
-    transform: scale(1.05);
-}
+/* Card styles moved to css/card.css */
 
 /* Filter Section */
 .cards-filter-section {
@@ -891,12 +636,6 @@
 .drag-over {
     border-color: var(--primary-color) !important;
     box-shadow: 0 0 10px var(--primary-color);
-}
-
-img {
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
-    -ms-interpolation-mode: nearest-neighbor;
 }
 
 /* Attack animation */

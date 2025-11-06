@@ -1,5 +1,5 @@
 import { gameState } from '../data/gameState.js';
-import { setupTiltEffect } from '../helpers/utils.js';
+import { setupTiltEffect, setupSingleCardTilt } from '../helpers/utils.js';
 import { dragStartHandler, dragEndHandler, dragOverHandler, dragEnterHandler, dragLeaveHandler, dropHandler } from '../helpers/dragDrop.js';
 import { showTooltip, removeTooltip, handleUnusedCardMouseEnter, handleUnusedCardMouseLeave } from './tooltips.js';
 import { startDeckContinuousAttacks } from '../game/combat.js';
@@ -114,14 +114,14 @@ export function renderDeckSlots() {
     setupSlotModifierClicks();
 }
 
-export function createCardElement(card, type = 'deck') {
+export function createCardElement(card, type = 'deck', imgBasePath = 'img/cats/') {
     const element = document.createElement('div');
     element.className = type === 'unused' ? 'unused-card' : 'card';
     element.classList.add(card.getRarityClass());
 
     if (type === 'unused') {
         element.innerHTML = `
-            <img class="unused-card-image" src="img/cats/${card.number}.png" alt="${card.name}">
+            <img class="unused-card-image" src="${imgBasePath}${card.number}.png" alt="${card.name}">
         `;
     }
 

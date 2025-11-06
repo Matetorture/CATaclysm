@@ -1,30 +1,31 @@
 export function setupTiltEffect() {
     const allCards = document.querySelectorAll('.unused-card, .slot-card.filled');
+    allCards.forEach(card => setupSingleCardTilt(card));
+}
 
-    allCards.forEach(card => {
-        card.addEventListener('mouseenter', () => {
-            card.style.transition = 'none';
-        });
+export function setupSingleCardTilt(card) {
+    card.addEventListener('mouseenter', () => {
+        card.style.transition = 'none';
+    });
 
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
+    card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
 
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
 
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
 
-            const rotateX = (y - centerY) / 8;
-            const rotateY = (centerX - x) / 8;
+        const rotateX = (y - centerY) / 8;
+        const rotateY = (centerX - x) / 8;
 
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
-        });
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+    });
 
-        card.addEventListener('mouseleave', () => {
-            card.style.transition = 'transform 0.3s ease';
-            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
-        });
+    card.addEventListener('mouseleave', () => {
+        card.style.transition = 'transform 0.3s ease';
+        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
     });
 }
 

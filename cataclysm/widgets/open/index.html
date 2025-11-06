@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Open</title>
+<link rel="stylesheet" href="../../main.css">
+<link rel="stylesheet" href="../../css/card.css">
+<link rel="stylesheet" href="../../css/tooltip.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="main-content">
+    <div class="left-section">
+        <h1>DISCOVER YOUR LUCK — DRAW A CARD RIGHT HERE</h1>
+
+        <button id="draw-button">DRAW A CARD</button>
+        
+        <div id="draw-result">
+            <div id="pull-counter">Pulls: 0</div>
+            <div id="drawn-card-container">
+                <p style="color: var(--text-secondary); font-size: 80px;">?</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="right-section">
+        <h2 style="text-align: center; margin-bottom: 10px;">Guaranteed Cards</h2>
+        <span style="text-align: center; margin-bottom: 10px;">Guaranteed Cards</span>
+        
+        <div class="guarantee-button rare" id="btn-rare">
+            <h3>Rare</h3>
+            <small>At 20 pulls</small>
+            <div class="selected-card-preview" id="preview-rare">
+                <span style="color: var(--text-secondary);">Random</span>
+            </div>
+        </div>
+
+        <div class="guarantee-button epic" id="btn-epic">
+            <h3>Epic</h3>
+            <small>At 50 pulls</small>
+            <div class="selected-card-preview" id="preview-epic">
+                <span style="color: var(--text-secondary);">Random</span>
+            </div>
+        </div>
+
+        <div class="guarantee-button legendary" id="btn-legendary">
+            <h3>Legendary</h3>
+            <small>At 70 pulls</small>
+            <div class="selected-card-preview" id="preview-legendary">
+                <span style="color: var(--text-secondary);">Random</span>
+            </div>
+        </div>
+
+        <div class="guarantee-button ultimate" id="btn-ultimate">
+            <h3>Ultimate</h3>
+            <small>At 100 pulls</small>
+            <div class="selected-card-preview" id="preview-ultimate">
+                <span style="color: var(--text-secondary);">Random</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for card selection -->
+<div class="modal" id="card-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modal-title">Select a Card</h2>
+            <button class="close-modal" id="close-modal">&times;</button>
+        </div>
+        <div class="modal-cards-grid" id="modal-cards-grid">
+            <!-- Cards will be inserted here -->
+        </div>
+    </div>
+</div>
+
+<script type="module" src="script.js"></script>
+
+</body>
+</html>
