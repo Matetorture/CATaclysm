@@ -595,10 +595,9 @@
     min-height: 100px;
 }
 
-/* Card styles moved to css/card.css */
-
 /* Filter Section */
 .cards-filter-section {
+    display: flex;
     margin-bottom: 15px;
     background-color: var(--dark-secondary);
     color: var(--primary-color);
@@ -608,12 +607,16 @@
     display: inline-block;
 }
 
+.card-filters{
+    margin-left: 2px;
+}
+
 .filterBtn {
     background-color: var(--dark-tertiary);
     color: var(--primary-color);
     border: none;
     border-radius: 4px;
-    padding: 6px 12px;
+    padding: 6px 6px;
     margin: 6px 3px;
     cursor: pointer;
     font-size: 14px;
@@ -634,6 +637,7 @@
 .card-filter-types, .card-filter-rarity{
     border-left: var(--border-color) 2px solid;
     padding-left: 3px;
+    margin-left: 3px;
 }
 
 /* Scrollbar Styling */
