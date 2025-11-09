@@ -1,7 +1,7 @@
 import { gameState } from '../data/gameState.js';
 import { setupTiltEffect, setupSingleCardTilt } from '../helpers/utils.js';
 import { dragStartHandler, dragEndHandler, dragOverHandler, dragEnterHandler, dragLeaveHandler, dropHandler } from '../helpers/dragDrop.js';
-import { showTooltip, removeTooltip, handleUnusedCardMouseEnter, handleUnusedCardMouseLeave } from './tooltips.js';
+import { showTooltip, removeTooltip, handleUnusedCardMouseEnter, handleUnusedCardMouseLeave, removeDeckComparisonTooltip } from './tooltips.js';
 import { startDeckContinuousAttacks } from '../game/combat.js';
 import { updateDeckStats } from './deckStats.js';
 
@@ -173,6 +173,11 @@ export function addCardToDeck(card) {
     
     if (emptySlot !== -1) {
         gameState.deckCards[emptySlot] = card;
+
+        const tooltips = document.querySelectorAll('[data-tooltip-active="true"]');
+        tooltips.forEach(el => removeTooltip(el));
+        removeDeckComparisonTooltip();
+        
         renderAvailableCards();
         renderDeckSlots();
         startDeckContinuousAttacks();
@@ -184,6 +189,11 @@ export function addCardToDeck(card) {
 export function removeCardFromDeck(slotIndex) {
     gameState.deckCards[slotIndex] = null;
     gameState.deckModifiers[slotIndex] = '';
+
+    const tooltips = document.querySelectorAll('[data-tooltip-active="true"]');
+    tooltips.forEach(el => removeTooltip(el));
+    removeDeckComparisonTooltip();
+    
     renderAvailableCards();
     renderDeckSlots();
     startDeckContinuousAttacks();
