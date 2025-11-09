@@ -2,6 +2,7 @@ import { gameState } from '../data/gameState.js';
 import { renderAvailableCards, renderDeckSlots } from '../ui/cardRenderer.js';
 import { removeTooltip, removeDeckComparisonTooltip } from '../ui/tooltips.js';
 import { startDeckContinuousAttacks } from '../game/combat.js';
+import { updateDeckStats } from '../ui/deckStats.js';
 
 let draggedCard = null;
 let draggedFrom = null; // 'deck' or 'unused'
@@ -128,6 +129,7 @@ export function dropHandler(e) {
     renderAvailableCards();
     renderDeckSlots();
     startDeckContinuousAttacks();
+    updateDeckStats();
     dragEndHandler(e);
 }
 
@@ -153,6 +155,7 @@ export function setupUnusedCardsDropZone() {
             renderAvailableCards();
             renderDeckSlots();
             startDeckContinuousAttacks();
+            updateDeckStats();
         }
         dragEndHandler(e);
     });

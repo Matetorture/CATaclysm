@@ -3,6 +3,7 @@ import { setupTiltEffect, setupSingleCardTilt } from '../helpers/utils.js';
 import { dragStartHandler, dragEndHandler, dragOverHandler, dragEnterHandler, dragLeaveHandler, dropHandler } from '../helpers/dragDrop.js';
 import { showTooltip, removeTooltip, handleUnusedCardMouseEnter, handleUnusedCardMouseLeave } from './tooltips.js';
 import { startDeckContinuousAttacks } from '../game/combat.js';
+import { updateDeckStats } from './deckStats.js';
 
 export function renderAvailableCards(cardsToRender = gameState.ownedCards) {
     const container = document.getElementById('availableCardsGrid');
@@ -112,6 +113,7 @@ export function renderDeckSlots() {
     }
     setupTiltEffect();
     setupSlotModifierClicks();
+    updateDeckStats();
 }
 
 export function createCardElement(card, type = 'deck', imgBasePath = 'img/cats/') {
@@ -161,6 +163,7 @@ function setupSlotModifierClicks() {
             }
             renderDeckSlots();
             startDeckContinuousAttacks();
+            updateDeckStats();
         });
     });
 }

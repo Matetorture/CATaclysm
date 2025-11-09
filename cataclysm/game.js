@@ -9,6 +9,7 @@ import { cardsData } from './js/data/cardsData.js';
 import { renderAvailableCards, renderDeckSlots } from './js/ui/cardRenderer.js';
 import { selectBoss } from './js/ui/bossRenderer.js';
 import { generateFilterButtons } from './js/ui/filters.js';
+import { createDeckStatsDisplay } from './js/ui/deckStats.js';
 
 // Import game logic
 import { startDeckContinuousAttacks } from './js/game/combat.js';
@@ -23,6 +24,7 @@ function initGame() {
     setupUnusedCardsDropZone();
     renderAvailableCards();
     renderDeckSlots();
+    createDeckStatsDisplay();
     startDeckContinuousAttacks();
     generateFilterButtons();
     selectBoss(selectedCategoryId);
