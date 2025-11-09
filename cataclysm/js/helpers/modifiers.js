@@ -21,10 +21,10 @@ export function getModifiedStats(card, slotType) {
             speed = Math.floor(speed / 2);
             crit *= 1.3;
             break;
-        case 'N': // Negative - change attack type to boss weakness
+        case 'N': // Negative - change attack type to boss weakness (keep as array)
             const boss = getCurrentBoss();
             if (boss && boss.weakness.length > 0) {
-                modifiedType = boss.weakness[0];
+                modifiedType = [boss.weakness[0]];
             }
             break;
     }

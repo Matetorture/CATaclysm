@@ -8,7 +8,7 @@ export class CatCard {
         this.baseAttack = baseAttack;
         this.baseSpeed = baseSpeed;
         this.baseCrit = baseCrit; // In percentage
-        this.attackType = attackType; // Fire, Water, Stone, Plant, Air, Electric, Ice, Holy, Dark
+        this.attackType = attackType; // Array of attack types: Fire, Water, Stone, Plant, Air, Electric, Ice, Holy, Dark
         this.copies = copies; // Number of copies owned
     }
 
@@ -59,10 +59,6 @@ export class CatCard {
 
     getRarityClass() {
         return `rarity-${this.rarity.toLowerCase()}`;
-    }
-
-    getTypeClass() {
-        return `type-${this.attackType.toLowerCase()}`;
     }
 
     getDPS() {

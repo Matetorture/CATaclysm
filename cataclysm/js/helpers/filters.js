@@ -11,7 +11,9 @@ export function sortCardsByDPSWithCrit(cards) {
 }
 
 export function filterCardsByAttackType(cards, type) {
-  return cards.filter(card => card.attackType.toLowerCase() === type.toLowerCase());
+  return cards.filter(card => 
+    card.attackType.some(cardType => cardType.toLowerCase() === type.toLowerCase())
+  );
 }
 
 export function filterCardsByRarity(cards, rarity) {

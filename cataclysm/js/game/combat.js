@@ -36,7 +36,8 @@ export function attackWithCard(card) {
     let damage = modifiedStats.attack;
     const attackTypeUsed = modifiedStats.modifiedType;
 
-    const isWeaknessMatch = boss.weakness.includes(attackTypeUsed);
+    let isWeaknessMatch = false;
+    isWeaknessMatch = attackTypeUsed.some(type => boss.weakness.includes(type));
 
     const infoTime = 4000;
     if (boss.onlyWeakness && !isWeaknessMatch) {

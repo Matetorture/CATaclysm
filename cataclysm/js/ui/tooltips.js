@@ -91,10 +91,12 @@ export function showTooltip(element, card, position = 'top') {
             </div>
         </div>
 
-        <div style="display:flex; justify-content:center; align-items: center; gap:16px;">
-            <div class="${card.getTypeClass()}-text type-attack-text" style="font-size: 11px; font-weight:600;">${card.attackType}</div>
-            <div class="${card.getRarityClass()}-text" style="font-size: 11px; font-weight:600;">${card.rarity}</div>
+        <div style="display:flex; justify-content: center; gap: 8px; text-align: center; width:80%; margin: auto;">
+        ${card.attackType.map(type => 
+            `<div class="type-${type.toLowerCase()}-text type-attack-text" style="font-size: 11px; font-weight:600;">${type}</div>`
+        ).join('')}
         </div>
+        <div class="${card.getRarityClass()}-text" style="font-size: 11px; font-weight:600; text-align: center; margin-top: 16px;">${card.rarity}</div>
     `;
 
     setTimeout(() => {
