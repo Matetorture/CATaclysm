@@ -27,6 +27,9 @@ export function dragStartHandler(e, card, from, index = null) {
     crt.width = 0;
     crt.height = 0;
     e.dataTransfer.setDragImage(crt, 0, 0);
+    
+    // Set card ID for base slots to access
+    e.dataTransfer.setData('cardId', card.id);
 
     dragPreview.style.display = 'block';
     dragPreview.innerHTML = '';

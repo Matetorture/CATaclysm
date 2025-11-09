@@ -75,8 +75,13 @@ export class CatCard {
         (damagePerHit * (1 - critChance) + damagePerHit * critMultiplier * critChance) * attacksPerSecond;
 
         return {
-        dps: dps.toFixed(2),
-        dpsWithCrit: dpsWithCrit.toFixed(2),
+            dps: dps.toFixed(2),
+            dpsWithCrit: dpsWithCrit.toFixed(2),
         };
+    }
+
+    calculateCritDPS() {
+        const dpsData = this.getDPS();
+        return parseFloat(dpsData.dpsWithCrit);
     }
 }

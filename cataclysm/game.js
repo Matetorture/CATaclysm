@@ -10,6 +10,7 @@ import { renderAvailableCards, renderDeckSlots } from './js/ui/cardRenderer.js';
 import { selectBoss } from './js/ui/bossRenderer.js';
 import { generateFilterButtons } from './js/ui/filters.js';
 import { createDeckStatsDisplay } from './js/ui/deckStats.js';
+import { initializeBasePanel } from './js/ui/basePanel.js';
 
 // Import game logic
 import { startDeckContinuousAttacks } from './js/game/combat.js';
@@ -29,6 +30,7 @@ function initGame() {
     generateFilterButtons();
     selectBoss(selectedCategoryId);
     updateMoneyDisplay();
+    initializeBasePanel();
 }
 
 if (document.readyState === 'loading') {

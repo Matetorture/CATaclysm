@@ -8,7 +8,10 @@ export const gameState = {
     deckModifiers: ['', '', '', '', '', '', '', ''],
     money: 1250,
     unlockedSlots: [true, false, false, false, false, false, false, false], // First slot unlocked by default
-    slotPrices: [0, 100, 250, 500, 1000, 2000, 4000, 8000] // Cost to unlock each slot
+    slotPrices: [0, 100, 250, 500, 1000, 2000, 4000, 8000], // Cost to unlock each slot
+    
+    currentBaseId: 1,
+    baseUpgradeInProgress: null,
 };
 
 // Boss state management

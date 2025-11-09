@@ -126,7 +126,10 @@ export function showTooltip(element, card, position = 'top') {
 export function removeTooltip(element) {
     const tooltips = document.querySelectorAll('.card-tooltip');
     tooltips.forEach(t => t.remove());
-    delete element.dataset.tooltipActive;
+    
+    if (element && element.dataset) {
+        delete element.dataset.tooltipActive;
+    }
 }
 
 export function showDeckComparisonTooltip(compareCard) {

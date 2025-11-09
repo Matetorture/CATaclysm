@@ -4,6 +4,7 @@ import { dragStartHandler, dragEndHandler, dragOverHandler, dragEnterHandler, dr
 import { showTooltip, removeTooltip, handleUnusedCardMouseEnter, handleUnusedCardMouseLeave, removeDeckComparisonTooltip } from './tooltips.js';
 import { startDeckContinuousAttacks } from '../game/combat.js';
 import { updateDeckStats } from './deckStats.js';
+import { isCardUsedInBase } from './basePanel.js';
 
 export function renderAvailableCards(cardsToRender = gameState.ownedCards) {
     const container = document.getElementById('availableCardsGrid');
@@ -13,7 +14,8 @@ export function renderAvailableCards(cardsToRender = gameState.ownedCards) {
 
     cardsToRender.forEach((card) => {
         const inDeck = gameState.deckCards.includes(card);
-        if (inDeck) return;
+        const inBase = isCardUsedInBase(card);
+        if (inDeck || inBase) return;
 
         const cardElement = createCardElement(card, 'unused');
         container.appendChild(cardElement);
