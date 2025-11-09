@@ -544,7 +544,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
-    min-height: 90%;
+    min-height: 100px;
 }
 
 /* Card styles moved to css/card.css */
