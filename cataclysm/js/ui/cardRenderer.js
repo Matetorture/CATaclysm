@@ -1,4 +1,4 @@
-import { gameState } from '../data/gameState.js';
+import { gameState, updateMoneyDisplay } from '../data/gameState.js';
 import { setupTiltEffect, setupSingleCardTilt } from '../helpers/utils.js';
 import { dragStartHandler, dragEndHandler, dragOverHandler, dragEnterHandler, dragLeaveHandler, dropHandler } from '../helpers/dragDrop.js';
 import { showTooltip, removeTooltip, handleUnusedCardMouseEnter, handleUnusedCardMouseLeave, removeDeckComparisonTooltip } from './tooltips.js';
@@ -44,6 +44,27 @@ export function renderDeckSlots() {
         const slot = document.createElement('div');
         slot.className = 'deck-slot';
         slot.dataset.slot = i;
+
+        const isUnlocked = gameState.unlockedSlots[i];
+
+        if (!isUnlocked) {
+            slot.classList.add('locked');
+            
+            const lockOverlay = document.createElement('div');
+            lockOverlay.className = 'lock-overlay';
+            lockOverlay.innerHTML = `
+                <img src="img/icons/lock.png" alt="Locked" class="lock-icon">
+                <div class="unlock-price">$${gameState.slotPrices[i]}</div>
+            `;
+            
+            lockOverlay.addEventListener('click', () => {
+                unlockSlot(i);
+            });
+            
+            slot.appendChild(lockOverlay);
+            container.appendChild(slot);
+            continue;
+        }
 
         const mod = gameState.deckModifiers[i];
         if (mod) {
@@ -169,7 +190,9 @@ function setupSlotModifierClicks() {
 }
 
 export function addCardToDeck(card) {
-    const emptySlot = gameState.deckCards.findIndex(slot => slot === null);
+    const emptySlot = gameState.deckCards.findIndex((slot, index) => 
+        slot === null && gameState.unlockedSlots[index]
+    );
     
     if (emptySlot !== -1) {
         gameState.deckCards[emptySlot] = card;
@@ -181,8 +204,6 @@ export function addCardToDeck(card) {
         renderAvailableCards();
         renderDeckSlots();
         startDeckContinuousAttacks();
-    } else {
-        alert('All deck slots are full!');
     }
 }
 
@@ -197,4 +218,15 @@ export function removeCardFromDeck(slotIndex) {
     renderAvailableCards();
     renderDeckSlots();
     startDeckContinuousAttacks();
+}
+
+function unlockSlot(slotIndex) {
+    const price = gameState.slotPrices[slotIndex];
+    
+    if (gameState.money >= price) {
+        gameState.money -= price;
+        gameState.unlockedSlots[slotIndex] = true;
+        updateMoneyDisplay();
+        renderDeckSlots();
+    }
 }

@@ -6,7 +6,9 @@ export const gameState = {
     deckCards: [null, null, null, null, null, null, null, null], // 8 deck slots
     ownedModifiers: ['S', 'G', 'B', 'R', 'N'], // S, G, B, R, N
     deckModifiers: ['', '', '', '', '', '', '', ''],
-    money: 1250
+    money: 1250,
+    unlockedSlots: [true, false, false, false, false, false, false, false], // First slot unlocked by default
+    slotPrices: [0, 100, 250, 500, 1000, 2000, 4000, 8000] // Cost to unlock each slot
 };
 
 // Boss state management
