@@ -18,21 +18,14 @@ import { startDeckContinuousAttacks } from './js/game/combat.js';
 // Import helpers
 import { setupBottomPanelToggle } from './js/helpers/utils.js';
 import { setupUnusedCardsDropZone } from './js/helpers/dragDrop.js';
+import { toggleCombatPause } from './js/helpers/pauseManager.js';
 
 function setupPauseButton() {
     const pauseBtn = document.getElementById('pauseBtn');
     if (!pauseBtn) return;
     
     pauseBtn.addEventListener('click', () => {
-        gameState.combatPaused = !gameState.combatPaused;
-        
-        if (gameState.combatPaused) {
-            pauseBtn.textContent = '▶ RESUME';
-            pauseBtn.classList.add('paused');
-        } else {
-            pauseBtn.textContent = '❚❚ PAUSE';
-            pauseBtn.classList.remove('paused');
-        }
+        toggleCombatPause();
     });
 }
 

@@ -1,3 +1,5 @@
+import { pauseCombat, resumeCombat, isCombatPaused } from './pauseManager.js';
+
 export function setupTiltEffect() {
     const allCards = document.querySelectorAll('.unused-card, .slot-card.filled');
     allCards.forEach(card => setupSingleCardTilt(card));
@@ -47,11 +49,21 @@ export function setupBottomPanelToggle() {
     }
 }
 
-export function openCenteredIframe(url, displayTime) {
+export function openCenteredIframe(url, displayTime = -1, shouldPauseCombat = false) {
     const existingWrapper = document.getElementById('iframeWrapper');
     if (existingWrapper) {
         existingWrapper.remove();
         clearInterval(window.iframeProgressInterval);
+    }
+
+    let wasPausedBeforeIframe = false;
+    
+    if (shouldPauseCombat) {
+        wasPausedBeforeIframe = isCombatPaused();
+        
+        if (!wasPausedBeforeIframe) {
+            pauseCombat();
+        }
     }
 
     const wrapper = document.createElement('div');
@@ -88,6 +100,10 @@ export function openCenteredIframe(url, displayTime) {
     function closeIframe() {
         clearInterval(window.iframeProgressInterval);
         wrapper.remove();
+        
+        if (shouldPauseCombat && !wasPausedBeforeIframe) {
+            resumeCombat();
+        }
     }
 
     if (displayTime && typeof displayTime === 'number' && displayTime > 0) {
