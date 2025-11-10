@@ -60,10 +60,10 @@
 .base-upgrade-panel {
     width: 100%;
     height: 100%;
-    padding: 16px;
+    padding: 8px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 8px;
 }
 
 .current-base-title {
@@ -103,8 +103,7 @@
 
 .upgrade-controls-box {
     flex: 1;
-    max-width: 300px;
-    padding: 16px;
+    max-width: 210px;
     display: flex;
     flex-direction: column;
 }
