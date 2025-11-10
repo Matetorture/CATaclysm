@@ -1,6 +1,3 @@
-// Import models
-import { CatCard } from './js/models/CatCard.js';
-
 // Import data
 import { gameState, selectedCategoryId, updateMoneyDisplay } from './js/data/gameState.js';
 import { cardsData } from './js/data/cardsData.js';
