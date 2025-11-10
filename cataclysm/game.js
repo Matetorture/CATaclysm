@@ -19,10 +19,28 @@ import { startDeckContinuousAttacks } from './js/game/combat.js';
 import { setupBottomPanelToggle } from './js/helpers/utils.js';
 import { setupUnusedCardsDropZone } from './js/helpers/dragDrop.js';
 
+function setupPauseButton() {
+    const pauseBtn = document.getElementById('pauseBtn');
+    if (!pauseBtn) return;
+    
+    pauseBtn.addEventListener('click', () => {
+        gameState.combatPaused = !gameState.combatPaused;
+        
+        if (gameState.combatPaused) {
+            pauseBtn.textContent = '▶ RESUME';
+            pauseBtn.classList.add('paused');
+        } else {
+            pauseBtn.textContent = '❚❚ PAUSE';
+            pauseBtn.classList.remove('paused');
+        }
+    });
+}
+
 function initGame() {
     gameState.ownedCards = [...cardsData];
     setupBottomPanelToggle();
     setupUnusedCardsDropZone();
+    setupPauseButton();
     renderAvailableCards();
     renderDeckSlots();
     createDeckStatsDisplay();

@@ -25,6 +25,8 @@ function playAttackAnimation(card) {
 }
 
 export function attackWithCard(card) {
+    if (gameState.combatPaused) return;
+    
     const slotIndex = gameState.deckCards.findIndex(c => c === card);
     const slotType = slotIndex !== -1 ? gameState.deckModifiers[slotIndex] : '';
 
@@ -108,6 +110,12 @@ export function startDeckContinuousAttacks() {
 }
 
 function updateAttackTimers(timestamp) {
+  if (gameState.combatPaused) {
+    updateAttackTimers.last = timestamp;
+    requestAnimationFrame(updateAttackTimers);
+    return;
+  }
+  
   if (!updateAttackTimers.last) updateAttackTimers.last = timestamp;
   const delta = timestamp - updateAttackTimers.last;
   updateAttackTimers.last = timestamp;

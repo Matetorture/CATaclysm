@@ -5,6 +5,44 @@
     width: 100vw;
 }
 
+/* ===== PAUSE BUTTON ===== */
+.pause-button {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 10000;
+    background-color: var(--dark-bg);
+    border: 2px solid var(--primary-color);
+    color: white;
+    padding: 12px;
+    padding-top: 9px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.pause-button:hover {
+    background-color: var(--dark-tertiary);
+    transform: translateY(-2px);
+}
+
+.pause-button:active {
+    transform: translateY(0);
+}
+
+.pause-button.paused {
+    background-color: var(--primary-color);
+    color: var(--dark-secondary);
+    border-color: var(--primary-color);
+}
+
+.pause-button.paused:hover {
+    background-color: var(--text-secondary);
+}
+
 /* ===== TOP PANEL (5%) ===== */
 .top-panel {
     height: 5vh;

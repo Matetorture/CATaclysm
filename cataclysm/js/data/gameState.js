@@ -12,6 +12,8 @@ export const gameState = {
     
     currentBaseId: 1,
     baseUpgradeInProgress: null,
+    
+    combatPaused: false,
 };
 
 // Boss state management
