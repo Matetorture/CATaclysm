@@ -120,7 +120,7 @@ export function renderDeckSlots() {
             const btn = document.createElement('button');
             btn.className = 'slot-modifier slot-modifier-effect';
             btn.setAttribute('data-modifier', mod);
-            btn.innerText = mod;
+            btn.innerHTML = `<img class="img-icon" src="img/icons/${mod}.png" alt="${mod}">`;
 
             if (gameState.deckModifiers[i] === mod) {
                 btn.classList.add('active');

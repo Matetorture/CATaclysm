@@ -4,7 +4,7 @@ import { bossCategories } from './bossesData.js';
 export const gameState = {
     ownedCards: [], // All owned cards
     deckCards: [null, null, null, null, null, null, null, null], // 8 deck slots
-    ownedModifiers: ['S', 'G', 'B', 'R', 'N'], // S, G, B, R, N
+    ownedModifiers: ['B', 'S', 'L', 'R', 'N'], // B, S, L, R, N
     deckModifiers: ['', '', '', '', '', '', '', ''],
     money: 1250,
     unlockedSlots: [true, false, false, false, false, false, false, false], // First slot unlocked by default

@@ -755,6 +755,13 @@
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* B - Bloody */
+.slot-modifier-effect.active[data-modifier="B"] {
+    border: 2px solid #8b0000;
+    background-color: #4b0000;
+    box-shadow: 0 0 8px 3px #8b0000;
+}
+
 /* S - Shiny */
 .slot-modifier-effect.active[data-modifier="S"] {
     border: 2px solid yellow;
@@ -774,18 +781,11 @@
     }
 }
 
-/* G - Golden */
-.slot-modifier-effect.active[data-modifier="G"] {
-    border: 2px solid #d4af37;
-    background: linear-gradient(145deg, #f9d976, #f39f09);
-    box-shadow: 0 0 10px 2px #d4af37;
-}
-
-/* B - Bloody */
-.slot-modifier-effect.active[data-modifier="B"] {
-    border: 2px solid #8b0000;
-    background-color: #4b0000;
-    box-shadow: 0 0 8px 3px #8b0000;
+/* L - Lucky */
+.slot-modifier-effect.active[data-modifier="L"] {
+    border: 2px solid #73b844;
+    background: linear-gradient(145deg, #73b844, #17270c);
+    box-shadow: 0 0 10px 2px #73b844;
 }
 
 /* R - Rainbow */
@@ -806,6 +806,7 @@
     );
     animation: rotateGradient 5s linear infinite;
     transform-origin: center;
+    border: none;
 }
 
 @keyframes rotateGradient {
