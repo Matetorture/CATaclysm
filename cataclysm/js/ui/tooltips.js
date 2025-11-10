@@ -35,15 +35,15 @@ export function showTooltip(element, card, position = 'top') {
 
         <div class="tooltip-stats" style="display: flex; margin-bottom: 8px;">
             <div style="display: flex; flex-direction:column; align-items:center; width:33%;">
-                <span style="font-size:13px; color:#fff; font-weight:bold;">A</span>
+                <span style="font-size:13px; color:#fff; font-weight:bold;"><img class="img-icon" src="img/icons/attack.png" alt="A"></span>
                 <span style="font-size:14px; color:#ff6464; font-weight:600;">${stats.attack}</span>
             </div>
             <div style="display: flex; flex-direction:column; align-items:center; width:33%;">
-                <span style="font-size:13px; color:#fff; font-weight:bold;">S</span>
+                <span style="font-size:13px; color:#fff; font-weight:bold;"><img class="img-icon" src="img/icons/speed.png" alt="S"></span>
                 <span style="font-size:14px; color:#3cb7fa; font-weight:600;">${modStats ? '' : '<span class="speed-timer"></span>'} ${(Number(stats.speed) / 1000).toFixed(2)}s</span>
             </div>
             <div style="display: flex; flex-direction:column; align-items:center; width:33%;">
-                <span style="font-size:13px; color:#fff; font-weight:bold;">C</span>
+                <span style="font-size:13px; color:#fff; font-weight:bold;"><img class="img-icon" src="img/icons/crit.png" alt="C"></span>
                 <span style="font-size:14px; color:#ffe769; font-weight:600;">${stats.crit}%</span>
             </div>
         </div>
@@ -60,15 +60,15 @@ export function showTooltip(element, card, position = 'top') {
             <span style="display:block; text-align:center; font-size:12px; color:#aaa; margin-bottom:6px;">WITH MODIFIER:</span>
             <div class="tooltip-stats" style="display: flex; margin-bottom: 8px;">
                 <div style="display: flex; flex-direction:column; align-items:center; width:33%;">
-                    <span style="font-size:13px; color:#fff; font-weight:bold;">A</span>
+                    <span style="font-size:13px; color:#fff; font-weight:bold;"><img class="img-icon" src="img/icons/attack.png" alt="A"></span>
                     <span style="font-size:14px; color:#ff6464; font-weight:600;">${modStats.attack}</span>
                 </div>
                 <div style="display: flex; flex-direction:column; align-items:center; width:33%;">
-                    <span style="font-size:13px; color:#fff; font-weight:bold;">S</span>
+                    <span style="font-size:13px; color:#fff; font-weight:bold;"><img class="img-icon" src="img/icons/speed.png" alt="S"></span>
                     <span style="font-size:14px; color:#3cb7fa; font-weight:600;">${modStats ? '<span class="speed-timer"></span>' : ''} ${(Number(modStats.speed) / 1000).toFixed(2)}s</span>
                 </div>
                 <div style="display: flex; flex-direction:column; align-items:center; width:33%;">
-                    <span style="font-size:13px; color:#fff; font-weight:bold;">C</span>
+                    <span style="font-size:13px; color:#fff; font-weight:bold;"><img class="img-icon" src="img/icons/crit.png" alt="C"></span>
                     <span style="font-size:14px; color:#ffe769; font-weight:600;">${modStats.crit}%</span>
                 </div>
             </div>
@@ -188,9 +188,9 @@ export function showDeckComparisonTooltip(compareCard) {
                 <div style="text-align:center; font-size: 15px; font-weight: bold; color: var(--primary-color); margin-bottom: 6px;">${deckCard.name}</div>
                 <div style="text-align:center; justify-content: center; font-size: 11px; color: #dfccff; font-weight: 500; margin-bottom: 6px;">${deckCard.collection}</div>
                 <div style="display: flex; justify-content: center; margin-bottom: 6px; font-size: 13px; width: 100%;">
-                    <div class="${getStatClass('attack')}" style="width: 33%; text-align: center;">A:<br>${deckStats.attack}</div>
-                    <div class="${getStatClass('speed')}" style="width: 33%; text-align: center;">S:<br>${(deckStats.speed / 1000).toFixed(2)}s</div>
-                    <div class="${getStatClass('crit')}" style="width: 33%; text-align: center;">C:<br>${deckStats.crit}%</div>
+                    <div class="${getStatClass('attack')}" style="width: 33%; text-align: center;"><img class="img-icon" src="img/icons/attack.png" alt="A"><br>${deckStats.attack}</div>
+                    <div class="${getStatClass('speed')}" style="width: 33%; text-align: center;"><img class="img-icon" src="img/icons/speed.png" alt="S"><br>${(deckStats.speed / 1000).toFixed(2)}s</div>
+                    <div class="${getStatClass('crit')}" style="width: 33%; text-align: center;"><img class="img-icon" src="img/icons/crit.png" alt="C"><br>${deckStats.crit}%</div>
                 </div>
                 <div style="display: flex; justify-content: center; margin-bottom: 6px; font-size: 13px; width: 100%;">
                     <div class="${getDPSClass(deckDPS.dps, compareDPS.dps)}" style="width: 50%; text-align: center;">DPS:<br>${deckDPS.dps}</div>
