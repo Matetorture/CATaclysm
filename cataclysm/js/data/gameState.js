@@ -50,3 +50,9 @@ export function updateMoneyDisplay() {
         moneyDisplay.textContent = gameState.money;
     }
 }
+
+export function triggerManualSave() {
+    import('../helpers/saveManager.js').then(({ saveGame }) => {
+        saveGame();
+    });
+}

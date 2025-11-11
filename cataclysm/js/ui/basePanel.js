@@ -1,12 +1,12 @@
-import { gameState, updateMoneyDisplay } from '../data/gameState.js';
+import { gameState, updateMoneyDisplay, triggerManualSave } from '../data/gameState.js';
 import { basesData, cloneTimeByRarity } from '../data/basesData.js';
 import { renderAvailableCards } from './cardRenderer.js';
 import { showTooltip, removeTooltip } from './tooltips.js';
 import { CatCard } from '../models/CatCard.js';
 
 let updateInterval = null;
-let baseUpgradeCats = [null, null];
-let cloneSlots = [
+export let baseUpgradeCats = [null, null];
+export let cloneSlots = [
     { card: null, startTime: null, totalTime: null },
     { card: null, startTime: null, totalTime: null },
     { card: null, startTime: null, totalTime: null },
@@ -31,6 +31,14 @@ function ensureCatCard(cat) {
         cat.attackType,
         cat.copies
     );
+}
+
+export function setBaseUpgradeCats(cats) {
+    baseUpgradeCats = cats;
+}
+
+export function setCloneSlots(slots) {
+    cloneSlots = slots;
 }
 
 export function isCardUsedInBase(card) {
@@ -347,6 +355,8 @@ function completeBaseUpgrade() {
     
     renderAvailableCards();
     renderBaseUpgradeTab();
+    
+    triggerManualSave();
 }
 
 function renderCardCloneTab() {
@@ -515,6 +525,8 @@ function completeCardCloning(slotIndex) {
     card.copies += 1;
     
     console.log(`Card "${card.name}" cloned! New copies: ${card.copies}`);
+    
+    triggerManualSave();
     
     if (card.copies >= MAX_LEVEL_COPIES) {
         console.log(`Card "${card.name}" has reached max level! Removing from slot.`);

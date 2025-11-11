@@ -16,6 +16,7 @@ import { startDeckContinuousAttacks } from './js/game/combat.js';
 import { setupBottomPanelToggle } from './js/helpers/utils.js';
 import { setupUnusedCardsDropZone } from './js/helpers/dragDrop.js';
 import { toggleCombatPause } from './js/helpers/pauseManager.js';
+import { loadGame, startAutoSave, setupBeforeUnloadSave } from './js/helpers/saveManager.js';
 
 function setupPauseButton() {
     const pauseBtn = document.getElementById('pauseBtn');
@@ -27,7 +28,12 @@ function setupPauseButton() {
 }
 
 function initGame() {
-    gameState.ownedCards = [...cardsData];
+    const saveLoaded = loadGame();
+
+    if (!saveLoaded) {
+        gameState.ownedCards = [...cardsData];
+    }
+    
     setupBottomPanelToggle();
     setupUnusedCardsDropZone();
     setupPauseButton();
@@ -39,6 +45,11 @@ function initGame() {
     selectBoss(selectedCategoryId);
     updateMoneyDisplay();
     initializeBasePanel();
+    
+    startAutoSave();
+    setupBeforeUnloadSave();
+    
+    console.log('Game initialized!', saveLoaded ? 'Save loaded' : 'New game started');
 }
 
 if (document.readyState === 'loading') {
