@@ -99,6 +99,12 @@
 .type-ice-text {
     color: #8ed4ff !important;
 }
+.type-holy-text {
+    color: #ffd700 !important;
+}
+.type-dark-text {
+    color: #1a1842 !important;
+}
 
 /* Slot Modifier Tooltip */
 .slot-modifier-tooltip {
