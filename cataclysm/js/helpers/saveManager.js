@@ -16,6 +16,7 @@ import {
     setBaseUpgradeCats,
     setCloneSlots
 } from '../ui/basePanel.js';
+import { isCategoryUnlocked } from '../ui/bossRenderer.js';
 
 const SAVE_KEY = 'cataclysm_save';
 const AUTO_SAVE_INTERVAL = 30000;
@@ -174,6 +175,12 @@ export function loadGame() {
         if (data.selectedCategoryId !== undefined) {
             setSelectedCategoryId(data.selectedCategoryId);
         }
+        
+        if (selectedCategoryId && !isCategoryUnlocked(selectedCategoryId)) {
+            console.warn(`Category ${selectedCategoryId} is locked, resetting to category 1`);
+            setSelectedCategoryId(1);
+        }
+        
         if (data.currentBossId !== undefined) {
             setCurrentBossId(data.currentBossId);
         }

@@ -236,12 +236,31 @@
     align-items: center;
     border-radius: 8px;
     margin: 5px;
+    position: relative;
 }
 
 .boss-category-button.active,
-.boss-category-button:hover {
+.boss-category-button:hover:not(.locked) {
     background-color: var(--dark-tertiary);
     color: #fff;
+}
+
+.boss-category-button.locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.boss-category-button .lock-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.8));
+}
+
+.boss-category-button .locked-img {
+    filter: brightness(0.3);
 }
 
 .category-img{

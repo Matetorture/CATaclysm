@@ -28,9 +28,27 @@ export function getCurrentBoss() {
     return category.bosses.find(b => b.id === currentBossId);
 }
 
+export function isCategoryUnlocked(categoryId) {
+    if (categoryId === 1) return true;
+    
+    const prevCategoryId = categoryId - 1;
+    const prevCategory = getCategoryById(prevCategoryId);
+    
+    if (!prevCategory) return false;
+    
+    const defeatedCount = defeatedBossesByCategory[prevCategoryId]?.size || 0;
+    return defeatedCount >= 10;
+}
+
 export function selectBoss(categoryId) {
     const category = getCategoryById(categoryId);
     if (!category) return;
+    
+    if (!isCategoryUnlocked(categoryId)) {
+        console.warn(`Category ${categoryId} is locked`);
+        return;
+    }
+    
     setSelectedCategoryId(categoryId);
 
     let boss = category.bosses.find(b => !defeatedBossesByCategory[categoryId].has(b.id));
@@ -78,9 +96,15 @@ export function renderBoss(bossOverride = null, isRandom = false) {
             ${bossCategories.map(cat => {
             const defeatedCount = defeatedBossesByCategory[cat.id].size;
             const total = cat.bosses.length;
+            const isUnlocked = isCategoryUnlocked(cat.id);
+            const isActive = cat.id === selectedCategoryId;
+            
             return `
-            <button class="boss-category-button ${cat.id === selectedCategoryId ? 'active' : ''}" data-cat-id="${cat.id}">
-                <img src="${cat.img}" alt="${cat.name}" class="category-img" />
+            <button class="boss-category-button ${isActive ? 'active' : ''} ${!isUnlocked ? 'locked' : ''}" 
+                    data-cat-id="${cat.id}" 
+                    ${!isUnlocked ? 'disabled' : ''}>
+                ${!isUnlocked ? '<img src="img/icons/lock.png" alt="Locked" class="lock-icon" />' : ''}
+                <img src="${cat.img}" alt="${cat.name}" class="category-img ${!isUnlocked ? 'locked-img' : ''}" />
                 <span class="defeated-count">${defeatedCount}/${total}</span>
             </button>`;
             }).join('')}
@@ -123,7 +147,9 @@ export function renderBoss(bossOverride = null, isRandom = false) {
     buttons.forEach(btn => {
         btn.addEventListener('click', () => {
             const catId = parseInt(btn.dataset.catId);
-            selectBoss(catId);
+            if (isCategoryUnlocked(catId)) {
+                selectBoss(catId);
+            }
         });
     });
 
