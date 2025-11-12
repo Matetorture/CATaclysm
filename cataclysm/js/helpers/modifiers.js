@@ -13,13 +13,13 @@ export function getModifiedStats(card, slotType) {
         case 'S': // Shiny - attack speed / 3
             speed = Math.floor(speed / 3);
             break;
-        case 'L': // Lucky - crit rate * 2
-            crit = crit * 2;
+        case 'L': // Lucky - crit rate * 3
+            crit = crit * 3;
             break;
         case 'R': // Rainbow - all stats boosted
             attack *= 2;
             speed = Math.floor(speed / 2);
-            crit *= 1.3;
+            crit *= 1.5;
             break;
         case 'N': // Negative - change attack type to boss weakness (keep as array)
             const boss = getCurrentBoss();
