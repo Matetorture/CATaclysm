@@ -1,6 +1,6 @@
 import { gameState, updateMoneyDisplay, triggerManualSave, defeatedBossesByCategory } from '../data/gameState.js';
-import { basesData, cloneTimeByRarity } from '../data/basesData.js';
-import { renderAvailableCards } from './cardRenderer.js';
+import { basesData, getEffectiveCloneTime, getCurrentBaseConfig } from '../data/basesData.js';
+import { renderAvailableCards, renderDeckSlots } from './cardRenderer.js';
 import { showTooltip, removeTooltip } from './tooltips.js';
 import { CatCard } from '../models/CatCard.js';
 
@@ -382,6 +382,8 @@ function completeBaseUpgrade() {
     
     renderAvailableCards();
     renderBaseUpgradeTab();
+    renderCardCloneTab();
+    renderDeckSlots();
     
     triggerManualSave();
 }
@@ -390,10 +392,29 @@ function renderCardCloneTab() {
     const container = document.getElementById('clone-subtab');
     if (!container) return;
     
+    const baseConfig = getCurrentBaseConfig(gameState.currentBaseId);
+    const isCloningUnlocked = baseConfig.cloneSlots > 0;
+    
+    if (!isCloningUnlocked) {
+        container.innerHTML = `
+            <div class="card-clone-panel locked">
+                <div class="clone-locked-overlay">
+                    <img src="img/icons/lock.png" alt="Locked" class="lock-icon">
+                    <h3>Card Cloning Locked</h3>
+                    <p>Upgrade your base to unlock card cloning</p>
+                </div>
+            </div>
+        `;
+        return;
+    }
+    
     container.innerHTML = `
+        <div class="clone-speed-info">
+            <p>Clone Speed: <strong>${baseConfig.cloneSpeedMultiplier}x</strong></p>
+        </div>
         <div class="card-clone-panel">
             <div class="clone-slots-container">
-                ${cloneSlots.map((slot, index) => renderCloneSlot(slot, index)).join('')}
+                ${cloneSlots.map((slot, index) => renderCloneSlot(slot, index, baseConfig)).join('')}
             </div>
         </div>
     `;
@@ -401,9 +422,24 @@ function renderCardCloneTab() {
     setupCardCloneControls();
 }
 
-function renderCloneSlot(slot, index) {
+function renderCloneSlot(slot, index, baseConfig) {
+    const isSlotLocked = index >= baseConfig.cloneSlots;
     const hasCard = slot.card !== null;
     const isCloning = hasCard && slot.startTime !== null;
+    
+    if (isSlotLocked) {
+        return `
+            <div class="clone-slot-wrapper locked">
+                <div class="clone-slot locked" data-slot="${index}">
+                    <img src="img/icons/lock.png" alt="Locked" class="lock-icon">
+                </div>
+                <div class="clone-timer">LOCKED</div>
+                <div class="clone-progress-bar-container">
+                    <div class="clone-progress-bar" style="width: 0%"></div>
+                </div>
+            </div>
+        `;
+    }
     
     if (!hasCard) {
         return `
@@ -421,7 +457,7 @@ function renderCloneSlot(slot, index) {
     
     const card = slot.card;
     const rarityClass = `rarity-${card.rarity.toLowerCase()}`;
-    const cloneTime = cloneTimeByRarity[card.rarity];
+    const cloneTime = getEffectiveCloneTime(card.rarity, gameState.currentBaseId);
     
     const cardInstance = ensureCatCard(card);
     const level = cardInstance.getLevel();
@@ -456,8 +492,11 @@ function renderCloneSlot(slot, index) {
 }
 
 function setupCardCloneControls() {
+    const baseConfig = getCurrentBaseConfig(gameState.currentBaseId);
     const slots = document.querySelectorAll('.clone-slot');
     slots.forEach((slotEl, index) => {
+        if (index >= baseConfig.cloneSlots) return;
+        
         slotEl.addEventListener('dragover', (e) => {
             e.preventDefault();
             if (!cloneSlots[index].card) {
@@ -485,7 +524,7 @@ function setupCardCloneControls() {
                 return;
             }
             
-            const cloneTime = cloneTimeByRarity[card.rarity];
+            const cloneTime = getEffectiveCloneTime(card.rarity, gameState.currentBaseId);
             cloneSlots[index] = {
                 card: card,
                 startTime: Date.now(),
@@ -531,7 +570,7 @@ function updateCardCloneProgress() {
             progressBar.style.width = `${progress * 100}%`;
         }
         
-        const cloneTime = cloneTimeByRarity[slot.card.rarity];
+        const cloneTime = getEffectiveCloneTime(slot.card.rarity, gameState.currentBaseId);
         const elapsedSeconds = Math.floor(elapsed / 1000);
         const timerEl = document.querySelectorAll('.clone-timer')[index];
         if (timerEl) {
@@ -561,7 +600,7 @@ function completeCardCloning(slotIndex) {
         renderCardCloneTab();
         renderAvailableCards();
     } else {
-        const cloneTime = cloneTimeByRarity[card.rarity];
+        const cloneTime = getEffectiveCloneTime(card.rarity, gameState.currentBaseId);
         cloneSlots[slotIndex] = {
             card: card,
             startTime: Date.now(),

@@ -1,5 +1,6 @@
-import { gameState } from '../data/gameState.js';
 import { getCurrentBoss } from '../ui/bossRenderer.js';
+
+export const allModifiers = ['B', 'S', 'L', 'R', 'N'];
 
 export function getModifiedStats(card, slotType) {
     const base = card.getStats();

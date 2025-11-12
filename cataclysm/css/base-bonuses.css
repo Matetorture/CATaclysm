@@ -1,0 +1,103 @@
+/* Locked Clone Slot */
+.clone-slot-wrapper.locked {
+    opacity: 0.5;
+}
+
+.clone-slot.locked {
+    background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+    cursor: not-allowed;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.clone-slot.locked:hover {
+    transform: none;
+    border-color: #555;
+}
+
+.clone-slot.locked .lock-icon {
+    position: absolute;
+    width: 20px;
+    height: 28px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Base-locked deck slots */
+.lock-overlay.base-locked {
+    cursor: default;
+}
+
+.unlock-price.base-upgrade-required {
+    background-color: #666;
+    color: #ccc;
+    border: 2px solid #555;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: default;
+    pointer-events: none;
+}
+
+
+/* Clone Locked Overlay */
+.card-clone-panel.locked {
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.clone-locked-overlay {
+    text-align: center;
+    padding: 40px;
+    padding-top: 0;
+}
+
+.clone-locked-overlay h3 {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+}
+
+.clone-locked-overlay p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+.clone-locked-overlay .lock-icon {
+    margin-bottom: 20px;
+}
+
+/* Clone Speed Info */
+.clone-speed-info {
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.clone-speed-info p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.clone-speed-info strong {
+    color: var(--primary-color);
+}
+
+/* Locked Modifiers */
+.slot-modifier.locked {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.slot-modifier.locked .locked-icon {
+    width: 20px;
+    height: 24px;
+}

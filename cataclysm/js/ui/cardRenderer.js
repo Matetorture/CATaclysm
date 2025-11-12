@@ -1,10 +1,12 @@
 import { gameState, updateMoneyDisplay } from '../data/gameState.js';
+import { getCurrentBaseConfig } from '../data/basesData.js';
 import { setupTiltEffect, setupSingleCardTilt } from '../helpers/utils.js';
 import { dragStartHandler, dragEndHandler, dragOverHandler, dragEnterHandler, dragLeaveHandler, dropHandler } from '../helpers/dragDrop.js';
 import { showTooltip, removeTooltip, handleUnusedCardMouseEnter, handleUnusedCardMouseLeave, removeDeckComparisonTooltip } from './tooltips.js';
 import { startDeckContinuousAttacks } from '../game/combat.js';
 import { updateDeckStats } from './deckStats.js';
 import { isCardUsedInBase } from './basePanel.js';
+import { allModifiers } from '../helpers/modifiers.js';
 
 export function renderAvailableCards(cardsToRender = gameState.ownedCards) {
     const container = document.getElementById('availableCardsGrid');
@@ -40,6 +42,10 @@ export function renderDeckSlots() {
     const container = document.querySelector('.deck-slots');
     if (!container) return;
     
+    const baseConfig = getCurrentBaseConfig(gameState.currentBaseId);
+    const maxSlots = baseConfig.maxDeckSlots;
+    const unlockedModifiers = allModifiers.slice(0, baseConfig.unlockedModifiers);
+    
     container.innerHTML = '';
 
     for (let i = 0; i < 8; i++) {
@@ -47,21 +53,31 @@ export function renderDeckSlots() {
         slot.className = 'deck-slot';
         slot.dataset.slot = i;
 
+        const isBeyondBaseLimit = i >= maxSlots;
         const isUnlocked = gameState.unlockedSlots[i];
 
-        if (!isUnlocked) {
+        if (isBeyondBaseLimit || !isUnlocked) {
             slot.classList.add('locked');
             
             const lockOverlay = document.createElement('div');
             lockOverlay.className = 'lock-overlay';
-            lockOverlay.innerHTML = `
-                <img src="img/icons/lock.png" alt="Locked" class="lock-icon">
-                <div class="unlock-price">$${gameState.slotPrices[i]}</div>
-            `;
             
-            lockOverlay.addEventListener('click', () => {
-                unlockSlot(i);
-            });
+            if (isBeyondBaseLimit) {
+                lockOverlay.classList.add('base-locked');
+                lockOverlay.innerHTML = `
+                    <img src="img/icons/lock.png" alt="Locked" class="lock-icon">
+                    <div class="unlock-price base-upgrade-required">Upgrade Base</div>
+                `;
+            } else {
+                lockOverlay.innerHTML = `
+                    <img src="img/icons/lock.png" alt="Locked" class="lock-icon">
+                    <div class="unlock-price">$${gameState.slotPrices[i]}</div>
+                `;
+                
+                lockOverlay.addEventListener('click', () => {
+                    unlockSlot(i);
+                });
+            }
             
             slot.appendChild(lockOverlay);
             container.appendChild(slot);
@@ -116,14 +132,22 @@ export function renderDeckSlots() {
 
         const modifiersDiv = document.createElement('div');
         modifiersDiv.className = 'slot-modifiers';
-        gameState.ownedModifiers.forEach(mod => {
+        allModifiers.forEach(mod => {
+            const isModUnlocked = unlockedModifiers.includes(mod);
             const btn = document.createElement('button');
             btn.className = 'slot-modifier slot-modifier-effect';
             btn.setAttribute('data-modifier', mod);
-            btn.innerHTML = `<img class="img-icon" src="img/icons/${mod}.png" alt="${mod}">`;
-
-            if (gameState.deckModifiers[i] === mod) {
-                btn.classList.add('active');
+            
+            if (!isModUnlocked) {
+                btn.classList.add('locked');
+                btn.disabled = true;
+                btn.innerHTML = `<img class="img-icon locked-icon" src="img/icons/lock.png" alt="Locked">`;
+            } else {
+                btn.innerHTML = `<img class="img-icon" src="img/icons/${mod}.png" alt="${mod}">`;
+                
+                if (gameState.deckModifiers[i] === mod) {
+                    btn.classList.add('active');
+                }
             }
 
             modifiersDiv.appendChild(btn);
