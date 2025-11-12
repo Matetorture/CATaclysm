@@ -106,7 +106,7 @@ function renderBaseUpgradeTab() {
     setupBaseUpgradeControls();
 }
 
-function renderUpgradeInProgress(nextBase) {
+function renderUpgradeInProgress() {
     return `
         <div class="upgrade-controls-box">
             <h4>Speed up with cats:</h4>
