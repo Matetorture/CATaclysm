@@ -1,5 +1,5 @@
 // Import data
-import { gameState, selectedCategoryId, updateMoneyDisplay } from './js/data/gameState.js';
+import { gameState, selectedCategoryId, updateMoneyDisplay, triggerManualSave } from './js/data/gameState.js';
 import { cardsData } from './js/data/cardsData.js';
 
 // Import UI renderers
@@ -13,7 +13,7 @@ import { initializeBasePanel } from './js/ui/basePanel.js';
 import { startDeckContinuousAttacks } from './js/game/combat.js';
 
 // Import helpers
-import { setupBottomPanelToggle } from './js/helpers/utils.js';
+import { setupBottomPanelToggle, openCenteredIframe } from './js/helpers/utils.js';
 import { setupUnusedCardsDropZone } from './js/helpers/dragDrop.js';
 import { toggleCombatPause } from './js/helpers/pauseManager.js';
 import { loadGame, startAutoSave, setupBeforeUnloadSave } from './js/helpers/saveManager.js';
@@ -27,6 +27,15 @@ function setupPauseButton() {
     });
 }
 
+function setupOpenCardsButton() {
+    const openCardsBtn = document.getElementById('openCardsBtn');
+    if (!openCardsBtn) return;
+    
+    openCardsBtn.addEventListener('click', () => {
+        openCenteredIframe('/widgets/open/', 10000, true);
+    });
+}
+
 function initGame() {
     const saveLoaded = loadGame();
 
@@ -37,6 +46,7 @@ function initGame() {
     setupBottomPanelToggle();
     setupUnusedCardsDropZone();
     setupPauseButton();
+    setupOpenCardsButton();
     renderAvailableCards();
     renderDeckSlots();
     createDeckStatsDisplay();
@@ -48,6 +58,11 @@ function initGame() {
     
     startAutoSave();
     setupBeforeUnloadSave();
+    
+    window.renderAvailableCards = renderAvailableCards;
+    window.gameState = gameState;
+    window.triggerManualSave = triggerManualSave;
+    window.updateMoneyDisplay = updateMoneyDisplay;
     
     console.log('Game initialized!', saveLoaded ? 'Save loaded' : 'New game started');
 }

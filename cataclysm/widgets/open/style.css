@@ -20,7 +20,7 @@ h1 {
 }
 
 .left-section {
-    width: 65%;
+    width: 50%;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -28,10 +28,12 @@ h1 {
 }
 
 .right-section {
-    width: 10%;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
+    width: 45%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    padding: 20px;
+    align-content: start;
 }
 
 button {
@@ -66,12 +68,12 @@ button:hover {
 
 #draw-result {
     margin: 10px 0;
-    padding: 20px;
+    padding: 15px;
     background-color: var(--dark-secondary);
     border-radius: var(--card-border-radius);
     box-shadow: var(--card-shadow);
-    width: 900px;
-    min-height: 120px;
+    width: 500px;
+    min-height: 80px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -86,19 +88,18 @@ button:hover {
 
 #drawn-card-container {
     width: 100%;
-    min-height: 550px;
+    min-height: 300px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .guarantee-button {
-    margin: auto;
-    width: 140px;
+    width: 100%;
     background-color: var(--dark-secondary);
     border: 2px solid var(--border-color);
     border-radius: 8px;
-    padding: 10px;
+    padding: 15px;
     cursor: pointer;
     transition: all 0.3s ease;
     text-align: center;
@@ -111,7 +112,7 @@ button:hover {
 }
 
 .guarantee-button h3 {
-    font-size: 1rem;
+    font-size: 1.2rem;
     margin-bottom: 5px;
 }
 
@@ -199,8 +200,8 @@ button:hover {
 }
 
 #drawn-card-container .unused-card {
-    width: 525px;
-    height: 525px;
+    width: 280px;
+    height: 280px;
 }
 
 .modal-cards-grid .unused-card {
@@ -210,19 +211,19 @@ button:hover {
 
 .selected-card-preview {
     width: 100%;
-    height: 120px;
+    height: 180px;
     background-color: var(--dark-tertiary);
     border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 8px;
+    margin-top: 10px;
     overflow: hidden;
 }
 
 .selected-card-preview .unused-card {
-    width: 120px;
-    height: 120px;
+    width: 160px;
+    height: 160px;
 }
 
 .card-info {

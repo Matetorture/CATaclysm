@@ -61,7 +61,23 @@ export function saveGame() {
                 Object.entries(defeatedBossesByCategory).map(([catId, bossSet]) => 
                     [catId, Array.from(bossSet)]
                 )
-            )
+            ),
+            
+            openCardsData: {
+                pullCount: window.openCardsState?.pullCount || 0,
+                lastGuaranteedPulls: window.openCardsState?.lastGuaranteedPulls || { Rare: 0, Epic: 0, Legendary: 0, Ultimate: 0 },
+                selectedGuaranteeCards: (() => {
+                    const cards = {};
+                    if (window.openCardsState?.selectedGuaranteeCards) {
+                        Object.entries(window.openCardsState.selectedGuaranteeCards).forEach(([rarity, card]) => {
+                            if (card && card.id) {
+                                cards[rarity] = card.id;
+                            }
+                        });
+                    }
+                    return cards;
+                })()
+            }
         };
         
         localStorage.setItem(SAVE_KEY, JSON.stringify(saveData));
@@ -169,6 +185,23 @@ export function loadGame() {
             Object.entries(data.defeatedBosses).forEach(([catId, bossIds]) => {
                 defeatedBossesByCategory[catId] = new Set(bossIds);
             });
+        }
+        
+        if (data.openCardsData) {
+            window.openCardsState = {
+                pullCount: data.openCardsData.pullCount || 0,
+                lastGuaranteedPulls: data.openCardsData.lastGuaranteedPulls || { Rare: 0, Epic: 0, Legendary: 0, Ultimate: 0 },
+                selectedGuaranteeCards: {}
+            };
+            
+            if (data.openCardsData.selectedGuaranteeCards) {
+                Object.entries(data.openCardsData.selectedGuaranteeCards).forEach(([rarity, cardId]) => {
+                    const card = cardsData.find(c => c.id === cardId);
+                    if (card) {
+                        window.openCardsState.selectedGuaranteeCards[rarity] = card;
+                    }
+                });
+            }
         }
         
         console.log('Game loaded successfully!');

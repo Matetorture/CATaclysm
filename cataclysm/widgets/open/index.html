@@ -26,12 +26,14 @@
     </div>
 
     <div class="right-section">
-        <h2 style="text-align: center; margin-bottom: 10px;">Guaranteed Cards</h2>
-        <span style="text-align: center; margin-bottom: 10px;">Guaranteed Cards</span>
+        <h2 style="text-align: center; margin-bottom: 5px; grid-column: 1 / -1;">Guaranteed Cards</h2>
+        <p style="text-align: center; font-size: 15px; color: var(--text-secondary); margin: 0 20px 15px 20px; grid-column: 1 / -1; line-height: 1.3;">
+            If multiple cards are guaranteed simultaneously, you will receive them in consecutive pulls, starting with the best rarity.
+        </p>
         
         <div class="guarantee-button rare" id="btn-rare">
             <h3>Rare</h3>
-            <small>At 20 pulls</small>
+            <small id="rare-pulls-info">At 20 pulls</small>
             <div class="selected-card-preview" id="preview-rare">
                 <span style="color: var(--text-secondary);">Random</span>
             </div>
@@ -39,7 +41,7 @@
 
         <div class="guarantee-button epic" id="btn-epic">
             <h3>Epic</h3>
-            <small>At 50 pulls</small>
+            <small id="epic-pulls-info">At 50 pulls</small>
             <div class="selected-card-preview" id="preview-epic">
                 <span style="color: var(--text-secondary);">Random</span>
             </div>
@@ -47,7 +49,7 @@
 
         <div class="guarantee-button legendary" id="btn-legendary">
             <h3>Legendary</h3>
-            <small>At 70 pulls</small>
+            <small id="legendary-pulls-info">At 70 pulls</small>
             <div class="selected-card-preview" id="preview-legendary">
                 <span style="color: var(--text-secondary);">Random</span>
             </div>
@@ -55,7 +57,7 @@
 
         <div class="guarantee-button ultimate" id="btn-ultimate">
             <h3>Ultimate</h3>
-            <small>At 100 pulls</small>
+            <small id="ultimate-pulls-info">At 100 pulls</small>
             <div class="selected-card-preview" id="preview-ultimate">
                 <span style="color: var(--text-secondary);">Random</span>
             </div>

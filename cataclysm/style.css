@@ -281,6 +281,33 @@
     border-color: var(--primary-color);
 }
 
+/* Open Cards Button */
+.open-cards-btn {
+    margin-top: 16px;
+    padding: 12px;
+    background-color: var(--dark-secondary);
+    border: 2px solid var(--dark-tertiary);
+    color: var(--text-primary);
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.open-cards-btn:hover {
+    background-color: var(--dark-tertiary);
+    border: 2px solid var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.open-cards-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
 /* Deck Section */
 .deck-section {
     flex: 1;

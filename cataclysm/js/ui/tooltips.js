@@ -1,7 +1,7 @@
 import { gameState } from '../data/gameState.js';
 import { getModifiedStats } from '../helpers/modifiers.js';
 
-export function showTooltip(element, card, position = 'top') {
+export function showTooltip(element, card, position = 'top', imgBasePath = '') {
     removeTooltip(element);
 
     const stats = card.getStats();
@@ -35,15 +35,15 @@ export function showTooltip(element, card, position = 'top') {
 
         <div class="tooltip-stats" style="display: flex; margin-bottom: 8px;">
             <div style="display: flex; flex-direction:column; align-items:center; width:33%;">
-                <span style="font-size:13px; color:#fff; font-weight:bold;"><img class="img-icon" src="img/icons/attack.png" alt="A"></span>
+                <span style="font-size:13px; color:#fff; font-weight:bold;"><img class="img-icon" src="${imgBasePath}img/icons/attack.png" alt="A"></span>
                 <span style="font-size:14px; color:#ff6464; font-weight:600;">${stats.attack}</span>
             </div>
             <div style="display: flex; flex-direction:column; align-items:center; width:33%;">
-                <span style="font-size:13px; color:#fff; font-weight:bold;"><img class="img-icon" src="img/icons/speed.png" alt="S"></span>
+                <span style="font-size:13px; color:#fff; font-weight:bold;"><img class="img-icon" src="${imgBasePath}img/icons/speed.png" alt="S"></span>
                 <span style="font-size:14px; color:#3cb7fa; font-weight:600;">${modStats ? '' : '<span class="speed-timer"></span>'} ${(Number(stats.speed) / 1000).toFixed(2)}s</span>
             </div>
             <div style="display: flex; flex-direction:column; align-items:center; width:33%;">
-                <span style="font-size:13px; color:#fff; font-weight:bold;"><img class="img-icon" src="img/icons/crit.png" alt="C"></span>
+                <span style="font-size:13px; color:#fff; font-weight:bold;"><img class="img-icon" src="${imgBasePath}img/icons/crit.png" alt="C"></span>
                 <span style="font-size:14px; color:#ffe769; font-weight:600;">${stats.crit}%</span>
             </div>
         </div>
@@ -60,15 +60,15 @@ export function showTooltip(element, card, position = 'top') {
             <span style="display:block; text-align:center; font-size:12px; color:#aaa; margin-bottom:6px;">WITH MODIFIER:</span>
             <div class="tooltip-stats" style="display: flex; margin-bottom: 8px;">
                 <div style="display: flex; flex-direction:column; align-items:center; width:33%;">
-                    <span style="font-size:13px; color:#fff; font-weight:bold;"><img class="img-icon" src="img/icons/attack.png" alt="A"></span>
+                    <span style="font-size:13px; color:#fff; font-weight:bold;"><img class="img-icon" src="${imgBasePath}img/icons/attack.png" alt="A"></span>
                     <span style="font-size:14px; color:#ff6464; font-weight:600;">${modStats.attack}</span>
                 </div>
                 <div style="display: flex; flex-direction:column; align-items:center; width:33%;">
-                    <span style="font-size:13px; color:#fff; font-weight:bold;"><img class="img-icon" src="img/icons/speed.png" alt="S"></span>
+                    <span style="font-size:13px; color:#fff; font-weight:bold;"><img class="img-icon" src="${imgBasePath}img/icons/speed.png" alt="S"></span>
                     <span style="font-size:14px; color:#3cb7fa; font-weight:600;">${modStats ? '<span class="speed-timer"></span>' : ''} ${(Number(modStats.speed) / 1000).toFixed(2)}s</span>
                 </div>
                 <div style="display: flex; flex-direction:column; align-items:center; width:33%;">
-                    <span style="font-size:13px; color:#fff; font-weight:bold;"><img class="img-icon" src="img/icons/crit.png" alt="C"></span>
+                    <span style="font-size:13px; color:#fff; font-weight:bold;"><img class="img-icon" src="${imgBasePath}img/icons/crit.png" alt="C"></span>
                     <span style="font-size:14px; color:#ffe769; font-weight:600;">${modStats.crit}%</span>
                 </div>
             </div>
