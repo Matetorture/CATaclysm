@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorials</title>
+    <link rel="stylesheet" href="../../main.css">
+    <link rel="stylesheet" href="../../css/tooltip.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="tutorials-container">
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="basics">Basics</button>
+            <button class="tab-btn" data-tab="cards">Cards & Deck</button>
+            <button class="tab-btn" data-tab="combat">Combat & Bosses</button>
+            <button class="tab-btn" data-tab="base">Base Upgrades</button>
+            <button class="tab-btn" data-tab="rates">Drop Rates</button>
+        </div>
+
+        <div class="tab-content active" id="basics">
+            <h2>Game Basics</h2>
+            <div class="content-grid">
+                <div class="info-card">
+                    <h3>Objective</h3>
+                    <p>Collect cats, build powerful decks, defeat all bosses, and upgrade your base to unlock new features.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Main Currency</h3>
+                    <p><span>Money ($)</span> - Earned by defeating bosses. Used to unlock deck slots, upgrade base, and pull new cards.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Card System</h3>
+                    <p>Cards have <span class="stat-attack">Attack</span>, <span class="stat-speed">Speed</span>, <span class="stat-crit">Crit Rate</span>, and <span>Attack Type</span>. </p>
+                    <p>Level them up by collecting copies. They will automatically level up when you have enough copies.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Progression</h3>
+                    <p>Defeat all 10 bosses in a category to unlock the next category and base upgrade.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Tips & Strategy</h3>
+                    <ul>
+                        <li>Match attack types to boss weaknesses</li>
+                        <li>Use modifiers strategically per slot</li>
+                        <li>Clone high-rarity cards to save money</li>
+                        <li>Speed up base upgrades with span cats</li>
+                        <li>Unlock deck slots early for more power</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="cards">
+            <h2>Cards & Deck Building</h2>
+            <div class="content-grid">
+                <div class="info-card">
+                    <h3>Rarities</h3>
+                    <p>Loading rarities...</p>
+                </div>
+                <div class="info-card">
+                    <h3>Leveling Cards</h3>
+                    <p>Collect copies to level up cards. Each level multiplies all stats by 2.</p>
+                    <p>Loading level requirements...</p>
+                </div>
+                <div class="info-card">
+                    <h3>Slot Modifiers</h3>
+                    <ul>
+                        <li><span class="modifier-bloody">B (Bloody):</span> <span class="stat-attack">Attack</span> ×3</li>
+                        <li><span class="modifier-shiny">S (Shiny):</span> <span class="stat-speed">Speed</span> ÷3</li>
+                        <li><span class="modifier-lucky">L (Lucky):</span> <span class="stat-crit">Crit</span> ×3</li>
+                        <li><span class="modifier-rainbow">R (Rainbow):</span> <span class="stat-attack">Attack</span> ×2, <span class="stat-speed">Speed</span> ÷2, <span class="stat-crit">Crit</span> ×1.5</li>
+                        <li><span class="modifier-negative">N (Negative):</span> Changes type to boss weakness</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="combat">
+            <h2>Combat & Boss System</h2>
+            <div class="content-grid">
+                <div class="info-card">
+                    <h3>Combat Mechanics</h3>
+                    <p>Cards automatically attack based on their <span class="stat-speed">Speed</span>.</p>
+                    <p><span class="stat-crit">Critical</span> hits deal 2× damage.</p>
+                    <p><span>Type Advantage:</span> Deal 2× damage when your attack type matches boss weakness.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Bosses</h3>
+                    <p>Defeat all 10 bosses to unlock next category.</p>
+                    <p>The reward has a fixed base amount, but the final payout may randomly vary by up to ±30%.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Attack Types</h3>
+                    <p>Loading attack types...</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="base">
+            <h2>Base Upgrades & Features</h2>
+            <div class="content-grid">
+                <div class="info-card wide">
+                    <h3>Base Levels & Bonuses</h3>
+                    <table class="base-table">
+                        <thead>
+                            <tr>
+                                <th>Level</th>
+                                <th>Name</th>
+                                <th>Cost</th>
+                                <th>Build Time</th>
+                                <th>Deck Slots</th>
+                                <th>Modifiers</th>
+                                <th>Clone Slots</th>
+                                <th>Clone Speed</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Generated by script.js -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="two-column-grid">
+                    <div class="info-card">
+                        <h3>Speed Up Upgrades</h3>
+                        <p>Place cats in upgrade slots to reduce build time using their <span class="stat-crit-dps">Crit DPS</span>:</p>
+                        <p><span>New Time = Base Time ÷ Total <span class="stat-crit-dps">Crit DPS</span></span></p>
+                        <p>Remove or add cats anytime during upgrade.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Card Cloning</h3>
+                        <p>Clone cards to earn copies without pulling. Cloning time varies by rarity, reduced by clone speed multiplier.</p>
+                        <p>Cards at max level (62 copies) cannot be cloned.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="rates">
+            <h2>Drop Rates & Probabilities</h2>
+            <div class="content-grid">
+                <div class="info-card">
+                    <h3>Card Pull Rates</h3>
+                    <p>Loading pull rates...</p>
+                </div>
+                <div class="info-card">
+                    <h3>Clone Times (Base)</h3>
+                    <p>Loading clone times...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
