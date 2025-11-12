@@ -228,6 +228,8 @@ function setupBaseUpgradeControls(isNextBaseUnlocked) {
                 baseUpgradeCats[index] = null;
                 renderCatSlot(slot, index);
                 
+                removeTooltip();
+                
                 if (gameState.baseUpgradeInProgress) {
                     gameState.baseUpgradeInProgress.cats = baseUpgradeCats.filter(c => c !== null);
                     recalculateUpgradeTime(removedCat, null);
@@ -546,6 +548,8 @@ function setupCardCloneControls() {
         slotEl.addEventListener('click', (e) => {
             const slot = cloneSlots[index];
             if (slot.card) {
+                removeTooltip();
+                
                 cloneSlots[index] = { card: null, startTime: null, totalTime: null };
                 renderCardCloneTab();
                 renderAvailableCards();
