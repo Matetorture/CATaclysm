@@ -103,7 +103,7 @@ export function loadGame() {
         const data = JSON.parse(savedData);
         console.log('Loading save from:', new Date(data.timestamp).toLocaleString());
         
-        gameState.money = data.money || 1250;
+        gameState.money = data.money || 0;
         
         if (data.defeatedBosses) {
             Object.entries(data.defeatedBosses).forEach(([catId, bossIds]) => {

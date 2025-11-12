@@ -6,7 +6,7 @@ export const gameState = {
     deckCards: [null, null, null, null, null, null, null, null], // 8 deck slots
     ownedModifiers: ['B', 'S', 'L', 'R', 'N'], // B, S, L, R, N
     deckModifiers: ['', '', '', '', '', '', '', ''],
-    money: 1250,
+    money: 0,
     unlockedSlots: [true, false, false, false, false, false, false, false], // First slot unlocked by default
     slotPrices: [0, 100, 250, 500, 1000, 2000, 4000, 8000], // Cost to unlock each slot
     
@@ -44,10 +44,14 @@ export function setBossListVisible(value) {
     bossListVisible = value;
 }
 
+function formatMoneyWithSpaces(number) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+}
+
 export function updateMoneyDisplay() {
     const moneyDisplay = document.querySelector('.money-display');
     if (moneyDisplay) {
-        moneyDisplay.textContent = gameState.money;
+        moneyDisplay.textContent = formatMoneyWithSpaces(gameState.money);
     }
 }
 
