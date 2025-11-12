@@ -44,6 +44,7 @@ export function saveGame() {
             baseUpgradeInProgress: gameState.baseUpgradeInProgress ? {
                 targetBaseId: gameState.baseUpgradeInProgress.targetBaseId,
                 startTime: gameState.baseUpgradeInProgress.startTime,
+                baseBuildTime: gameState.baseUpgradeInProgress.baseBuildTime,
                 remainingTime: gameState.baseUpgradeInProgress.remainingTime,
                 cats: gameState.baseUpgradeInProgress.cats.map(cat => cat.id)
             } : null,
@@ -158,6 +159,7 @@ export function loadGame() {
             gameState.baseUpgradeInProgress = {
                 targetBaseId: data.baseUpgradeInProgress.targetBaseId,
                 startTime: data.baseUpgradeInProgress.startTime,
+                baseBuildTime: data.baseUpgradeInProgress.baseBuildTime || 10,
                 remainingTime: data.baseUpgradeInProgress.remainingTime,
                 cats: cats
             };

@@ -204,12 +204,17 @@ function setupBaseUpgradeControls(isNextBaseUnlocked) {
                 const slots = document.querySelectorAll('.cat-slot');
                 renderCatSlot(slots[fromIndex], fromIndex);
                 renderCatSlot(slots[index], index);
+                
+                if (gameState.baseUpgradeInProgress) {
+                    gameState.baseUpgradeInProgress.cats = baseUpgradeCats.filter(c => c !== null);
+                }
             } else {
                 const oldCat = baseUpgradeCats[index];
                 baseUpgradeCats[index] = card;
                 renderCatSlot(slot, index);
                 
                 if (gameState.baseUpgradeInProgress) {
+                    gameState.baseUpgradeInProgress.cats = baseUpgradeCats.filter(c => c !== null);
                     recalculateUpgradeTime(oldCat, card);
                 }
             }
@@ -222,11 +227,13 @@ function setupBaseUpgradeControls(isNextBaseUnlocked) {
                 const removedCat = baseUpgradeCats[index];
                 baseUpgradeCats[index] = null;
                 renderCatSlot(slot, index);
-                renderAvailableCards();
                 
                 if (gameState.baseUpgradeInProgress) {
+                    gameState.baseUpgradeInProgress.cats = baseUpgradeCats.filter(c => c !== null);
                     recalculateUpgradeTime(removedCat, null);
                 }
+                
+                renderAvailableCards();
             }
         });
     });
@@ -243,26 +250,27 @@ function setupBaseUpgradeControls(isNextBaseUnlocked) {
 
 function recalculateUpgradeTime(oldCat, newCat) {
     if (!gameState.baseUpgradeInProgress) return;
-    
+
     const oldCDPS = oldCat ? ensureCatCard(oldCat).calculateCritDPS() : 0;
     const newCDPS = newCat ? ensureCatCard(newCat).calculateCritDPS() : 0;
     
-    if (oldCat && !newCat && oldCDPS > 1) {
+    if (oldCat && !newCat && oldCDPS > 0) {
         gameState.baseUpgradeInProgress.remainingTime *= oldCDPS;
+        gameState.baseUpgradeInProgress.startTime = Date.now();
     }
     else if (!oldCat && newCat && newCDPS > 0) {
-        gameState.baseUpgradeInProgress.remainingTime /= newCDPS;
+        gameState.baseUpgradeInProgress.remainingTime = Math.max(100, gameState.baseUpgradeInProgress.remainingTime / newCDPS);
+        gameState.baseUpgradeInProgress.startTime = Date.now();
     }
     else if (oldCat && newCat) {
-        if (oldCDPS > 1) {
+        if (oldCDPS > 0) {
             gameState.baseUpgradeInProgress.remainingTime *= oldCDPS;
         }
         if (newCDPS > 0) {
-            gameState.baseUpgradeInProgress.remainingTime /= newCDPS;
+            gameState.baseUpgradeInProgress.remainingTime = Math.max(100, gameState.baseUpgradeInProgress.remainingTime / newCDPS);
         }
+        gameState.baseUpgradeInProgress.startTime = Date.now();
     }
-    
-    gameState.baseUpgradeInProgress.remainingTime = Math.max(1000, gameState.baseUpgradeInProgress.remainingTime);
 }
 
 function renderCatSlot(slot, index) {
@@ -328,16 +336,15 @@ function startBaseUpgrade() {
         return;
     }
     
-    let buildTime = nextBase.baseBuildTime;
+    const baseBuildTime = nextBase.baseBuildTime;
     const cats = baseUpgradeCats.filter(c => c !== null);
+    const totalCritDPS = cats.length > 0 
+        ? cats.reduce((sum, cat) => sum + ensureCatCard(cat).calculateCritDPS(), 0) 
+        : 0;
     
-    if (cats.length > 0) {
-        const totalCritDPS = cats.reduce((sum, cat) => sum + ensureCatCard(cat).calculateCritDPS(), 0);
-        
-        const reducedTime = buildTime / totalCritDPS;
-        if (reducedTime >= 1) {
-            buildTime = reducedTime;
-        }
+    let buildTime = baseBuildTime;
+    if (totalCritDPS > 0) {
+        buildTime = Math.max(1, baseBuildTime / totalCritDPS);
     }
     
     gameState.money -= nextBase.cost;
@@ -346,6 +353,7 @@ function startBaseUpgrade() {
     gameState.baseUpgradeInProgress = {
         targetBaseId: nextBase.id,
         startTime: Date.now(),
+        baseBuildTime: baseBuildTime,
         remainingTime: buildTime * 1000,
         cats: [...cats]
     };
