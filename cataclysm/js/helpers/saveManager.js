@@ -14,7 +14,8 @@ import {
     baseUpgradeCats, 
     cloneSlots,
     setBaseUpgradeCats,
-    setCloneSlots
+    setCloneSlots,
+    isBaseUnlocked
 } from '../ui/basePanel.js';
 import { isCategoryUnlocked } from '../ui/bossRenderer.js';
 
@@ -102,7 +103,20 @@ export function loadGame() {
         console.log('Loading save from:', new Date(data.timestamp).toLocaleString());
         
         gameState.money = data.money || 1250;
+        
+        if (data.defeatedBosses) {
+            Object.entries(data.defeatedBosses).forEach(([catId, bossIds]) => {
+                defeatedBossesByCategory[catId] = new Set(bossIds);
+            });
+        }
+
         gameState.currentBaseId = data.currentBaseId || 1;
+        
+        if (!isBaseUnlocked(gameState.currentBaseId)) {
+            console.warn(`Base ${gameState.currentBaseId} is locked, resetting to base 1`);
+            gameState.currentBaseId = 1;
+        }
+        
         gameState.unlockedSlots = data.unlockedSlots || [true, false, false, false, false, false, false, false];
         gameState.deckModifiers = data.deckModifiers || ['', '', '', '', '', '', '', ''];
         
@@ -188,11 +202,6 @@ export function loadGame() {
             setCurrentBossIsRandom(data.currentBossIsRandom);
         }
         
-        if (data.defeatedBosses) {
-            Object.entries(data.defeatedBosses).forEach(([catId, bossIds]) => {
-                defeatedBossesByCategory[catId] = new Set(bossIds);
-            });
-        }
         
         if (data.openCardsData) {
             window.openCardsState = {

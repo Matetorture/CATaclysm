@@ -1,4 +1,4 @@
-import { gameState, updateMoneyDisplay, triggerManualSave } from '../data/gameState.js';
+import { gameState, updateMoneyDisplay, triggerManualSave, defeatedBossesByCategory } from '../data/gameState.js';
 import { basesData, cloneTimeByRarity } from '../data/basesData.js';
 import { renderAvailableCards } from './cardRenderer.js';
 import { showTooltip, removeTooltip } from './tooltips.js';
@@ -53,6 +53,16 @@ export function isCardUsedInBase(card) {
     return false;
 }
 
+export function isBaseUnlocked(baseId) {
+
+    if (baseId === 1) return true;
+
+    const requiredCategory = baseId - 1;
+    const defeatedCount = defeatedBossesByCategory[requiredCategory]?.size || 0;
+    
+    return defeatedCount >= 10;
+}
+
 export function initializeBasePanel() {
     setupBaseSubTabs();
     renderBaseUpgradeTab();
@@ -82,12 +92,14 @@ function setupBaseSubTabs() {
     });
 }
 
-function renderBaseUpgradeTab() {
+export function renderBaseUpgradeTab() {
     const container = document.getElementById('upgrade-subtab');
     if (!container) return;
     
     const currentBase = basesData.find(b => b.id === gameState.currentBaseId);
     const nextBase = basesData.find(b => b.id === gameState.currentBaseId + 1);
+    
+    const isNextBaseUnlocked = nextBase ? isBaseUnlocked(nextBase.id) : false;
     
     container.innerHTML = `
         <div class="base-upgrade-panel">
@@ -98,12 +110,12 @@ function renderBaseUpgradeTab() {
                     <img src="img/bases/${currentBase.id}.png" alt="${currentBase.name}">
                 </div>
                 
-                ${gameState.baseUpgradeInProgress ? renderUpgradeInProgress(nextBase) : (nextBase ? renderUpgradeControls(nextBase) : '<p class="max-level">MAX LEVEL REACHED!</p>')}
+                ${gameState.baseUpgradeInProgress ? renderUpgradeInProgress(nextBase) : (nextBase ? renderUpgradeControls(nextBase, isNextBaseUnlocked) : '<p class="max-level">MAX LEVEL REACHED!</p>')}
             </div>
         </div>
     `;
     
-    setupBaseUpgradeControls();
+    setupBaseUpgradeControls(isNextBaseUnlocked);
 }
 
 function renderUpgradeInProgress() {
@@ -123,7 +135,20 @@ function renderUpgradeInProgress() {
     `;
 }
 
-function renderUpgradeControls(nextBase) {
+function renderUpgradeControls(nextBase, isUnlocked) {
+    if (!isUnlocked) {
+        return `
+            <div class="upgrade-controls-box locked">
+                <div class="locked-base-overlay">
+                    <img src="img/icons/lock.png" alt="Locked" class="lock-icon">
+                    <p class="unlock-requirement">
+                        Defeat all 10 bosses from the next category to unlock this base upgrade
+                    </p>
+                </div>
+            </div>
+        `;
+    }
+    
     return `
         <div class="upgrade-controls-box">
             <h4>Speed up with cats:</h4>
@@ -140,7 +165,9 @@ function renderUpgradeControls(nextBase) {
     `;
 }
 
-function setupBaseUpgradeControls() {
+function setupBaseUpgradeControls(isNextBaseUnlocked) {
+    if (!isNextBaseUnlocked) return;
+    
     const slots = document.querySelectorAll('.cat-slot');
     slots.forEach((slot, index) => {
         slot.addEventListener('dragover', (e) => {

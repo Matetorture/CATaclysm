@@ -179,6 +179,12 @@ export function changeBossHp(amount) {
         gameState.money += rewardMoney;
         updateMoneyDisplay();
 
+        import('./basePanel.js').then(({ renderBaseUpgradeTab }) => {
+            if (typeof renderBaseUpgradeTab === 'function') {
+                renderBaseUpgradeTab();
+            }
+        });
+
         const category = getCategoryById(selectedCategoryId);
         const nextBoss = category.bosses.find(b => !defeatedBossesByCategory[selectedCategoryId].has(b.id));
 
