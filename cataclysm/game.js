@@ -32,7 +32,16 @@ function setupOpenCardsButton() {
     if (!openCardsBtn) return;
     
     openCardsBtn.addEventListener('click', () => {
-        openCenteredIframe('/widgets/open/', 10000, true);
+        openCenteredIframe('/widgets/open/', -1, true);
+    });
+}
+
+function setupTutorialsButton() {
+    const tutorialsBtn = document.getElementById('tutorialsBtn');
+    if (!tutorialsBtn) return;
+    
+    tutorialsBtn.addEventListener('click', () => {
+        openCenteredIframe('/widgets/tutorials/', -1, true);
     });
 }
 
@@ -47,6 +56,7 @@ function initGame() {
     setupUnusedCardsDropZone();
     setupPauseButton();
     setupOpenCardsButton();
+    setupTutorialsButton();
     renderAvailableCards();
     renderDeckSlots();
     createDeckStatsDisplay();
