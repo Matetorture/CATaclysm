@@ -303,8 +303,14 @@
 }
 
 /* Open Cards Button */
-.open-cards-btn {
-    margin-top: 16px;
+.btn-group{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn {
     padding: 12px;
     background-color: var(--dark-secondary);
     border: 2px solid var(--dark-tertiary);
@@ -317,14 +323,14 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-.open-cards-btn:hover {
+.btn:hover {
     background-color: var(--dark-tertiary);
     border: 2px solid var(--primary-color);
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
 
-.open-cards-btn:active {
+.btn:active {
     transform: translateY(0);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
