@@ -62,9 +62,11 @@ const closeModalBtn = document.getElementById('close-modal');
 const MAX_LEVEL_COPIES = 62;
 
 // Calculate pull cost function
+// First pull is free (n = 0)
 // a(n) = 100 * e^(0.0931 * (n - 1))
 // For n >= 100: cost = 1,000,000
 function calculatePullCost(n) {
+    if (n === 0) return 0;
     if (n >= 100) return 1000000;
     
     // a(n) = 100 * e^(0.0931 * (n - 1))
@@ -76,6 +78,7 @@ function calculatePullCost(n) {
 
 // Format function with rounding to first 2 digits + zeros
 function formatCostToTwoDigits(num) {
+    if (num === 0) return 'FREE';
     if (num < 100) {
         return num.toString();
     }
@@ -284,7 +287,7 @@ function updatePullCounter() {
     const cost = calculatePullCost(openCardsState.pullCount);
     const formattedCost = formatCostToTwoDigits(cost);
     pullCounter.textContent = `Pulls: ${openCardsState.pullCount}`;
-    drawButton.textContent = `DRAW (${formattedCost} $)`;
+    drawButton.textContent = `DRAW - ${formattedCost === 'FREE' ? formattedCost : formattedCost + ' $'}`;
 
     updateGuaranteeInfo();
     
