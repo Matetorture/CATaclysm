@@ -19,20 +19,24 @@ export function renderAvailableCards(cardsToRender = gameState.ownedCards) {
         const inBase = isCardUsedInBase(card);
         if (inDeck || inBase) return;
 
+        const wrapper = document.createElement('div');
+        wrapper.className = 'card-tilt-wrapper';
+        
         const cardElement = createCardElement(card, 'unused');
-        container.appendChild(cardElement);
+        wrapper.appendChild(cardElement);
+        container.appendChild(wrapper);
 
-        cardElement.addEventListener('click', () => addCardToDeck(card));
+        wrapper.addEventListener('click', () => addCardToDeck(card));
 
-        cardElement.addEventListener('mouseenter', (e) => handleUnusedCardMouseEnter(e, card));
+        wrapper.addEventListener('mouseenter', (e) => handleUnusedCardMouseEnter(e, card));
 
-        cardElement.addEventListener('mouseleave', handleUnusedCardMouseLeave);
+        wrapper.addEventListener('mouseleave', handleUnusedCardMouseLeave);
 
-        cardElement.setAttribute('draggable', 'true');
+        wrapper.setAttribute('draggable', 'true');
 
-        cardElement.addEventListener('dragstart', (e) => dragStartHandler(e, card, 'unused'));
+        wrapper.addEventListener('dragstart', (e) => dragStartHandler(e, card, 'unused'));
 
-        cardElement.addEventListener('dragend', dragEndHandler);
+        wrapper.addEventListener('dragend', dragEndHandler);
     });
 
     setupTiltEffect();
@@ -98,36 +102,38 @@ export function renderDeckSlots() {
         slot.addEventListener('dragleave', dragLeaveHandler);
 
         const cardContainer = document.createElement('div');
-        cardContainer.className = 'slot-card';
+        cardContainer.className = 'slot-card-container';
 
         let card = gameState.deckCards[i];
         if (card) {
-            cardContainer.classList.add('filled');
-            cardContainer.classList.add(card.getRarityClass());
-            cardContainer.innerHTML = '';
-            const cardContent = createCardContent(card);
-            cardContainer.appendChild(cardContent);
+            const { wrapper, cardElement } = renderCardWithWrapper(card, 'deck');
+            cardElement.classList.remove('unused-card');
+            cardElement.className = 'slot-card filled';
+            cardElement.classList.add(card.getRarityClass());
+            
+            cardContainer.appendChild(wrapper);
 
-            cardContainer.setAttribute('draggable', 'true');
-            cardContainer.addEventListener('dragstart', (e) => {
+            wrapper.setAttribute('draggable', 'true');
+            wrapper.addEventListener('dragstart', (e) => {
                 dragStartHandler(e, card, 'deck', i);
             });
-            cardContainer.addEventListener('dragend', dragEndHandler);
-            cardContainer.addEventListener('click', () => {
+            wrapper.addEventListener('dragend', dragEndHandler);
+            wrapper.addEventListener('click', () => {
                 removeCardFromDeck(i);
             });
-            cardContainer.addEventListener('mouseenter', () => {
-                const rect = cardContainer.getBoundingClientRect();
+            wrapper.addEventListener('mouseenter', () => {
+                const rect = wrapper.getBoundingClientRect();
                 const isUpper = rect.top < window.innerHeight / 2;
-                showTooltip(cardContainer, card, isUpper ? 'bottom' : 'top');
+                showTooltip(wrapper, card, isUpper ? 'bottom' : 'top');
             });
-            cardContainer.addEventListener('mouseleave', () => {
-                removeTooltip(cardContainer);
+            wrapper.addEventListener('mouseleave', () => {
+                removeTooltip(wrapper);
             });
         } else {
-            cardContainer.classList.remove('filled');
-            cardContainer.innerHTML = '<span>Empty Slot</span>';
-            cardContainer.removeAttribute('draggable');
+            const emptySlot = document.createElement('div');
+            emptySlot.className = 'slot-card';
+            emptySlot.innerHTML = '<span>Empty Slot</span>';
+            cardContainer.appendChild(emptySlot);
         }
 
         const modifiersDiv = document.createElement('div');
@@ -163,15 +169,35 @@ export function renderDeckSlots() {
     updateDeckStats();
 }
 
+export function renderCardWithWrapper(card, type = 'deck', imgBasePath = 'img/cats/') {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'card-tilt-wrapper';
+    
+    const cardElement = createCardElement(card, type, imgBasePath);
+    wrapper.appendChild(cardElement);
+    
+    return { wrapper, cardElement };
+}
+
 export function createCardElement(card, type = 'deck', imgBasePath = 'img/cats/') {
     const element = document.createElement('div');
     element.className = type === 'unused' ? 'unused-card' : 'card';
     element.classList.add(card.getRarityClass());
 
     if (type === 'unused') {
-        element.innerHTML = `
+        const content = document.createElement('div');
+        content.className = 'unused-card-content';
+        content.innerHTML = `
             <img class="unused-card-image" src="${imgBasePath}${card.number}.png" alt="${card.name}">
         `;
+        element.appendChild(content);
+    } else if (type === 'deck') {
+        const content = document.createElement('div');
+        content.className = 'card-content';
+        content.innerHTML = `
+            <img class="card-image" src="${imgBasePath}${card.number}.png" alt="${card.name}">
+        `;
+        element.appendChild(content);
     }
 
     return element;

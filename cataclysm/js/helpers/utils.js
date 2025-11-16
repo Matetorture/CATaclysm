@@ -1,33 +1,97 @@
 import { pauseCombat, resumeCombat, isCombatPaused } from './pauseManager.js';
 
 export function setupTiltEffect() {
-    const allCards = document.querySelectorAll('.unused-card, .slot-card.filled');
-    allCards.forEach(card => setupSingleCardTilt(card));
+    const wrappers = document.querySelectorAll('.card-tilt-wrapper');
+    wrappers.forEach(wrapper => {
+        const card = wrapper.querySelector('.unused-card, .slot-card, .cat-slot-inner');
+        if (card) setupSingleCardTilt(wrapper, card);
+    });
+    
+    const directCards = document.querySelectorAll('.slot-card.filled:not(.card-tilt-wrapper .slot-card)');
+    directCards.forEach(card => {
+        const existingWrapper = card.closest('.card-tilt-wrapper');
+        if (!existingWrapper) {
+            setupSingleCardTilt(card, card);
+        }
+    });
 }
 
-export function setupSingleCardTilt(card) {
-    card.addEventListener('mouseenter', () => {
+export function setupSingleCardTilt(wrapper, card) {
+    const isGlitter = card.classList.contains('rarity-epic');
+    const isNormal = card.classList.contains('rarity-common');
+    
+    wrapper.addEventListener('mouseenter', () => {
         card.style.transition = 'none';
     });
 
-    card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
+    wrapper.addEventListener('mousemove', (e) => {
+        const rect = wrapper.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
 
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-
-        const rotateX = (y - centerY) / 8;
-        const rotateY = (centerX - x) / 8;
-
-        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+        let maxTilt = 50;
+        
+        let tiltX = (y - 0.5) * maxTilt;
+        let tiltY = (x - 0.5) * -maxTilt;
+        
+        card.style.transform =
+            `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+        
+        const cardImage = card.querySelector('.card-image, .unused-card-image, .cat-slot-image');
+        
+        if (card.classList.contains('rarity-ultimate')) {
+            card.style.setProperty('--holo-x', `${(x - 0.5) * 225}px`);
+            card.style.setProperty('--holo-y', `${(y - 0.5) * 225}px`);
+            card.style.setProperty('--holo-rotate', `${x * 300}deg`);
+            card.style.setProperty('--holo-scale', `${1 + (x + y) * 0.5}`);
+        } else if (card.classList.contains('rarity-epic')) {
+            card.style.setProperty('--glitter-x', `${(x - 0.5) * 40}px`);
+            card.style.setProperty('--glitter-y', `${(y - 0.5) * 40}px`);
+            card.style.setProperty('--glitter-rotate', `${x * 120}deg`);
+            card.style.setProperty('--glitter-scale', `${1 + (Math.abs(x - 0.5) + Math.abs(y - 0.5)) * .5}`);
+        } else if (card.classList.contains('rarity-rare')) {
+            card.style.setProperty('--crystal-x', `${(x - 0.5) * 180}px`);
+            card.style.setProperty('--crystal-y', `${(y - 0.5) * 180}px`);
+            card.style.setProperty('--crystal-scale', `${1 + (x + y) * 0.1}`);
+        } else if (card.classList.contains('rarity-uncommon')) {
+            card.style.setProperty('--foil-x', `${(x - 0.5) * 70}px`);
+            card.style.setProperty('--foil-y', `${(y - 0.5) * 70}px`);
+            card.style.setProperty('--foil-rotate', `${(x + y) * 50}deg`);
+        } 
+        
+        const sparkleMove = isGlitter ? -70 : -90;
+        if (cardImage) {
+            cardImage.style.setProperty('--sparkle-x', `${(x - 0.5) * sparkleMove}px`);
+            cardImage.style.setProperty('--sparkle-y', `${(y - 0.5) * sparkleMove}px`);
+        }
     });
 
-    card.addEventListener('mouseleave', () => {
+    wrapper.addEventListener('mouseleave', () => {
         card.style.transition = 'transform 0.3s ease';
-        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
+        card.style.transform = '';
+        card.style.removeProperty('--holo-x');
+        card.style.removeProperty('--holo-y');
+        card.style.removeProperty('--holo-rotate');
+        card.style.removeProperty('--glitter-x');
+        card.style.removeProperty('--glitter-y');
+        card.style.removeProperty('--glitter-rotate');
+        card.style.removeProperty('--glitter-scale');
+        card.style.removeProperty('--foil-x');
+        card.style.removeProperty('--foil-y');
+        card.style.removeProperty('--foil-rotate');
+        card.style.removeProperty('--crystal-x');
+        card.style.removeProperty('--crystal-y');
+        card.style.removeProperty('--crystal-scale');
+        card.style.removeProperty('--gold-x');
+        card.style.removeProperty('--gold-y');
+        card.style.removeProperty('--gold-rotate');
+        card.style.removeProperty('--gold-scale');
+        
+        const cardImage = card.querySelector('.card-image, .unused-card-image, .cat-slot-image, .clone-slot-image');
+        if (cardImage) {
+            cardImage.style.removeProperty('--sparkle-x');
+            cardImage.style.removeProperty('--sparkle-y');
+        }
     });
 }
 

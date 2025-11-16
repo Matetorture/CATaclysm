@@ -116,86 +116,83 @@
     margin: 0 0 12px 0;
 }
 
-.cat-slots-container {
+.cat-slots-container,
+.clone-slots-container {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
     gap: 12px;
     margin-bottom: 16px;
+}
+
+.cat-slots-container {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.clone-slots-container {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    width: 100%;
 }
 
 .cat-slot {
     background-color: var(--dark-tertiary);
     border: 2px dashed var(--border-color);
     border-radius: 8px;
-    padding: 5px;
+    padding: 0;
     width: 100px;
     height: 100px;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 6px;
     cursor: pointer;
     transition: all 0.3s ease;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+}
+
+.cat-slot.filled {
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    border: none;
+}
+
+.cat-slot-inner {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 .cat-slot:hover {
     border-color: var(--primary-color);
-    transform: scale(1.02);
 }
 
-.cat-slot.filled {
-    border-style: solid;
-    border-width: 3px;
-}
-
-.cat-slot.filled.rarity-common {
-    background: linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 100%);
-    border-color: #9e9e9e;
-}
-
-.cat-slot.filled.rarity-uncommon {
-    background: linear-gradient(135deg, #2a4a2a 0%, #1a3a1a 100%);
-    border-color: #4caf50;
-}
-
-.cat-slot.filled.rarity-rare {
-    background: linear-gradient(135deg, #2a4a7a 0%, #1a3a6a 100%);
-    box-shadow: inset 0 0 20px rgba(100, 181, 246, 0.5), 0 0 15px rgba(100, 181, 246, 0.4);
-    border-color: #64B5F6;
-}
-
-.cat-slot.filled.rarity-epic {
-    background: linear-gradient(135deg, #6a3a7a 0%, #4a2a5a 100%);
-    box-shadow: inset 0 0 20px rgba(186, 104, 200, 0.5), 0 0 15px rgba(186, 104, 200, 0.4);
-    border-color: #BA68C8;
-}
-
-.cat-slot.filled.rarity-legendary {
-    background: linear-gradient(135deg, #d4a574 0%, #b48811 60%, #8a6a0d 100%);
-    box-shadow: 
-        inset 0 0 25px 10px rgba(255, 183, 77, 0.7),
-        0 0 20px 8px rgba(255, 183, 77, 0.6),
-        0 0 35px 12px rgba(255, 183, 77, 0.5),
-        0 0 50px 16px rgba(255, 183, 77, 0.4);
-    border-color: #FFB74D;
-}
-
-.cat-slot.filled.rarity-ultimate {
-    background: linear-gradient(135deg, #c06292 0%, #8a4a6a 60%, #6a3a5a 100%);
-    box-shadow: 
-        inset 0 0 60px 20px rgba(240, 98, 146, 0.8),
-        0 0 60px 20px rgba(240, 98, 146, 0.7),
-        0 0 90px 30px rgba(240, 98, 146, 0.5),
-        0 0 120px 40px rgba(240, 98, 146, 0.4);
-    animation: ultimateGlow 4s ease-in-out infinite;
-    border-color: #F06292;
-}
-
-.cat-slot img {
+.cat-slot-content {
     width: 100%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    text-align: center;
+    gap: 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.cat-slot-image {
+    width: 95%;
+    height: 95%;
     object-fit: cover;
+    position: relative;
+    z-index: 2;
 }
 
 .cat-slot span {
@@ -225,7 +222,7 @@
 
 .start-upgrade-btn:hover {
     transform: scale(1.02);
-    box-shadow: 0 4px 16px var(--primary-color);
+    box-shadow: 0 0 6px var(--primary-color);
 }
 
 .start-upgrade-btn:active {
@@ -255,103 +252,10 @@
     overflow-y: hidden;
 }
 
-.clone-slots-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    width: 100%;
-}
-
 .clone-slot-wrapper {
     display: flex;
     flex-direction: column;
     gap: 8px;
-}
-
-.clone-slot {
-    background-color: var(--dark-tertiary);
-    border: 2px dashed var(--border-color);
-    border-radius: 8px;
-    padding: 12px;
-    width: 100px;
-    height: 100px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: center;
-}
-
-.clone-slot:hover {
-    border-color: var(--primary-color);
-    transform: scale(1.02);
-}
-
-.clone-slot.filled {
-    border-style: solid;
-    border-width: 3px;
-    cursor: pointer;
-}
-
-.clone-slot.filled:hover {
-    box-shadow: 0 0 15px rgba(100, 181, 246, 0.5);
-}
-
-.clone-slot.filled.rarity-common {
-    background: linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 100%);
-    border-color: #9e9e9e;
-}
-
-.clone-slot.filled.rarity-uncommon {
-    background: linear-gradient(135deg, #2a4a2a 0%, #1a3a1a 100%);
-    border-color: #4caf50;
-}
-
-.clone-slot.filled.rarity-rare {
-    background: linear-gradient(135deg, #2a4a7a 0%, #1a3a6a 100%);
-    box-shadow: inset 0 0 20px rgba(100, 181, 246, 0.5), 0 0 15px rgba(100, 181, 246, 0.4);
-    border-color: #64B5F6;
-}
-
-.clone-slot.filled.rarity-epic {
-    background: linear-gradient(135deg, #6a3a7a 0%, #4a2a5a 100%);
-    box-shadow: inset 0 0 20px rgba(186, 104, 200, 0.5), 0 0 15px rgba(186, 104, 200, 0.4);
-    border-color: #BA68C8;
-}
-
-.clone-slot.filled.rarity-legendary {
-    background: linear-gradient(135deg, #d4a574 0%, #b48811 60%, #8a6a0d 100%);
-    box-shadow: 
-        inset 0 0 25px 10px rgba(255, 183, 77, 0.7),
-        0 0 20px 8px rgba(255, 183, 77, 0.6),
-        0 0 35px 12px rgba(255, 183, 77, 0.5),
-        0 0 50px 16px rgba(255, 183, 77, 0.4);
-    border-color: #FFB74D;
-}
-
-.clone-slot.filled.rarity-ultimate {
-    background: linear-gradient(135deg, #c06292 0%, #8a4a6a 60%, #6a3a5a 100%);
-    box-shadow: 
-        inset 0 0 60px 20px rgba(240, 98, 146, 0.8),
-        0 0 60px 20px rgba(240, 98, 146, 0.7),
-        0 0 90px 30px rgba(240, 98, 146, 0.5),
-        0 0 120px 40px rgba(240, 98, 146, 0.4);
-    animation: ultimateGlow 4s ease-in-out infinite;
-    border-color: #F06292;
-}
-
-.clone-slot img {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-}
-
-.clone-slot span {
-    font-size: 0.9rem;
-    color: var(--text-primary);
 }
 
 .clone-stats {

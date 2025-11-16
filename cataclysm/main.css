@@ -32,4 +32,5 @@ img {
     image-rendering: pixelated;
     image-rendering: crisp-edges;
     -ms-interpolation-mode: nearest-neighbor;
+    -webkit-user-drag: none;
 }

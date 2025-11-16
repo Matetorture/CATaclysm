@@ -241,7 +241,7 @@ function displayDrawnCard(card, isGuarantee = false, guaranteeRarity = null) {
     
     // Display card from ownedCards (with current copy count)
     const cardElement = createCardElement(ownedCard, 'unused', '../../img/cats/');
-    setupSingleCardTilt(cardElement);
+    setupSingleCardTilt(cardElement, cardElement);
     
     cardElement.addEventListener('mouseenter', () => {
         showTooltip(cardElement, ownedCard, 'bottom', '../../');
@@ -275,9 +275,9 @@ function displayDrawnCard(card, isGuarantee = false, guaranteeRarity = null) {
     drawnCardContainer.appendChild(cardElement);
     
     cardElement.style.opacity = '0';
-    cardElement.style.transform = 'scale(0.3) rotateY(720deg)';
+    cardElement.style.transform = 'scale(0.3) rotateY(1440deg)';
     setTimeout(() => {
-        cardElement.style.transition = 'all 1.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        cardElement.style.transition = 'all 3s cubic-bezier(0.34, 1.56, 0.64, 1)';
         cardElement.style.opacity = '1';
         cardElement.style.transform = 'scale(1) rotateY(0deg)';
     }, 50);
@@ -356,7 +356,7 @@ function updateGuaranteePreview(rarity) {
     if (selectedCard) {
         preview.innerHTML = '';
         const miniCard = createCardElement(selectedCard, 'unused', '../../img/cats/');
-        setupSingleCardTilt(miniCard);
+        setupSingleCardTilt(miniCard, miniCard);
         
         // Rare and Epic (top row) - tooltip at bottom, Legendary and Ultimate (bottom row) - tooltip at top
         const tooltipPosition = (rarity === 'Rare' || rarity === 'Epic') ? 'bottom' : 'top';
@@ -388,7 +388,7 @@ function openCardSelectionModal(rarity) {
     
     cardsOfRarity.forEach(card => {
         const cardElement = createCardElement(card, 'unused', '../../img/cats/');
-        setupSingleCardTilt(cardElement);
+        setupSingleCardTilt(cardElement, cardElement);
         cardElement.classList.add('modal-card');
         
         cardElement.addEventListener('mouseenter', () => {

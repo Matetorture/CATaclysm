@@ -1,8 +1,9 @@
 import { gameState, updateMoneyDisplay, triggerManualSave, defeatedBossesByCategory } from '../data/gameState.js';
 import { basesData, getEffectiveCloneTime, getCurrentBaseConfig } from '../data/basesData.js';
-import { renderAvailableCards, renderDeckSlots } from './cardRenderer.js';
+import { renderAvailableCards, renderDeckSlots, renderCardWithWrapper } from './cardRenderer.js';
 import { showTooltip, removeTooltip } from './tooltips.js';
 import { CatCard } from '../models/CatCard.js';
+import { setupTiltEffect } from '../helpers/utils.js';
 
 let updateInterval = null;
 export let baseUpgradeCats = [null, null];
@@ -14,6 +15,68 @@ export let cloneSlots = [
 ];
 
 const MAX_LEVEL_COPIES = 62;
+
+function renderEmptyCardSlot(slotType, index) {
+    return `
+        <div class="${slotType}-slot" data-slot="${index}">
+            <span class="empty-text">Drag here</span>
+        </div>
+    `;
+}
+
+function renderSlot(slot, card, slotType = 'cat', options = {}) {
+    if (!card) {
+        slot.classList.remove('filled', 'rarity-common', 'rarity-uncommon', 'rarity-rare', 'rarity-epic', 'rarity-legendary', 'rarity-ultimate');
+        slot.innerHTML = '<span class="empty-text">Drag here</span>';
+        return { wrapper: null, cardInstance: null };
+    }
+    
+    const cardInstance = ensureCatCard(card);
+    
+    slot.classList.remove('rarity-common', 'rarity-uncommon', 'rarity-rare', 'rarity-epic', 'rarity-legendary', 'rarity-ultimate');
+    slot.innerHTML = '';
+    
+    const { wrapper, cardElement } = renderCardWithWrapper(cardInstance, 'unused');
+    cardElement.classList.remove('unused-card');
+    cardElement.className = `${slotType}-slot-inner filled`;
+    cardElement.classList.add(cardInstance.getRarityClass());
+    
+    const content = cardElement.querySelector('.unused-card-content');
+    if (content) {
+        content.className = `${slotType}-slot-content`;
+    }
+    const img = cardElement.querySelector('.unused-card-image');
+    if (img) {
+        img.className = `${slotType}-slot-image`;
+    }
+    
+    slot.appendChild(wrapper);
+    slot.classList.add('filled');
+    
+    if (options.onDragStart) {
+        wrapper.setAttribute('draggable', 'true');
+        const oldListener = wrapper._dragStartListener;
+        if (oldListener) wrapper.removeEventListener('dragstart', oldListener);
+        wrapper._dragStartListener = options.onDragStart;
+        wrapper.addEventListener('dragstart', options.onDragStart);
+    }
+    
+    if (options.onMouseEnter) {
+        const oldListener = wrapper._mouseEnterListener;
+        if (oldListener) wrapper.removeEventListener('mouseenter', oldListener);
+        wrapper._mouseEnterListener = options.onMouseEnter;
+        wrapper.addEventListener('mouseenter', options.onMouseEnter);
+    }
+    
+    if (options.onMouseLeave) {
+        const oldListener = wrapper._mouseLeaveListener;
+        if (oldListener) wrapper.removeEventListener('mouseleave', oldListener);
+        wrapper._mouseLeaveListener = options.onMouseLeave;
+        wrapper.addEventListener('mouseleave', options.onMouseLeave);
+    }
+    
+    return { wrapper, cardElement, cardInstance };
+}
 
 function ensureCatCard(cat) {
     if (cat instanceof CatCard) {
@@ -123,12 +186,8 @@ function renderUpgradeInProgress() {
         <div class="upgrade-controls-box">
             <h4>Speed up with cats:</h4>
             <div class="cat-slots-container">
-                <div class="cat-slot" data-slot="0">
-                    <span class="empty-text">Drag here</span>
-                </div>
-                <div class="cat-slot" data-slot="1">
-                    <span class="empty-text">Drag here</span>
-                </div>
+                ${renderEmptyCardSlot('cat', 0)}
+                ${renderEmptyCardSlot('cat', 1)}
             </div>
             <div class="upgrade-time-display" id="base-upgrade-time">Calculating...</div>
         </div>
@@ -153,12 +212,8 @@ function renderUpgradeControls(nextBase, isUnlocked) {
         <div class="upgrade-controls-box">
             <h4>Speed up with cats:</h4>
             <div class="cat-slots-container">
-                <div class="cat-slot" data-slot="0">
-                    <span class="empty-text">Drag here</span>
-                </div>
-                <div class="cat-slot" data-slot="1">
-                    <span class="empty-text">Drag here</span>
-                </div>
+                ${renderEmptyCardSlot('cat', 0)}
+                ${renderEmptyCardSlot('cat', 1)}
             </div>
             <button class="start-upgrade-btn">Upgrade - $${nextBase.cost}</button>
         </div>
@@ -248,6 +303,8 @@ function setupBaseUpgradeControls(isNextBaseUnlocked) {
     slots.forEach((slot, index) => {
         renderCatSlot(slot, index);
     });
+    
+    setupTiltEffect();
 }
 
 function recalculateUpgradeTime(oldCat, newCat) {
@@ -278,55 +335,20 @@ function recalculateUpgradeTime(oldCat, newCat) {
 function renderCatSlot(slot, index) {
     const cat = baseUpgradeCats[index];
     
-    if (cat) {
-        slot.classList.remove('rarity-common', 'rarity-uncommon', 'rarity-rare', 'rarity-epic', 'rarity-legendary', 'rarity-ultimate');
-        
-        slot.innerHTML = `
-            <img src="img/cats/${cat.number}.png" alt="${cat.name}">
-        `;
-        slot.classList.add('filled');
-        slot.classList.add(ensureCatCard(cat).getRarityClass());
-        
-        slot.setAttribute('draggable', 'true');
-        
-        const oldDragStartListener = slot._dragStartListener;
-        if (oldDragStartListener) {
-            slot.removeEventListener('dragstart', oldDragStartListener);
-        }
-        const oldMouseEnterListener = slot._mouseEnterListener;
-        if (oldMouseEnterListener) {
-            slot.removeEventListener('mouseenter', oldMouseEnterListener);
-        }
-        const oldMouseLeaveListener = slot._mouseLeaveListener;
-        if (oldMouseLeaveListener) {
-            slot.removeEventListener('mouseleave', oldMouseLeaveListener);
-        }
-        
-        const dragStartListener = (e) => {
+    renderSlot(slot, cat, 'cat', {
+        onDragStart: (e) => {
             e.dataTransfer.setData('cardId', cat.id);
             e.dataTransfer.setData('sourceType', 'base-upgrade');
             e.dataTransfer.setData('sourceIndex', index);
             removeTooltip();
-        };
-        slot._dragStartListener = dragStartListener;
-        slot.addEventListener('dragstart', dragStartListener);
-        
-        const mouseEnterListener = (e) => {
-            showTooltip(slot, cat, 'top');
-        };
-        slot._mouseEnterListener = mouseEnterListener;
-        slot.addEventListener('mouseenter', mouseEnterListener);
-        
-        const mouseLeaveListener = () => {
+        },
+        onMouseEnter: (e) => {
+            showTooltip(e.currentTarget, cat, 'top');
+        },
+        onMouseLeave: () => {
             removeTooltip();
-        };
-        slot._mouseLeaveListener = mouseLeaveListener;
-        slot.addEventListener('mouseleave', mouseLeaveListener);
-    } else {
-        slot.innerHTML = '<span class="empty-text">Drag here</span>';
-        slot.classList.remove('filled', 'rarity-common', 'rarity-uncommon', 'rarity-rare', 'rarity-epic', 'rarity-legendary', 'rarity-ultimate');
-        slot.removeAttribute('draggable');
-    }
+        }
+    });
 }
 
 function startBaseUpgrade() {
@@ -418,94 +440,97 @@ function renderCardCloneTab() {
         return;
     }
     
+    const slotsHTML = cloneSlots.map((slot, index) => {
+        const isLocked = index >= baseConfig.cloneSlots;
+        if (isLocked) {
+            return `
+                <div class="clone-slot-wrapper locked">
+                    <div class="cat-slot locked" data-slot="${index}">
+                        <img src="img/icons/lock.png" alt="Locked" class="lock-icon">
+                    </div>
+                    <div class="clone-timer">LOCKED</div>
+                    <div class="clone-progress-bar-container">
+                        <div class="clone-progress-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+            `;
+        }
+        return `
+            <div class="clone-slot-wrapper">
+                ${renderEmptyCardSlot('cat', index)}
+                <div class="clone-stats"></div>
+                <div class="clone-timer">SLOT ${index + 1}</div>
+                <div class="clone-progress-bar-container">
+                    <div class="clone-progress-bar" id="clone-bar-${index}" style="width: 0%"></div>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
     container.innerHTML = `
         <div class="clone-speed-info">
             <p>Clone Speed: <strong>${baseConfig.cloneSpeedMultiplier}x</strong></p>
         </div>
         <div class="card-clone-panel">
             <div class="clone-slots-container">
-                ${cloneSlots.map((slot, index) => renderCloneSlot(slot, index, baseConfig)).join('')}
+                ${slotsHTML}
             </div>
         </div>
     `;
     
+    const slots = document.querySelectorAll('.clone-slots-container .cat-slot:not(.locked)');
+    slots.forEach((slot, index) => {
+        renderCloneSlot(slot, index, baseConfig);
+    });
+    
     setupCardCloneControls();
+    setupTiltEffect();
 }
 
 function renderCloneSlot(slot, index, baseConfig) {
-    const isSlotLocked = index >= baseConfig.cloneSlots;
-    const hasCard = slot.card !== null;
-    const isCloning = hasCard && slot.startTime !== null;
+    const slotData = cloneSlots[index];
+    const card = slotData?.card;
     
-    if (isSlotLocked) {
-        return `
-            <div class="clone-slot-wrapper locked">
-                <div class="clone-slot locked" data-slot="${index}">
-                    <img src="img/icons/lock.png" alt="Locked" class="lock-icon">
-                </div>
-                <div class="clone-timer">LOCKED</div>
-                <div class="clone-progress-bar-container">
-                    <div class="clone-progress-bar" style="width: 0%"></div>
-                </div>
-            </div>
-        `;
-    }
+    const { cardInstance } = renderSlot(slot, card, 'cat');
     
-    if (!hasCard) {
-        return `
-            <div class="clone-slot-wrapper">
-                <div class="clone-slot empty" data-slot="${index}">
-                    <span class="empty-text">Drag here</span>
-                </div>
-                <div class="clone-timer">SLOT ${index + 1}</div>
-                <div class="clone-progress-bar-container">
-                    <div class="clone-progress-bar" style="width: 0%"></div>
-                </div>
-            </div>
-        `;
-    }
-    
-    const card = slot.card;
-    const rarityClass = `rarity-${card.rarity.toLowerCase()}`;
-    const cloneTime = getEffectiveCloneTime(card.rarity, gameState.currentBaseId);
-    
-    const cardInstance = ensureCatCard(card);
-    const level = cardInstance.getLevel();
-    const copiesProgress = cardInstance.getCopiesDisplay();
-    
-    let progressPercent = 0;
-    let timeText = `0/${cloneTime}s`;
-    
-    if (isCloning) {
-        const elapsed = (Date.now() - slot.startTime) / 1000;
-        progressPercent = Math.min((elapsed / cloneTime) * 100, 100);
-        timeText = `${Math.floor(elapsed)}/${cloneTime}s`;
-    } else {
-        timeText = `0/${cloneTime}s`;
-    }
-    
-    return `
-        <div class="clone-slot-wrapper">
-            <div class="clone-slot filled ${rarityClass}" data-slot="${index}" data-card-id="${card.id}">
-                <img src="img/cats/${card.number}.png" alt="${card.name}">
-            </div>
-            <div class="clone-stats">
+    if (card && cardInstance) {
+        const slotWrapper = slot.parentElement;
+        const statsDiv = slotWrapper.querySelector('.clone-stats');
+        const timerDiv = slotWrapper.querySelector('.clone-timer');
+        const progressBar = slotWrapper.querySelector('.clone-progress-bar');
+        
+        const level = cardInstance.getLevel();
+        const copiesProgress = cardInstance.getCopiesDisplay();
+        const cloneTime = getEffectiveCloneTime(card.rarity, gameState.currentBaseId);
+        
+        let progressPercent = 0;
+        let timeText = `0/${cloneTime}s`;
+        
+        if (baseConfig.isCloning && slotData.startTime) {
+            const elapsed = (Date.now() - slotData.startTime) / 1000;
+            progressPercent = Math.min((elapsed / cloneTime) * 100, 100);
+            timeText = `${Math.floor(elapsed)}/${cloneTime}s`;
+        }
+        
+        if (statsDiv) {
+            statsDiv.innerHTML = `
                 <span>Level ${level}</span>
                 <span>${copiesProgress} copies</span>
-            </div>
-            <div class="clone-timer">${timeText}</div>
-            <div class="clone-progress-bar-container">
-                <div class="clone-progress-bar" id="clone-bar-${index}" style="width: ${progressPercent}%"></div>
-            </div>
-        </div>
-    `;
+            `;
+        }
+        if (timerDiv) {
+            timerDiv.textContent = timeText;
+        }
+        if (progressBar) {
+            progressBar.style.width = `${progressPercent}%`;
+        }
+    }
 }
 
 function setupCardCloneControls() {
     const baseConfig = getCurrentBaseConfig(gameState.currentBaseId);
-    const slots = document.querySelectorAll('.clone-slot');
+    const slots = document.querySelectorAll('.clone-slots-container .cat-slot:not(.locked)');
     slots.forEach((slotEl, index) => {
-        if (index >= baseConfig.cloneSlots) return;
         
         slotEl.addEventListener('dragover', (e) => {
             e.preventDefault();
