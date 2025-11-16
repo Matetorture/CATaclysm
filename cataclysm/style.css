@@ -639,6 +639,7 @@
     border-radius: var(--card-border-radius);
     padding: var(--spacing-unit);
     overflow-y: auto;
+    overflow-x: hidden;
     box-shadow: var(--card-shadow);
     perspective: 1000px;
 }
@@ -657,7 +658,6 @@
     padding: 5px;
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
     min-height: 100px;
 }
 
@@ -704,29 +704,6 @@
     border-left: var(--border-color) 2px solid;
     padding-left: 3px;
     margin-left: 3px;
-}
-
-/* Scrollbar Styling */
-.cards-container::-webkit-scrollbar,
-.unused-cards-section::-webkit-scrollbar {
-    width: 8px;
-}
-
-.cards-container::-webkit-scrollbar-track,
-.unused-cards-section::-webkit-scrollbar-track {
-    background: var(--dark-tertiary);
-    border-radius: 4px;
-}
-
-.cards-container::-webkit-scrollbar-thumb,
-.unused-cards-section::-webkit-scrollbar-thumb {
-    background: var(--primary-color);
-    border-radius: 4px;
-}
-
-.cards-container::-webkit-scrollbar-thumb:hover,
-.unused-cards-section::-webkit-scrollbar-thumb:hover {
-    background: #f0f0f0;
 }
 
 #closePanelBtn {

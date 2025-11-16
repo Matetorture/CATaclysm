@@ -34,3 +34,19 @@ img {
     -ms-interpolation-mode: nearest-neighbor;
     -webkit-user-drag: none;
 }
+
+/* Scrollbar Styling */
+*::-webkit-scrollbar {
+    width: 8px;
+}
+*::-webkit-scrollbar-track {
+    background: var(--dark-tertiary);
+    border-radius: 4px;
+}
+*::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+}
+*::-webkit-scrollbar-thumb:hover {
+    background: #f0f0f0;
+}
