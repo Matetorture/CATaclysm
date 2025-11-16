@@ -16,7 +16,7 @@ h1 {
     justify-content: center;
     width: 100dvw;
     height: 100dvh;
-    overflow-y: auto;
+    overflow: hidden;
 }
 
 .left-section {
