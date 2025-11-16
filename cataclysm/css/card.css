@@ -152,8 +152,8 @@
 
 /* Common - Normal */
 .rarity-common {
-    background: linear-gradient(135deg, #2d2d44 0%, #1a1a2e 100%);
-    border: 3px solid #9e9e9e;
+    background: linear-gradient(135deg, #656b6b 0%, #525353 100%);
+    border: 3px solid #656b6b;
 }
 
 .rarity-common::after {
