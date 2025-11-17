@@ -2,13 +2,14 @@ import { bossCategories } from '../data/bossesData.js';
 import { 
     gameState, 
     selectedCategoryId, 
-    currentBossId, 
-    currentBossIsRandom, 
+    currentBossIndex,
+    currentBossHp,
     bossListVisible,
-    defeatedBossesByCategory,
+    categoryProgress,
     setSelectedCategoryId,
-    setCurrentBossId,
-    setCurrentBossIsRandom,
+    setCurrentBossIndex,
+    setCurrentBossHp,
+    setCategoryCompleted,
     setBossListVisible,
     updateMoneyDisplay
 } from '../data/gameState.js';
@@ -18,26 +19,17 @@ export function getCategoryById(catId) {
     return bossCategories.find(cat => cat.id === catId);
 }
 
-export function getNextUndefeatedBoss(category) {
-    return category.bosses.find(b => !defeatedBossesByCategory[category.id].has(b.id));
-}
-
 export function getCurrentBoss() {
     const category = getCategoryById(selectedCategoryId);
     if (!category) return null;
-    return category.bosses.find(b => b.id === currentBossId);
+    return category.bosses[currentBossIndex];
 }
 
 export function isCategoryUnlocked(categoryId) {
     if (categoryId === 1) return true;
     
     const prevCategoryId = categoryId - 1;
-    const prevCategory = getCategoryById(prevCategoryId);
-    
-    if (!prevCategory) return false;
-    
-    const defeatedCount = defeatedBossesByCategory[prevCategoryId]?.size || 0;
-    return defeatedCount >= 10;
+    return categoryProgress[prevCategoryId]?.completed || false;
 }
 
 export function selectBoss(categoryId) {
@@ -50,39 +42,25 @@ export function selectBoss(categoryId) {
     }
     
     setSelectedCategoryId(categoryId);
-
-    let boss = category.bosses.find(b => !defeatedBossesByCategory[categoryId].has(b.id));
-
-    if (!boss) {
-        boss = category.bosses[Math.floor(Math.random() * category.bosses.length)];
-        boss.hp = boss.maxHp;
-        setCurrentBossIsRandom(true);
-    } else {
-        setCurrentBossIsRandom(false);
-        if (boss.hp === undefined) {
-            boss.hp = boss.maxHp;
-        }
+    
+    const boss = category.bosses[currentBossIndex];
+    if (currentBossHp === null) {
+        setCurrentBossHp(boss.maxHp);
     }
-
-    setCurrentBossId(boss.id);
-    renderBoss(boss, currentBossIsRandom);
+    
+    renderBoss();
 }
 
-export function renderBoss(bossOverride = null, isRandom = false) {
-    if (!bossOverride) {
-        isRandom = currentBossIsRandom;
-    } else {
-        setCurrentBossIsRandom(isRandom);
-    }
-
+export function renderBoss() {
     const bossContainer = document.querySelector('.boss-container');
     if (!bossContainer) return;
     
     const category = getCategoryById(selectedCategoryId);
-    const boss = bossOverride || category.bosses.find(b => b.id === currentBossId);
+    const boss = getCurrentBoss();
     if (!boss) return;
 
-    const hpPercent = ((boss.hp / boss.maxHp) * 100).toFixed(1);
+    const hp = currentBossHp !== null ? currentBossHp : boss.maxHp;
+    const hpPercent = ((hp / boss.maxHp) * 100).toFixed(1);
     if (!renderBoss.lagHpPercent) renderBoss.lagHpPercent = hpPercent;
 
     const weaknessHtml = boss.weakness.map(type => {
@@ -94,8 +72,8 @@ export function renderBoss(bossOverride = null, isRandom = false) {
     <div class="boss-container-inner" style="display: flex; gap: 16px;">
         <div class="boss-category-list ${bossListVisible ? 'visible' : ''}">
             ${bossCategories.map(cat => {
-            const defeatedCount = defeatedBossesByCategory[cat.id].size;
-            const total = cat.bosses.length;
+            const progress = categoryProgress[cat.id];
+            const isCompleted = progress.completed;
             const isUnlocked = isCategoryUnlocked(cat.id);
             const isActive = cat.id === selectedCategoryId;
             
@@ -105,13 +83,13 @@ export function renderBoss(bossOverride = null, isRandom = false) {
                     ${!isUnlocked ? 'disabled' : ''}>
                 ${!isUnlocked ? '<img src="img/icons/lock.png" alt="Locked" class="lock-icon" />' : ''}
                 <img src="${cat.img}" alt="${cat.name}" class="category-img ${!isUnlocked ? 'locked-img' : ''}" />
-                <span class="defeated-count">${defeatedCount}/${total}</span>
+                <span class="defeated-count">${progress.currentBossIndex}/10 ${isCompleted ? '✓' : ''}</span>
             </button>`;
             }).join('')}
         </div>
         <button id="bossToggleBtn" class="boss-list-toggle-btn ${bossListVisible ? 'visible' : ''}">BOSS LIST</button>
         <div class="boss-details" style="flex: 1;">
-            <div class="boss-name">${boss.name}${isRandom ? ' [R]' : ''}</div>
+            <div class="boss-name">${boss.name}</div>
             <div class="boss-image">
             <img src="img/bosses/${boss.id}.png" alt="${boss.name}">
             </div>
@@ -120,7 +98,7 @@ export function renderBoss(bossOverride = null, isRandom = false) {
                 <div class="boss-hp-bar-lag" style="width: ${renderBoss.lagHpPercent}%;"></div>
                 <div class="boss-hp-bar" style="width: ${hpPercent}%;"></div>
             </div>
-            <div class="boss-hp-text">${boss.hp} / ${boss.maxHp} (${hpPercent}%)</div>
+            <div class="boss-hp-text">${hp} / ${boss.maxHp} (${hpPercent}%)</div>
             <div class="boss-weakness">
             Weakness: ${weaknessHtml}
             ${boss.onlyWeakness ? '<br><em class="weakness-info">Can only be damaged by its weaknesses</em>' : ''}
@@ -169,11 +147,10 @@ export function changeBossHp(amount) {
     const boss = getCurrentBoss();
     if (!boss) return;
 
-    boss.hp = Math.max(0, Math.min(boss.maxHp, boss.hp + amount));
+    const newHp = Math.max(0, Math.min(boss.maxHp, currentBossHp + amount));
+    setCurrentBossHp(newHp);
 
-    if (boss.hp === 0) {
-        defeatedBossesByCategory[selectedCategoryId].add(boss.id);
-        
+    if (newHp === 0) {
         const rewardMoney = calculateRewardMoney(boss.baseRewardMoney);
         openCenteredIframe('widgets/reward/index.html?amount=' + rewardMoney, 10);
         gameState.money += rewardMoney;
@@ -186,18 +163,17 @@ export function changeBossHp(amount) {
         });
 
         const category = getCategoryById(selectedCategoryId);
-        const nextBoss = category.bosses.find(b => !defeatedBossesByCategory[selectedCategoryId].has(b.id));
+        const nextIndex = currentBossIndex + 1;
 
-        if (nextBoss) {
-            setCurrentBossId(nextBoss.id);
-            setCurrentBossIsRandom(false);
+        if (nextIndex >= category.bosses.length) {
+            setCategoryCompleted(selectedCategoryId, true);
+            setCurrentBossIndex(0);
+            setCurrentBossHp(category.bosses[0].maxHp);
             renderBoss();
         } else {
-            const randomBoss = category.bosses[Math.floor(Math.random() * category.bosses.length)];
-            setCurrentBossId(randomBoss.id);
-            randomBoss.hp = randomBoss.maxHp;
-            setCurrentBossIsRandom(true);
-            renderBoss(randomBoss, true);
+            setCurrentBossIndex(nextIndex);
+            setCurrentBossHp(category.bosses[nextIndex].maxHp);
+            renderBoss();
         }
     } else {
         renderBoss();

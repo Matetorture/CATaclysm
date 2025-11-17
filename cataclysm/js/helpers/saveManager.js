@@ -2,13 +2,9 @@ import { gameState } from '../data/gameState.js';
 import { CatCard } from '../models/CatCard.js';
 import { cardsData } from '../data/cardsData.js';
 import { 
-    selectedCategoryId, 
-    currentBossId, 
-    currentBossIsRandom, 
-    defeatedBossesByCategory,
-    setSelectedCategoryId,
-    setCurrentBossId,
-    setCurrentBossIsRandom
+    selectedCategoryId,
+    categoryProgress,
+    setSelectedCategoryId
 } from '../data/gameState.js';
 import { 
     baseUpgradeCats, 
@@ -58,13 +54,7 @@ export function saveGame() {
             })),
             
             selectedCategoryId: selectedCategoryId,
-            currentBossId: currentBossId,
-            currentBossIsRandom: currentBossIsRandom,
-            defeatedBosses: Object.fromEntries(
-                Object.entries(defeatedBossesByCategory).map(([catId, bossSet]) => 
-                    [catId, Array.from(bossSet)]
-                )
-            ),
+            categoryProgress: categoryProgress,
             
             openCardsData: {
                 pullCount: window.openCardsState?.pullCount || 0,
@@ -105,9 +95,13 @@ export function loadGame() {
         
         gameState.money = data.money || 0;
         
-        if (data.defeatedBosses) {
-            Object.entries(data.defeatedBosses).forEach(([catId, bossIds]) => {
-                defeatedBossesByCategory[catId] = new Set(bossIds);
+        if (data.categoryProgress) {
+            Object.keys(categoryProgress).forEach(catId => {
+                if (data.categoryProgress[catId]) {
+                    categoryProgress[catId].currentBossIndex = data.categoryProgress[catId].currentBossIndex || 0;
+                    categoryProgress[catId].currentBossHp = data.categoryProgress[catId].currentBossHp || null;
+                    categoryProgress[catId].completed = data.categoryProgress[catId].completed || false;
+                }
             });
         }
 
@@ -196,14 +190,6 @@ export function loadGame() {
             console.warn(`Category ${selectedCategoryId} is locked, resetting to category 1`);
             setSelectedCategoryId(1);
         }
-        
-        if (data.currentBossId !== undefined) {
-            setCurrentBossId(data.currentBossId);
-        }
-        if (data.currentBossIsRandom !== undefined) {
-            setCurrentBossIsRandom(data.currentBossIsRandom);
-        }
-        
         
         if (data.openCardsData) {
             window.openCardsState = {

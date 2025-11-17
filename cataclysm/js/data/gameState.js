@@ -18,26 +18,38 @@ export const gameState = {
 
 // Boss state management
 export let selectedCategoryId = bossCategories[0].id;
-export let currentBossId = null;
-export let currentBossIsRandom = false;
+export let currentBossIndex = 0;
+export let currentBossHp = null;
 export let bossListVisible = false;
 
-export const defeatedBossesByCategory = {};
+export const categoryProgress = {};
 bossCategories.forEach(cat => {
-    defeatedBossesByCategory[cat.id] = new Set();
+    categoryProgress[cat.id] = {
+        currentBossIndex: 0,
+        currentBossHp: null,
+        completed: false
+    };
 });
 
 // Boss state setters
 export function setSelectedCategoryId(id) {
     selectedCategoryId = id;
+    currentBossIndex = categoryProgress[id].currentBossIndex;
+    currentBossHp = categoryProgress[id].currentBossHp;
 }
 
-export function setCurrentBossId(id) {
-    currentBossId = id;
+export function setCurrentBossIndex(index) {
+    currentBossIndex = index;
+    categoryProgress[selectedCategoryId].currentBossIndex = index;
 }
 
-export function setCurrentBossIsRandom(value) {
-    currentBossIsRandom = value;
+export function setCurrentBossHp(hp) {
+    currentBossHp = hp;
+    categoryProgress[selectedCategoryId].currentBossHp = hp;
+}
+
+export function setCategoryCompleted(categoryId, completed) {
+    categoryProgress[categoryId].completed = completed;
 }
 
 export function setBossListVisible(value) {

@@ -1,4 +1,4 @@
-import { gameState, updateMoneyDisplay, triggerManualSave, defeatedBossesByCategory } from '../data/gameState.js';
+import { gameState, updateMoneyDisplay, triggerManualSave, categoryProgress } from '../data/gameState.js';
 import { basesData, getEffectiveCloneTime, getCurrentBaseConfig } from '../data/basesData.js';
 import { renderAvailableCards, renderDeckSlots, renderCardWithWrapper } from './cardRenderer.js';
 import { showTooltip, removeTooltip } from './tooltips.js';
@@ -121,9 +121,7 @@ export function isBaseUnlocked(baseId) {
     if (baseId === 1) return true;
 
     const requiredCategory = baseId - 1;
-    const defeatedCount = defeatedBossesByCategory[requiredCategory]?.size || 0;
-    
-    return defeatedCount >= 10;
+    return categoryProgress[requiredCategory]?.completed || false;
 }
 
 export function initializeBasePanel() {
