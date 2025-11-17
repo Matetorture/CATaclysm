@@ -7,6 +7,7 @@ import { startDeckContinuousAttacks } from '../game/combat.js';
 import { updateDeckStats } from './deckStats.js';
 import { isCardUsedInBase } from './basePanel.js';
 import { allModifiers } from '../helpers/modifiers.js';
+import { checkSlotAchievements } from '../helpers/achievementChecker.js';
 
 export function renderAvailableCards(cardsToRender = gameState.ownedCards) {
     const container = document.getElementById('availableCardsGrid');
@@ -280,5 +281,6 @@ function unlockSlot(slotIndex) {
         gameState.unlockedSlots[slotIndex] = true;
         updateMoneyDisplay();
         renderDeckSlots();
+        checkSlotAchievements();
     }
 }

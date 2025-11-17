@@ -3,6 +3,7 @@ import { renderAvailableCards, renderDeckSlots } from '../ui/cardRenderer.js';
 import { removeTooltip, removeDeckComparisonTooltip } from '../ui/tooltips.js';
 import { startDeckContinuousAttacks } from '../game/combat.js';
 import { updateDeckStats } from '../ui/deckStats.js';
+import { checkDeckAchievements } from './achievementChecker.js';
 
 let draggedCard = null;
 let draggedFrom = null; // 'deck' or 'unused'
@@ -133,6 +134,7 @@ export function dropHandler(e) {
     renderDeckSlots();
     startDeckContinuousAttacks();
     updateDeckStats();
+    checkDeckAchievements();
     dragEndHandler(e);
 }
 
@@ -159,6 +161,7 @@ export function setupUnusedCardsDropZone() {
             renderDeckSlots();
             startDeckContinuousAttacks();
             updateDeckStats();
+            checkDeckAchievements();
         }
         dragEndHandler(e);
     });

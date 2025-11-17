@@ -4,6 +4,7 @@ import { createCardElement } from '../../js/ui/cardRenderer.js';
 import { setupSingleCardTilt } from '../../js/helpers/utils.js';
 import { gameState as localGameState, triggerManualSave as localTriggerManualSave, updateMoneyDisplay as localUpdateMoneyDisplay } from '../../js/data/gameState.js';
 import { CatCard } from '../../js/models/CatCard.js';
+import { checkCardUnlockAchievements, onCardMaxed } from '../../js/helpers/achievementChecker.js';
 
 // Get gameState from parent window if we're in iframe, otherwise use local
 const gameState = (window.parent && window.parent !== window && window.parent.gameState) 
@@ -204,11 +205,12 @@ function displayDrawnCard(card, isGuarantee = false, guaranteeRarity = null) {
     let ownedCard = gameState.ownedCards.find(c => c.id === card.id);
     
     if (ownedCard) {
-        // Card already exists - add copy
         ownedCard.copies += 1;
         console.log(`Added copy to ${ownedCard.name}, now has ${ownedCard.copies} copies`);
+        if (ownedCard.copies >= 62) {
+            onCardMaxed(ownedCard);
+        }
     } else {
-        // New card - create CatCard instance with 1 copy
         ownedCard = new CatCard(
             card.id,
             card.number,
@@ -219,10 +221,11 @@ function displayDrawnCard(card, isGuarantee = false, guaranteeRarity = null) {
             card.baseSpeed,
             card.baseCrit,
             card.attackType,
-            1 // First copy
+            1
         );
         gameState.ownedCards.push(ownedCard);
         console.log(`Added new card: ${ownedCard.name}`);
+        checkCardUnlockAchievements();
     }
     
     // Save game after adding card

@@ -56,6 +56,8 @@ export function saveGame() {
             selectedCategoryId: selectedCategoryId,
             categoryProgress: categoryProgress,
             
+            unlockedAchievements: Array.from(gameState.unlockedAchievements),
+            
             openCardsData: {
                 pullCount: window.openCardsState?.pullCount || 0,
                 lastGuaranteedPulls: window.openCardsState?.lastGuaranteedPulls || { Rare: 0, Epic: 0, Legendary: 0, Ultimate: 0 },
@@ -94,6 +96,10 @@ export function loadGame() {
         console.log('Loading save from:', new Date(data.timestamp).toLocaleString());
         
         gameState.money = data.money || 0;
+        
+        if (data.unlockedAchievements) {
+            gameState.unlockedAchievements = new Set(data.unlockedAchievements);
+        }
         
         if (data.categoryProgress) {
             Object.keys(categoryProgress).forEach(catId => {

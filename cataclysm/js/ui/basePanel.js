@@ -4,6 +4,7 @@ import { renderAvailableCards, renderDeckSlots, renderCardWithWrapper } from './
 import { showTooltip, removeTooltip } from './tooltips.js';
 import { CatCard } from '../models/CatCard.js';
 import { setupTiltEffect } from '../helpers/utils.js';
+import { onCardCloned } from '../helpers/achievementChecker.js';
 
 let updateInterval = null;
 export let baseUpgradeCats = [null, null];
@@ -626,6 +627,8 @@ function completeCardCloning(slotIndex) {
     card.copies += 1;
     
     console.log(`Card "${card.name}" cloned! New copies: ${card.copies}`);
+    
+    onCardCloned(card);
     
     triggerManualSave();
     

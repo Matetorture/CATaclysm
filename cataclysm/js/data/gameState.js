@@ -14,6 +14,8 @@ export const gameState = {
     baseUpgradeInProgress: null,
     
     combatPaused: false,
+    
+    unlockedAchievements: new Set()
 };
 
 // Boss state management

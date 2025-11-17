@@ -14,6 +14,7 @@ import {
     updateMoneyDisplay
 } from '../data/gameState.js';
 import { openCenteredIframe } from '../helpers/utils.js';
+import { checkBossAchievements } from '../helpers/achievementChecker.js';
 
 export function getCategoryById(catId) {
     return bossCategories.find(cat => cat.id === catId);
@@ -170,10 +171,12 @@ export function changeBossHp(amount) {
             setCurrentBossIndex(0);
             setCurrentBossHp(category.bosses[0].maxHp);
             renderBoss();
+            checkBossAchievements();
         } else {
             setCurrentBossIndex(nextIndex);
             setCurrentBossHp(category.bosses[nextIndex].maxHp);
             renderBoss();
+            checkBossAchievements();
         }
     } else {
         renderBoss();
