@@ -56,6 +56,8 @@
 }
 
 .username {
+    width: 50%;
+    text-align: center;
     font-size: 18px;
     font-weight: 600;
     color: var(--primary-color);
@@ -526,7 +528,6 @@
     font-size: 10px;
     font-weight: 600;
     cursor: pointer;
-    padding: 4px;
     transition: all 0.2s ease;
 }
 
