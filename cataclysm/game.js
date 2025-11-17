@@ -45,6 +45,15 @@ function setupTutorialsButton() {
     });
 }
 
+function setupAchievementsButton() {
+    const achievementsBtn = document.getElementById('achievementsBtn');
+    if (!achievementsBtn) return;
+    
+    achievementsBtn.addEventListener('click', () => {
+        openCenteredIframe('/widgets/achievements/', -1, true);
+    });
+}
+
 function initGame() {
     const saveLoaded = loadGame();
 
@@ -57,6 +66,7 @@ function initGame() {
     setupPauseButton();
     setupOpenCardsButton();
     setupTutorialsButton();
+    setupAchievementsButton();
     renderAvailableCards();
     renderDeckSlots();
     createDeckStatsDisplay();
