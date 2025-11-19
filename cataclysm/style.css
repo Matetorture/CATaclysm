@@ -660,6 +660,7 @@
     display: flex;
     flex-wrap: wrap;
     min-height: 100px;
+    overflow: hidden;
 }
 
 /* Filter Section */
