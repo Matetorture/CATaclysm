@@ -50,10 +50,19 @@ export class CatCard {
 
     getStats() {
         const level = this.getLevel();
+        
+        if (level === 0) {
+            return {
+                attack: this.baseAttack,
+                speed: this.baseSpeed,
+                crit: this.baseCrit
+            };
+        }
+        
         return {
             attack: Math.floor(this.baseAttack * level * 2),
-            speed: Math.floor(this.baseSpeed / ((level + 1))),
-            crit: (this.baseCrit * level * 1.5).toFixed(1)
+            speed: Math.floor(this.baseSpeed / (level * 2)),
+            crit: parseFloat((this.baseCrit * level * 1.5).toFixed(1))
         };
     }
 
