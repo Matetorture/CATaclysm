@@ -234,8 +234,8 @@ function displayDrawnCard(card, isGuarantee = false, guaranteeRarity = null) {
     // Refresh card view in main window (if window.parent exists)
     try {
         if (window.parent && window.parent !== window) {
-            if (window.parent.renderAvailableCards) {
-                window.parent.renderAvailableCards();
+            if (window.parent.applyCurrentFilter) {
+                window.parent.applyCurrentFilter();
             }
         }
     } catch (e) {

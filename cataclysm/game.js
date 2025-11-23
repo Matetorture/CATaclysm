@@ -3,7 +3,8 @@ import { gameState, selectedCategoryId, updateMoneyDisplay, triggerManualSave } 
 import { cardsData } from './js/data/cardsData.js';
 
 // Import UI renderers
-import { renderAvailableCards, renderDeckSlots } from './js/ui/cardRenderer.js';
+import { renderDeckSlots } from './js/ui/cardRenderer.js';
+import { applyCurrentFilter } from './js/ui/filters.js';
 import { selectBoss } from './js/ui/bossRenderer.js';
 import { generateFilterButtons } from './js/ui/filters.js';
 import { createDeckStatsDisplay } from './js/ui/deckStats.js';
@@ -67,7 +68,7 @@ function initGame() {
     setupOpenCardsButton();
     setupTutorialsButton();
     setupAchievementsButton();
-    renderAvailableCards();
+    applyCurrentFilter();
     renderDeckSlots();
     createDeckStatsDisplay();
     startDeckContinuousAttacks();

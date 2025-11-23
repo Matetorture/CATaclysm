@@ -8,6 +8,7 @@ import { updateDeckStats } from './deckStats.js';
 import { isCardUsedInBase } from './basePanel.js';
 import { allModifiers } from '../helpers/modifiers.js';
 import { checkSlotAchievements } from '../helpers/achievementChecker.js';
+import { applyCurrentFilter } from './filters.js';
 
 export function renderAvailableCards(cardsToRender = gameState.ownedCards) {
     const container = document.getElementById('availableCardsGrid');
@@ -254,7 +255,7 @@ export function addCardToDeck(card) {
         tooltips.forEach(el => removeTooltip(el));
         removeDeckComparisonTooltip();
         
-        renderAvailableCards();
+        applyCurrentFilter();
         renderDeckSlots();
         startDeckContinuousAttacks();
     }
@@ -268,7 +269,7 @@ export function removeCardFromDeck(slotIndex) {
     tooltips.forEach(el => removeTooltip(el));
     removeDeckComparisonTooltip();
     
-    renderAvailableCards();
+    applyCurrentFilter();
     renderDeckSlots();
     startDeckContinuousAttacks();
 }

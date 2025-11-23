@@ -1,5 +1,6 @@
 import { gameState } from '../data/gameState.js';
-import { renderAvailableCards, renderDeckSlots } from '../ui/cardRenderer.js';
+import { renderDeckSlots } from '../ui/cardRenderer.js';
+import { applyCurrentFilter } from '../ui/filters.js';
 import { removeTooltip, removeDeckComparisonTooltip } from '../ui/tooltips.js';
 import { startDeckContinuousAttacks } from '../game/combat.js';
 import { updateDeckStats } from '../ui/deckStats.js';
@@ -130,7 +131,7 @@ export function dropHandler(e) {
             gameState.deckCards[slotIndex] = draggedCard;
         }
     }
-    renderAvailableCards();
+    applyCurrentFilter();
     renderDeckSlots();
     startDeckContinuousAttacks();
     updateDeckStats();
@@ -157,7 +158,7 @@ export function setupUnusedCardsDropZone() {
         if (!draggedCard) return;
         if (draggedFrom === 'deck' && draggedFromIndex !== null) {
             gameState.deckCards[draggedFromIndex] = null;
-            renderAvailableCards();
+            applyCurrentFilter();
             renderDeckSlots();
             startDeckContinuousAttacks();
             updateDeckStats();

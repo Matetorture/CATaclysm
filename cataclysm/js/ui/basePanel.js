@@ -1,6 +1,7 @@
 import { gameState, updateMoneyDisplay, triggerManualSave, categoryProgress } from '../data/gameState.js';
 import { basesData, getEffectiveCloneTime, getCurrentBaseConfig } from '../data/basesData.js';
-import { renderAvailableCards, renderDeckSlots, renderCardWithWrapper } from './cardRenderer.js';
+import { renderDeckSlots, renderCardWithWrapper } from './cardRenderer.js';
+import { applyCurrentFilter } from './filters.js';
 import { showTooltip, removeTooltip } from './tooltips.js';
 import { CatCard } from '../models/CatCard.js';
 import { setupTiltEffect } from '../helpers/utils.js';
@@ -278,7 +279,7 @@ function setupBaseUpgradeControls(isNextBaseUnlocked) {
                 }
             }
             
-            renderAvailableCards();
+            applyCurrentFilter();
         });
         
         slot.addEventListener('click', () => {
@@ -294,7 +295,7 @@ function setupBaseUpgradeControls(isNextBaseUnlocked) {
                     recalculateUpgradeTime(removedCat, null);
                 }
                 
-                renderAvailableCards();
+                applyCurrentFilter();
             }
         });
     });
@@ -386,7 +387,7 @@ function startBaseUpgrade() {
         cats: [...cats]
     };
     
-    renderAvailableCards();
+    applyCurrentFilter();
     renderBaseUpgradeTab();
 }
 
@@ -416,7 +417,7 @@ function completeBaseUpgrade() {
     
     baseUpgradeCats = [null, null];
     
-    renderAvailableCards();
+    applyCurrentFilter();
     renderBaseUpgradeTab();
     renderCardCloneTab();
     renderDeckSlots();
@@ -571,7 +572,7 @@ function setupCardCloneControls() {
             };
             
             renderCardCloneTab();
-            renderAvailableCards();
+            applyCurrentFilter();
         });
         
         slotEl.addEventListener('click', (e) => {
@@ -581,7 +582,7 @@ function setupCardCloneControls() {
                 
                 cloneSlots[index] = { card: null, startTime: null, totalTime: null };
                 renderCardCloneTab();
-                renderAvailableCards();
+                applyCurrentFilter();
             }
         });
         
@@ -641,7 +642,7 @@ function completeCardCloning(slotIndex) {
         console.log(`Card "${card.name}" has reached max level! Removing from slot.`);
         cloneSlots[slotIndex] = { card: null, startTime: null, totalTime: null };
         renderCardCloneTab();
-        renderAvailableCards();
+        applyCurrentFilter();
     } else {
         const cloneTime = getEffectiveCloneTime(card.rarity, gameState.currentBaseId);
         cloneSlots[slotIndex] = {

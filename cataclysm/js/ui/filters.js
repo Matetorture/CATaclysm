@@ -3,6 +3,25 @@ import { cardRarities, attackTypes } from '../data/constants.js';
 import { sortCardsById, sortCardsByDPSWithCrit, filterCardsByAttackType, filterCardsByRarity } from '../helpers/filters.js';
 import { renderAvailableCards } from './cardRenderer.js';
 
+// Store current active filter state
+let currentFilter = { type: 'all', value: null };
+
+export function applyCurrentFilter() {
+    let cardsToRender;
+    
+    if (currentFilter.type === 'all') {
+        cardsToRender = sortCardsById(gameState.ownedCards);
+    } else if (currentFilter.type === 'dps') {
+        cardsToRender = sortCardsByDPSWithCrit(gameState.ownedCards);
+    } else if (currentFilter.type === 'attackType') {
+        cardsToRender = filterCardsByAttackType(gameState.ownedCards, currentFilter.value);
+    } else if (currentFilter.type === 'rarity') {
+        cardsToRender = filterCardsByRarity(gameState.ownedCards, currentFilter.value);
+    }
+    
+    renderAvailableCards(cardsToRender);
+}
+
 export function generateFilterButtons() {
     const typeContainer = document.querySelector('.card-filter-types');
     const rarityContainer = document.querySelector('.card-filter-rarity');
@@ -53,32 +72,32 @@ export function setupFilterButtons() {
     const btnAll = document.getElementById('btnAll');
     if (btnAll) {
         btnAll.addEventListener('click', () => {
-            const sorted = sortCardsById(gameState.ownedCards);
-            renderAvailableCards(sorted);
+            currentFilter = { type: 'all', value: null };
+            applyCurrentFilter();
         });
     }
 
     const btnSortDPS = document.getElementById('btnSortDPS');
     if (btnSortDPS) {
         btnSortDPS.addEventListener('click', () => {
-            const sorted = sortCardsByDPSWithCrit(gameState.ownedCards);
-            renderAvailableCards(sorted);
+            currentFilter = { type: 'dps', value: null };
+            applyCurrentFilter();
         });
     }
 
     document.querySelectorAll('.btnFilterType').forEach(btn => {
         btn.addEventListener('click', () => {
             const type = btn.dataset.type;
-            const filtered = filterCardsByAttackType(gameState.ownedCards, type);
-            renderAvailableCards(filtered);
+            currentFilter = { type: 'attackType', value: type };
+            applyCurrentFilter();
         });
     });
 
     document.querySelectorAll('.btnFilterRarity').forEach(btn => {
         btn.addEventListener('click', () => {
             const rarity = btn.dataset.rarity;
-            const filtered = filterCardsByRarity(gameState.ownedCards, rarity);
-            renderAvailableCards(filtered);
+            currentFilter = { type: 'rarity', value: rarity };
+            applyCurrentFilter();
         });
     });
 }
