@@ -62,7 +62,7 @@ export const cardsData = [
     new CatCard(46, '4.11', 'Yellow Firework', 'Event', 'Uncommon', 90, 300000, 10, ['Water'], 0),
     new CatCard(47, '4.12', 'Red Firework', 'Event', 'Uncommon', 90, 300000, 10, ['Stone'], 0),
     new CatCard(48, '4.13', 'Shining Heart', 'Event', 'Ultimate', 1250, 100000, 5, ['Fire'], 0),
-    new CatCard(49, '4.14', 'Vampir', 'Event', 'Ultimate', 1950, 150000, 5, ['Light','Air','Magic'], 0),
+    new CatCard(49, '4.14', 'Vampir', 'Event', 'Ultimate', 1950, 150000, 5, ['Dark'], 0),
 
     //5
     new CatCard(50, '5.1', 'Sun', 'Celestial', 'Epic', 140, 100000, 10, ['Fire','Water','Stone','Plant','Air'], 0),
