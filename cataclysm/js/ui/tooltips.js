@@ -168,6 +168,13 @@ export function showDeckComparisonTooltip(compareCard) {
             const compareStats = compareCard.getStats();
 
             function getStatClass(statName) {
+                // For speed, lower is better
+                if (statName === 'speed') {
+                    if (deckStats[statName] < compareStats[statName]) return 'stat-better';
+                    if (deckStats[statName] > compareStats[statName]) return 'stat-worse';
+                    return '';
+                }
+                // For other stats, higher is better
                 if (deckStats[statName] > compareStats[statName]) return 'stat-better';
                 if (deckStats[statName] < compareStats[statName]) return 'stat-worse';
                 return '';
