@@ -7,6 +7,7 @@ import { CatCard } from '../models/CatCard.js';
 import { setupTiltEffect } from '../helpers/utils.js';
 import { onCardCloned } from '../helpers/achievementChecker.js';
 import { bossCategories } from '../data/bossesData.js';
+import { notifySuccess, notifyError, notifyInfo, notifyWarning } from './notifications.js';
 
 let updateInterval = null;
 export let baseUpgradeCats = [null, null];
@@ -361,7 +362,7 @@ function startBaseUpgrade() {
     if (!nextBase) return;
     
     if (gameState.money < nextBase.cost) {
-        alert(`Not enough money! Need $${nextBase.cost}, you have $${gameState.money}`);
+        notifyError(`Not enough money! Need $${nextBase.cost}`);
         return;
     }
     
@@ -412,10 +413,13 @@ function updateBaseUpgradeProgress() {
 }
 
 function completeBaseUpgrade() {
+    const targetBase = basesData.find(b => b.id === gameState.baseUpgradeInProgress.targetBaseId);
     gameState.currentBaseId = gameState.baseUpgradeInProgress.targetBaseId;
     gameState.baseUpgradeInProgress = null;
     
     baseUpgradeCats = [null, null];
+    
+    notifySuccess(`Base upgraded to ${targetBase.name}!`);
     
     applyCurrentFilter();
     renderBaseUpgradeTab();
@@ -560,7 +564,7 @@ function setupCardCloneControls() {
             if (!card || gameState.deckCards.includes(card)) return;
             
             if (card.copies >= MAX_LEVEL_COPIES) {
-                alert('This card is already at max level!');
+                notifyWarning('This card is already at max level!');
                 return;
             }
             
@@ -632,18 +636,17 @@ function completeCardCloning(slotIndex) {
     const card = slot.card;
     card.copies += 1;
     
-    console.log(`Card "${card.name}" cloned! New copies: ${card.copies}`);
-    
     onCardCloned(card);
     
     triggerManualSave();
     
     if (card.copies >= MAX_LEVEL_COPIES) {
-        console.log(`Card "${card.name}" has reached max level! Removing from slot.`);
+        notifySuccess(`${card.name} cloned! MAX LEVEL reached!`);
         cloneSlots[slotIndex] = { card: null, startTime: null, totalTime: null };
         renderCardCloneTab();
         applyCurrentFilter();
     } else {
+        notifyInfo(`${card.name} cloned!`);
         const cloneTime = getEffectiveCloneTime(card.rarity, gameState.currentBaseId);
         cloneSlots[slotIndex] = {
             card: card,

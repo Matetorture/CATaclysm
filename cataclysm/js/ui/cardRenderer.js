@@ -9,6 +9,7 @@ import { isCardUsedInBase } from './basePanel.js';
 import { allModifiers } from '../helpers/modifiers.js';
 import { checkSlotAchievements } from '../helpers/achievementChecker.js';
 import { applyCurrentFilter } from './filters.js';
+import { notifySuccess, notifyError } from './notifications.js';
 
 export function renderAvailableCards(cardsToRender = gameState.ownedCards) {
     const container = document.getElementById('availableCardsGrid');
@@ -283,5 +284,8 @@ function unlockSlot(slotIndex) {
         updateMoneyDisplay();
         renderDeckSlots();
         checkSlotAchievements();
+        notifySuccess(`Slot ${slotIndex + 1} unlocked!`);
+    } else {
+        notifyError(`Not enough money! Need $${price}`);
     }
 }

@@ -1,6 +1,7 @@
 import { gameState } from '../data/gameState.js';
 import { getModifiedStats } from '../helpers/modifiers.js';
 import { getCurrentBoss, changeBossHp } from '../ui/bossRenderer.js';
+import { notifyWarning } from '../ui/notifications.js';
 
 let attackIntervals = [];
 const cardAttackTimers = new Map();
@@ -43,6 +44,7 @@ export function attackWithCard(card) {
 
     const infoTime = 4000;
     if (boss.onlyWeakness && !isWeaknessMatch) {
+        notifyWarning(`${card.name} can't damage ${boss.name}! Wrong attack type.`);
         const damageElement = showCardInfo(card.name, "NO DAMAGE", true, infoTime);
         if (damageElement) {
             setTimeout(() => damageElement.remove(), infoTime);

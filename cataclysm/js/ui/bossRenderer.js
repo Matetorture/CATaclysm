@@ -15,6 +15,7 @@ import {
 } from '../data/gameState.js';
 import { openCenteredIframe } from '../helpers/utils.js';
 import { checkBossAchievements } from '../helpers/achievementChecker.js';
+import { notifySuccess, notifyInfo } from './notifications.js';
 
 export function getCategoryById(catId) {
     return bossCategories.find(cat => cat.id === catId);
@@ -158,6 +159,8 @@ export function changeBossHp(amount) {
         openCenteredIframe('widgets/reward/index.html?amount=' + rewardMoney, 10);
         gameState.money += rewardMoney;
         updateMoneyDisplay();
+        
+        notifySuccess(`${boss.name} defeated! +$${rewardMoney}`);
 
         import('./basePanel.js').then(({ renderBaseUpgradeTab }) => {
             if (typeof renderBaseUpgradeTab === 'function') {
@@ -174,6 +177,7 @@ export function changeBossHp(amount) {
             setCurrentBossHp(category.bosses[0].maxHp);
             renderBoss();
             checkBossAchievements();
+            notifySuccess(`${category.name} category completed!`);
         } else {
             setCurrentBossIndex(nextIndex);
             setCurrentBossHp(category.bosses[nextIndex].maxHp);

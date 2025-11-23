@@ -2,6 +2,7 @@ import { achievementsData } from '../data/achievementsData.js';
 import { gameState } from '../data/gameState.js';
 import { categoryProgress } from '../data/gameState.js';
 import { cloneSlots } from '../ui/basePanel.js';
+import { notifySuccess } from '../ui/notifications.js';
 
 export function unlockAchievement(achievementId) {
     if (gameState.unlockedAchievements.has(achievementId)) {
@@ -12,7 +13,7 @@ export function unlockAchievement(achievementId) {
     
     const achievement = achievementsData.find(a => a.id === achievementId);
     if (achievement) {
-        alert(`Achievement unlocked: ${achievement.name}`);
+        notifySuccess(`Achievement unlocked: ${achievement.name}`);
     }
     
     import('./saveManager.js').then(({ saveGame }) => {
