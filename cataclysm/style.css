@@ -290,7 +290,6 @@
     font-size: 60px;
     color: var(--primary-color);
     z-index: 11;
-    text-shadow: 0 0 16px rgba(0, 0, 0, 0.8), 0 0 8px var(--primary-color);
     pointer-events: none;
 }
 
