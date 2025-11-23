@@ -893,7 +893,7 @@ button.slot-modifier-effect.active[data-modifier="N"]{
 #deck-comparison-tooltip {
     position: fixed;
     top: 30%;
-    left: 50%;
+    left: 60%;
     transform: translate(-50%, -50%);
     width: 910px;
     height: 320px;
