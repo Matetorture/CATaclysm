@@ -1,160 +1,54 @@
 import { Boss, BossCategory } from '../models/Boss.js';
 
 export const bossCategories = [
-    new BossCategory(1, 'Fire Lords', 'img/bosses/1.png', [
-        new Boss(101, 'Fire Dragon', 400, ['Ice'], false, 1120),
-        new Boss(102, 'Lava Beast', 400, ['Water'], false, 754),
-        new Boss(103, 'Blazing Phoenix', 400, ['Water'], false, 1014),
-        new Boss(104, 'Magma Giant', 400, ['Water', 'Ice'], true, 1104),
-        new Boss(105, 'Flame Wraith', 400, ['Stone'], false, 721),
-        new Boss(106, 'Inferno Hound', 400, ['Water'], false, 855),
-        new Boss(107, 'Scorching Serpent', 400, ['Ice'], false, 1164),
-        new Boss(108, 'Fire Elemental', 400, ['Water'], false, 1232),
-        new Boss(109, 'Cinder Lord', 400, ['Water'], false, 1313),
-        new Boss(110, 'Ashen King', 400, ['Water'], false, 1263)
+    new BossCategory(1, 'Toys', 'img/bosses/1.png', [
+        new Boss(1, 'Yarn Ball', 100, [], false, 1000),
+        new Boss(2, 'Wool String', 100, [], false, 1000),
+        new Boss(3, 'Plush Mouse', 100, [], false, 1000),
+        new Boss(4, 'Rubber Ball', 100, [], false, 1000),
+        new Boss(5, 'Feather Toy', 100, [], false, 1000),
+        new Boss(6, 'Chirping Bird Toy', 100, [], false, 1000),
+        new Boss(7, 'Laser Pointer', 100, [], false, 1000)
     ]),
-    new BossCategory(2, 'Stone Titans', 'img/bosses/2.png', [
-        new Boss(201, 'Stone Golem', 400, ['Water', 'Electric'], false, 10275),
-        new Boss(202, 'Granite Beast', 400, ['Water'], false, 9562),
-        new Boss(203, 'Rock Giant', 400, ['Plant'], false, 10555),
-        new Boss(204, 'Earth Colossus', 400, ['Air'], false, 11382),
-        new Boss(205, 'Boulder King', 400, ['Water'], false, 9974),
-        new Boss(206, 'Crag Beast', 400, ['Water', 'Electric'], false, 10652),
-        new Boss(207, 'Stone Guardian', 400, ['Water'], false, 9405),
-        new Boss(208, 'Rock Titan', 400, ['Water'], false, 10844),
-        new Boss(209, 'Stone Lord', 400, ['Electric'], false, 10406),
-        new Boss(210, 'Crystal Hulk', 400, ['Water', 'Electric'], true, 10351)
+
+    new BossCategory(2, 'House Items', 'img/bosses/13.png', [
+        new Boss(8, 'Ceramic Mug', 100, [], false, 1000),
+        new Boss(9, 'Hair Dryer', 100, [], false, 1000),
+        new Boss(10, 'Broom', 100, [], false, 1000),
+        new Boss(11, 'Chair', 100, [], false, 1000),
+        new Boss(12, 'Vacuum Cleaner', 100, [], false, 1000),
+        new Boss(13, 'Washing Machine', 100, [], false, 1000)
     ]),
-    new BossCategory(3, 'Shadow Phantoms', 'img/bosses/3.png', [
-        new Boss(301, 'Shadow Wraith', 400, ['Plant'], false, 7056),
-        new Boss(302, 'Dark Specter', 400, ['Holy'], false, 6831),
-        new Boss(303, 'Night Stalker', 400, ['Light'], false, 6867),
-        new Boss(304, 'Phantom Lord', 400, ['Holy'], true, 7297),
-        new Boss(305, 'Ethereal Beast', 400, ['Holy'], false, 6633),
-        new Boss(306, 'Ghastly Reaper', 400, ['Holy'], false, 7119),
-        new Boss(307, 'Soul Hunter', 400, ['Plant'], false, 6480),
-        new Boss(308, 'Deathshade', 400, ['Holy'], false, 6682),
-        new Boss(309, 'Wraith King', 400, ['Plant'], false, 6934),
-        new Boss(310, 'Dark Emperor', 400, ['Holy'], true, 6833)
+
+    new BossCategory(3, 'Buildings', 'img/bosses/16.png', [
+        new Boss(14, 'House', 100, [], false, 1000),
+        new Boss(15, 'Skyscraper', 100, [], false, 1000),
+        new Boss(16, 'City', 100, [], false, 1000)
     ]),
-    new BossCategory(4, 'Ice Wardens', 'img/bosses/4.png', [
-        new Boss(401, 'Frost Giant', 400, ['Fire'], false, 15400),
-        new Boss(402, 'Frozen Colossus', 400, ['Fire', 'Electric'], true, 16200),
-        new Boss(403, 'Blizzard King', 400, ['Fire'], false, 17800),
-        new Boss(404, 'Ice Sentinel', 400, ['Fire'], false, 14500),
-        new Boss(405, 'Glacier Behemoth', 400, ['Fire', 'Electric'], false, 15800),
-        new Boss(406, 'Frostbite Dragon', 400, ['Fire'], false, 16500),
-        new Boss(407, 'Permafrost Golem', 400, ['Fire'], false, 14200),
-        new Boss(408, 'Arctic Tyrant', 400, ['Fire', 'Electric'], false, 15100),
-        new Boss(409, 'Icicle Warden', 400, ['Fire'], false, 16800),
-        new Boss(410, 'Frozen Emperor', 400, ['Fire'], true, 17200)
+
+    new BossCategory(4, 'Large Geographies', 'img/bosses/19.png', [
+        new Boss(17, 'Mountain', 100, [], false, 1000),
+        new Boss(18, 'Ocean', 100, [], false, 1000),
+        new Boss(19, 'Continent', 100, [], false, 1000)
     ]),
-    new BossCategory(5, 'Thunder Lords', 'img/bosses/5.png', [
-        new Boss(501, 'Storm Bringer', 400, ['Stone', 'Water'], false, 22500),
-        new Boss(502, 'Lightning Titan', 400, ['Stone'], true, 24000),
-        new Boss(503, 'Thunder Emperor', 400, ['Stone', 'Air'], false, 26500),
-        new Boss(504, 'Voltage Overlord', 400, ['Stone'], false, 21800),
-        new Boss(505, 'Electroshock Beast', 400, ['Stone', 'Water'], false, 23200),
-        new Boss(506, 'Thunderstorm Dragon', 400, ['Stone'], false, 24800),
-        new Boss(507, 'Static Colossus', 400, ['Stone', 'Air'], false, 22100),
-        new Boss(508, 'Lightning Archon', 400, ['Stone'], false, 25500),
-        new Boss(509, 'Bolt Sovereign', 400, ['Stone', 'Water'], false, 23900),
-        new Boss(510, 'Thunder God', 400, ['Stone'], true, 27000)
+
+    new BossCategory(501, 'Earth', 'img/bosses/20.png', [
+        new Boss(20, 'Earth', 100, [], false, 1000)
     ]),
-    new BossCategory(6, 'Toxic Swarm', 'img/bosses/6.png', [
-        new Boss(601, 'Poison Drake', 400, ['Holy', 'Air'], false, 31000),
-        new Boss(602, 'Venom Hydra', 400, ['Holy'], true, 33500),
-        new Boss(603, 'Plague Leviathan', 400, ['Holy', 'Fire'], false, 36000),
-        new Boss(604, 'Toxic Serpent', 400, ['Holy'], false, 29500),
-        new Boss(605, 'Contamination Beast', 400, ['Holy', 'Air'], false, 32000),
-        new Boss(606, 'Biohazard Titan', 400, ['Holy'], false, 34500),
-        new Boss(607, 'Pestilence Lord', 400, ['Holy', 'Fire'], false, 30800),
-        new Boss(608, 'Miasma Dragon', 400, ['Holy'], false, 33000),
-        new Boss(609, 'Venom Overlord', 400, ['Holy', 'Air'], false, 35200),
-        new Boss(610, 'Plague Emperor', 400, ['Holy'], true, 37500)
+
+    new BossCategory(502, 'Solar System', 'img/bosses/21.png', [
+        new Boss(21, 'Solar System', 100, [], false, 1000)
     ]),
-    new BossCategory(7, 'Infernal Legion', 'img/bosses/7.png', [
-        new Boss(701, 'Demon Overlord', 400, ['Holy', 'Ice'], false, 43000),
-        new Boss(702, 'Infernal Archon', 400, ['Holy', 'Water'], true, 47000),
-        new Boss(703, 'Hell Emperor', 400, ['Holy'], false, 51000),
-        new Boss(704, 'Hellfire Titan', 400, ['Holy', 'Ice'], false, 41500),
-        new Boss(705, 'Damnation Beast', 400, ['Holy'], false, 45000),
-        new Boss(706, 'Inferno Demon', 400, ['Holy', 'Water'], false, 48500),
-        new Boss(707, 'Abyssal Lord', 400, ['Holy', 'Ice'], false, 42800),
-        new Boss(708, 'Infernal Dragon', 400, ['Holy'], false, 46200),
-        new Boss(709, 'Hell Sovereign', 400, ['Holy', 'Water'], false, 49800),
-        new Boss(710, 'Infernal God', 400, ['Holy'], true, 52500)
+
+    new BossCategory(503, 'Black Hole', 'img/bosses/22.png', [
+        new Boss(22, 'Black Hole', 100, [], false, 1000)
     ]),
-    new BossCategory(8, 'Crystal Guardians', 'img/bosses/8.png', [
-        new Boss(801, 'Prismatic Sentinel', 400, ['Dark', 'Stone'], false, 59000),
-        new Boss(802, 'Diamond Colossus', 400, ['Dark', 'Electric'], true, 64000),
-        new Boss(803, 'Crystalline Empress', 400, ['Dark'], false, 69000),
-        new Boss(804, 'Gemstone Titan', 400, ['Dark', 'Stone'], false, 57000),
-        new Boss(805, 'Quartz Behemoth', 400, ['Dark'], false, 61500),
-        new Boss(806, 'Crystal Dragon', 400, ['Dark', 'Electric'], false, 66000),
-        new Boss(807, 'Prism Guardian', 400, ['Dark', 'Stone'], false, 58500),
-        new Boss(808, 'Diamond Warden', 400, ['Dark'], false, 63000),
-        new Boss(809, 'Crystal Overlord', 400, ['Dark', 'Electric'], false, 67500),
-        new Boss(810, 'Gemstone God', 400, ['Dark'], true, 71000)
+
+    new BossCategory(504, 'Milky Way', 'img/bosses/23.png', [
+        new Boss(23, 'Milky Way', 100, [], false, 1000)
     ]),
-    new BossCategory(9, 'Void Entities', 'img/bosses/9.png', [
-        new Boss(901, 'Void Devourer', 400, ['Light', 'Holy'], false, 80000),
-        new Boss(902, 'Cosmic Horror', 400, ['Light'], true, 86000),
-        new Boss(903, 'Entropy Lord', 400, ['Light', 'Plant'], false, 92000),
-        new Boss(904, 'Void Titan', 400, ['Light', 'Holy'], false, 78000),
-        new Boss(905, 'Cosmic Beast', 400, ['Light'], false, 83000),
-        new Boss(906, 'Void Dragon', 400, ['Light', 'Plant'], false, 88500),
-        new Boss(907, 'Entropy Overlord', 400, ['Light', 'Holy'], false, 79500),
-        new Boss(908, 'Cosmic Archon', 400, ['Light'], false, 84500),
-        new Boss(909, 'Void Sovereign', 400, ['Light', 'Plant'], false, 90000),
-        new Boss(910, 'Cosmic God', 400, ['Light'], true, 94000)
-    ]),
-    new BossCategory(10, 'Ancient Dragons', 'img/bosses/10.png', [
-        new Boss(1001, 'Elder Dragon', 400, ['Ice', 'Dark'], false, 104000),
-        new Boss(1002, 'Primordial Wyrm', 400, ['Ice', 'Holy'], true, 112000),
-        new Boss(1003, 'Dragon Sovereign', 400, ['Ice'], false, 122000),
-        new Boss(1004, 'Ancient Wyvern', 400, ['Ice', 'Dark'], false, 100000),
-        new Boss(1005, 'Primordial Beast', 400, ['Ice'], false, 108000),
-        new Boss(1006, 'Dragon Emperor', 400, ['Ice', 'Holy'], false, 116000),
-        new Boss(1007, 'Ancient Wyrm', 400, ['Ice', 'Dark'], false, 102000),
-        new Boss(1008, 'Primordial Titan', 400, ['Ice'], false, 110000),
-        new Boss(1009, 'Dragon Overlord', 400, ['Ice', 'Holy'], false, 118000),
-        new Boss(1010, 'Ancient God', 400, ['Ice'], true, 125000)
-    ]),
-    new BossCategory(11, 'Celestial Beings', 'img/bosses/11.png', [
-        new Boss(1101, 'Starborn Guardian', 400, ['Dark', 'Poison'], false, 140000),
-        new Boss(1102, 'Nebula Titan', 400, ['Dark'], true, 152000),
-        new Boss(1103, 'Celestial Emperor', 400, ['Dark', 'Electric'], false, 165000),
-        new Boss(1104, 'Cosmic Sentinel', 400, ['Dark', 'Poison'], false, 136000),
-        new Boss(1105, 'Starlight Beast', 400, ['Dark'], false, 148000),
-        new Boss(1106, 'Celestial Dragon', 400, ['Dark', 'Electric'], false, 160000),
-        new Boss(1107, 'Nebula Overlord', 400, ['Dark', 'Poison'], false, 138000),
-        new Boss(1108, 'Cosmic Archon', 400, ['Dark'], false, 150000),
-        new Boss(1109, 'Celestial Sovereign', 400, ['Dark', 'Electric'], false, 162000),
-        new Boss(1110, 'Starborn God', 400, ['Dark'], true, 168000)
-    ]),
-    new BossCategory(12, 'Eldritch Horrors', 'img/bosses/12.png', [
-        new Boss(1201, 'Madness Incarnate', 400, ['Holy', 'Light'], false, 183000),
-        new Boss(1202, 'Chaos Behemoth', 400, ['Holy', 'Fire'], true, 201000),
-        new Boss(1203, 'Eldritch God', 400, ['Holy'], false, 220000),
-        new Boss(1204, 'Horror Titan', 400, ['Holy', 'Light'], false, 178000),
-        new Boss(1205, 'Madness Beast', 400, ['Holy'], false, 195000),
-        new Boss(1206, 'Eldritch Dragon', 400, ['Holy', 'Fire'], false, 212000),
-        new Boss(1207, 'Chaos Overlord', 400, ['Holy', 'Light'], false, 180000),
-        new Boss(1208, 'Horror Archon', 400, ['Holy'], false, 198000),
-        new Boss(1209, 'Eldritch Sovereign', 400, ['Holy', 'Fire'], false, 215000),
-        new Boss(1210, 'Madness God', 400, ['Holy'], true, 225000)
-    ]),
-    new BossCategory(13, 'Primordial Titans', 'img/bosses/13.png', [
-        new Boss(1301, 'Time Devourer', 400, ['All'], false, 244000),
-        new Boss(1302, 'Reality Shaper', 400, ['All'], true, 268000),
-        new Boss(1303, 'Primordial Eternal', 400, ['All'], false, 305000),
-        new Boss(1304, 'Chaos Primordial', 400, ['All'], false, 238000),
-        new Boss(1305, 'Void Primordial', 400, ['All'], false, 260000),
-        new Boss(1306, 'Cosmic Primordial', 400, ['All'], false, 295000),
-        new Boss(1307, 'Ancient Primordial', 400, ['All'], false, 240000),
-        new Boss(1308, 'Eternal Primordial', 400, ['All'], false, 265000),
-        new Boss(1309, 'Supreme Primordial', 400, ['All'], false, 300000),
-        new Boss(1310, 'Primordial God', 400, ['All'], true, 310000)
+
+    new BossCategory(505, 'Universe', 'img/bosses/24.png', [
+        new Boss(24, 'Universe', 100, [], false, 1000)
     ])
 ];
