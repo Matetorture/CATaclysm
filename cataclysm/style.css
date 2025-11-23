@@ -126,6 +126,7 @@
     justify-content: center;
     align-items: center;
     width: 100%;
+    padding: 40px;
 }
 
 .boss-image img {
@@ -268,8 +269,9 @@
 }
 
 .category-img{
-    width: 64px;
-    height: 64px;
+    padding: 10px;
+    max-width: 64px;
+    height: 54px;
 }
 
 .defeated-count {
