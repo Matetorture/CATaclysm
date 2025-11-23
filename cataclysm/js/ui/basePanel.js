@@ -5,6 +5,7 @@ import { showTooltip, removeTooltip } from './tooltips.js';
 import { CatCard } from '../models/CatCard.js';
 import { setupTiltEffect } from '../helpers/utils.js';
 import { onCardCloned } from '../helpers/achievementChecker.js';
+import { bossCategories } from '../data/bossesData.js';
 
 let updateInterval = null;
 export let baseUpgradeCats = [null, null];
@@ -195,12 +196,16 @@ function renderUpgradeInProgress() {
 
 function renderUpgradeControls(nextBase, isUnlocked) {
     if (!isUnlocked) {
+        const requiredCategoryId = nextBase.id - 1;
+        const requiredCategory = bossCategories.find(cat => cat.id === requiredCategoryId);
+        const totalBosses = requiredCategory ? requiredCategory.bosses.length : 10;
+        
         return `
             <div class="upgrade-controls-box locked">
                 <div class="locked-base-overlay">
                     <img src="img/icons/lock.png" alt="Locked" class="lock-icon">
                     <p class="unlock-requirement">
-                        Defeat all 10 bosses from the next category to unlock this base upgrade
+                        Defeat all ${totalBosses} bosses from the next category to unlock this base upgrade
                     </p>
                 </div>
             </div>

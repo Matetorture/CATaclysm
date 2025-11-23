@@ -77,6 +77,7 @@ export function renderBoss() {
             const isCompleted = progress.completed;
             const isUnlocked = isCategoryUnlocked(cat.id);
             const isActive = cat.id === selectedCategoryId;
+            const totalBosses = cat.bosses.length;
             
             return `
             <button class="boss-category-button ${isActive ? 'active' : ''} ${!isUnlocked ? 'locked' : ''}" 
@@ -84,7 +85,7 @@ export function renderBoss() {
                     ${!isUnlocked ? 'disabled' : ''}>
                 ${!isUnlocked ? '<img src="img/icons/lock.png" alt="Locked" class="lock-icon" />' : ''}
                 <img src="${cat.img}" alt="${cat.name}" class="category-img ${!isUnlocked ? 'locked-img' : ''}" />
-                <span class="defeated-count">${progress.currentBossIndex}/10 ${isCompleted ? '✓' : ''}</span>
+                <span class="defeated-count">${progress.currentBossIndex}/${totalBosses} ${isCompleted ? '✓' : ''}</span>
             </button>`;
             }).join('')}
         </div>
