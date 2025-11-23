@@ -80,7 +80,7 @@ function initGame() {
     startAutoSave();
     setupBeforeUnloadSave();
     
-    window.renderAvailableCards = renderAvailableCards;
+    window.applyCurrentFilter = applyCurrentFilter;
     window.gameState = gameState;
     window.triggerManualSave = triggerManualSave;
     window.updateMoneyDisplay = updateMoneyDisplay;
