@@ -84,8 +84,9 @@ export function renderBoss() {
                     data-cat-id="${cat.id}" 
                     ${!isUnlocked ? 'disabled' : ''}>
                 ${!isUnlocked ? '<img src="img/icons/lock.png" alt="Locked" class="lock-icon" />' : ''}
+                ${isCompleted ? '<div class="category-completed-checkmark">✓</div>' : ''}
                 <img src="${cat.img}" alt="${cat.name}" class="category-img ${!isUnlocked ? 'locked-img' : ''}" />
-                <span class="defeated-count">${progress.currentBossIndex}/${totalBosses} ${isCompleted ? '✓' : ''}</span>
+                <span class="defeated-count">${progress.currentBossIndex}/${totalBosses}</span>
             </button>`;
             }).join('')}
         </div>
