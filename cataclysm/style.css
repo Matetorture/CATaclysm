@@ -278,10 +278,10 @@
     top: 50%;
     left: 30%;
     transform: translate(-50%, -50%);
-    font-size: 60px;
-    color: var(--primary-color);
     z-index: 11;
     pointer-events: none;
+    width: 40%;
+    opacity: 0.8;
 }
 
 .boss-list-toggle-btn {
