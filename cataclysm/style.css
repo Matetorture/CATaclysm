@@ -55,21 +55,12 @@
     gap: var(--spacing-unit);
 }
 
-.username {
-    width: 50%;
-    text-align: center;
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--primary-color);
-}
-
 .money-display {
     font-size: 18px;
     font-weight: 600;
     color: #4bc180;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    width: 100%;
+    text-align: right;
 }
 
 .money-display::before {
