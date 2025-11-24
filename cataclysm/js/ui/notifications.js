@@ -17,10 +17,16 @@ export function showNotification(message, type = 'info') {
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
     
-    const icon = getNotificationIcon(type);
     const iconElement = document.createElement('span');
     iconElement.className = 'notification-icon';
-    iconElement.textContent = icon;
+    
+    const iconImg = document.createElement('img');
+    iconImg.src = `img/icons/${type}.png`;
+    iconImg.alt = type;
+    iconImg.style.width = '70%';
+    iconImg.style.height = '70%';
+    iconImg.style.objectFit = 'contain';
+    iconElement.appendChild(iconImg);
     
     const messageElement = document.createElement('span');
     messageElement.className = 'notification-message';
@@ -71,17 +77,6 @@ function updateNotificationPositions() {
         notification.style.top = `${offset}px`;
         offset += notification.offsetHeight + 10;
     });
-}
-
-function getNotificationIcon(type) {
-    switch(type) {
-        case 'success': return '✓';
-        case 'error': return '✕';
-        case 'warning': return '⚠';
-        case 'info': return 'ℹ';
-        case 'achievement': return '🏆';
-        default: return 'ℹ';
-    }
 }
 
 export function notifySuccess(message) {

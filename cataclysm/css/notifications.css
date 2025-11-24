@@ -74,6 +74,10 @@
     opacity: 1;
 }
 
+.notification-icon img {
+    filter: brightness(0) invert(1);
+}
+
 /* Success notification */
 .notification-success {
     background: linear-gradient(135deg, rgba(76, 175, 80, 0.95), rgba(56, 142, 60, 0.95));
