@@ -111,12 +111,12 @@ export const basesData = [
 
 // Time required to clone cards based on rarity (in seconds)
 export const cloneTimeByRarity = {
-    'Common': 30,
-    'Uncommon': 60,
-    'Rare': 120,
-    'Epic': 300,
-    'Legendary': 600,
-    'Ultimate': 1200
+    'Common': 100,
+    'Uncommon': 200,
+    'Rare': 500,
+    'Epic': 2000,
+    'Legendary': 4000,
+    'Ultimate': 10000
 };
 
 export function getCurrentBaseConfig(baseId) {
