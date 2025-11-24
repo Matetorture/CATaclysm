@@ -591,6 +591,17 @@
     transition: all 0.2s ease;
 }
 
+.bottom-panel-close img {
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+}
+
+.bottom-panel-close:hover img {
+    filter: brightness(1) invert(0);
+}
+
 .bottom-panel-close:hover {
     background-color: var(--primary-color);
     color: var(--dark-bg);
