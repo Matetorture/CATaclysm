@@ -121,3 +121,15 @@
     background: rgba(255, 255, 255, 0.2);
     color: #fff;
 }
+
+/* Achievement notification */
+.notification-achievement {
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.95), rgba(255, 160, 0, 0.95));
+    color: #fff;
+    border-left: 4px solid #FFC107;
+}
+
+.notification-achievement .notification-icon {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}

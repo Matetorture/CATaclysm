@@ -78,6 +78,7 @@ function getNotificationIcon(type) {
         case 'error': return '✕';
         case 'warning': return '⚠';
         case 'info': return 'ℹ';
+        case 'achievement': return '🏆';
         default: return 'ℹ';
     }
 }
@@ -96,4 +97,8 @@ export function notifyWarning(message, duration = 10000) {
 
 export function notifyInfo(message, duration = 10000) {
     showNotification(message, 'info', duration);
+}
+
+export function notifyAchievement(message, duration = 10000) {
+    showNotification(message, 'achievement', duration);
 }
