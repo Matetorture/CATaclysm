@@ -48,7 +48,7 @@ function renderAchievements() {
                 <div class="achievement-id">#${achievement.id}</div>
                 <div class="achievement-icon ${isUnlocked ? '' : 'locked'}">
                     ${isUnlocked 
-                        ? `<img src="${achievementImg}" alt="${achievement.name}" style="width: 70%; height: 70%; object-fit: contain;">` 
+                        ? `<img src="../../img/icons/achievement.png" alt="${achievement.name}" style="width: 70%; height: 70%; object-fit: contain;">`
                         : '<img src="../../img/icons/lock.png" alt="Locked" style="width: 70%; height: 70%; object-fit: contain;">'}
                 </div>
                 <div class="achievement-content">
