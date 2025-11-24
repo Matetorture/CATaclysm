@@ -18,7 +18,7 @@ import { setupBottomPanelToggle, openCenteredIframe } from './js/helpers/utils.j
 import { setupUnusedCardsDropZone } from './js/helpers/dragDrop.js';
 import { toggleCombatPause } from './js/helpers/pauseManager.js';
 import { loadGame, startAutoSave, setupBeforeUnloadSave } from './js/helpers/saveManager.js';
-import { checkDeckAchievements, checkBaseAchievements } from './js/helpers/achievementChecker.js';
+import { checkDeckAchievements, checkBaseAchievements, checkMaxCardAchievements } from './js/helpers/achievementChecker.js';
 
 function setupPauseButton() {
     const pauseBtn = document.getElementById('pauseBtn');
@@ -79,6 +79,7 @@ function initGame() {
     initializeBasePanel();
     checkDeckAchievements();
     checkBaseAchievements();
+    checkMaxCardAchievements();
     
     startAutoSave();
     setupBeforeUnloadSave();

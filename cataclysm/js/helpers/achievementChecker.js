@@ -175,31 +175,22 @@ export function onCardCloned(card) {
 }
 
 export function onCardMaxed(card) {
-    const maxCount = achievementsData.find(a => 
-        a.requirements.type === 'max_card_count' && a.requirements.count === 1
+    checkMaxCardAchievements();
+}
+
+export function checkMaxCardAchievements() {
+    const maxCardAchievements = achievementsData.filter(a => 
+        a.requirements.type === 'max_card_count' || 
+        a.requirements.type === 'max_card_rarity'
     );
-    if (maxCount && !gameState.unlockedAchievements.has(maxCount.id)) {
-        unlockAchievement(maxCount.id);
-    }
     
-    if (card.rarity === 'Ultimate') {
-        const ultimateMax = achievementsData.find(a => 
-            a.requirements.type === 'max_card_rarity' && a.requirements.rarity === 'Ultimate'
-        );
-        if (ultimateMax && !gameState.unlockedAchievements.has(ultimateMax.id)) {
-            unlockAchievement(ultimateMax.id);
+    maxCardAchievements.forEach(achievement => {
+        if (!gameState.unlockedAchievements.has(achievement.id)) {
+            if (checkAchievement(achievement)) {
+                unlockAchievement(achievement.id);
+            }
         }
-    }
-    
-    const maxedCards = gameState.ownedCards.filter(c => c.copies >= 62).length;
-    const collectionMaster = achievementsData.find(a => 
-        a.requirements.type === 'max_card_count' && a.requirements.count === 20
-    );
-    if (collectionMaster && !gameState.unlockedAchievements.has(collectionMaster.id)) {
-        if (maxedCards >= 20) {
-            unlockAchievement(collectionMaster.id);
-        }
-    }
+    });
 }
 
 export function checkBaseAchievements() {
