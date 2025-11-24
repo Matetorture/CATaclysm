@@ -57,7 +57,7 @@ export const achievementsData = [
     {
         id: 7,
         name: "First Victory",
-        description: "Defeat the first boss (Category 1)",
+        description: "Defeat the first bosses",
         requirements: {
             type: "defeat_boss_category",
             categoryId: 1
@@ -66,10 +66,10 @@ export const achievementsData = [
     {
         id: 8,
         name: "Final Victory",
-        description: "Defeat the final boss (Category 13)",
+        description: "Defeat the final boss",
         requirements: {
             type: "defeat_boss_category",
-            categoryId: 13
+            categoryId: 9
         }
     },
     {

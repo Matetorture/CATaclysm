@@ -7,7 +7,7 @@ import { startDeckContinuousAttacks } from '../game/combat.js';
 import { updateDeckStats } from './deckStats.js';
 import { isCardUsedInBase } from './basePanel.js';
 import { allModifiers } from '../helpers/modifiers.js';
-import { checkSlotAchievements } from '../helpers/achievementChecker.js';
+import { checkSlotAchievements, checkDeckAchievements } from '../helpers/achievementChecker.js';
 import { applyCurrentFilter } from './filters.js';
 import { notifySuccess, notifyError } from './notifications.js';
 
@@ -259,6 +259,7 @@ export function addCardToDeck(card) {
         applyCurrentFilter();
         renderDeckSlots();
         startDeckContinuousAttacks();
+        checkDeckAchievements();
     }
 }
 
@@ -268,6 +269,8 @@ export function removeCardFromDeck(slotIndex) {
 
     const tooltips = document.querySelectorAll('[data-tooltip-active="true"]');
     tooltips.forEach(el => removeTooltip(el));
+    
+    checkDeckAchievements();
     removeDeckComparisonTooltip();
     
     applyCurrentFilter();
