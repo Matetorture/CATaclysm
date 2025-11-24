@@ -173,12 +173,33 @@ export function changeBossHp(amount) {
         const nextIndex = currentBossIndex + 1;
 
         if (nextIndex >= category.bosses.length) {
-            setCategoryCompleted(selectedCategoryId, true);
+            const wasFirstCompletion = !categoryProgress[selectedCategoryId].completed;
+            const completedCategoryId = selectedCategoryId;
+            setCategoryCompleted(completedCategoryId, true);
+            
+            let targetCategory = category;
+            let completionMessage = `${category.name} category completed!`;
+
+            
+            if (wasFirstCompletion) {
+                const currentCategoryIndex = bossCategories.findIndex(cat => cat.id === completedCategoryId);
+                const nextCategory = bossCategories[currentCategoryIndex + 1];
+                
+                if (nextCategory && isCategoryUnlocked(nextCategory.id)) {
+                    categoryProgress[completedCategoryId].currentBossIndex = 0;
+                    categoryProgress[completedCategoryId].currentBossHp = category.bosses[0].maxHp;
+                    
+                    setSelectedCategoryId(nextCategory.id);
+                    targetCategory = nextCategory;
+                    completionMessage = `${category.name} category completed! Now facing ${nextCategory.name}!`;
+                }
+            }
+            
+            notifySuccess(completionMessage);
             setCurrentBossIndex(0);
-            setCurrentBossHp(category.bosses[0].maxHp);
+            setCurrentBossHp(targetCategory.bosses[0].maxHp);
             renderBoss();
             checkBossAchievements();
-            notifySuccess(`${category.name} category completed!`);
         } else {
             setCurrentBossIndex(nextIndex);
             setCurrentBossHp(category.bosses[nextIndex].maxHp);
