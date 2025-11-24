@@ -1,4 +1,4 @@
-import { gameState } from '../data/gameState.js';
+import { gameState, currentBossHp } from '../data/gameState.js';
 import { getModifiedStats } from '../helpers/modifiers.js';
 import { getCurrentBoss, changeBossHp } from '../ui/bossRenderer.js';
 import { notifyWarning } from '../ui/notifications.js';
@@ -61,6 +61,8 @@ export function attackWithCard(card) {
         damage *= 2;
     }
 
+    const bossHpAfterDamage = currentBossHp - damage;
+    
     changeBossHp(-damage);
 
     playAttackAnimation(card);
@@ -70,8 +72,8 @@ export function attackWithCard(card) {
         bossHpBarDamage.classList.add('move-up-animation');
         bossHpBarDamage.style.position = 'absolute';
         bossHpBarDamage.style.zIndex = '1002';
-        bossHpBarDamage.style.left = (boss.hp / boss.maxHp * 100)  + '%';
-        bossHpBarDamage.style.top = '-10px';
+        bossHpBarDamage.style.left = (bossHpAfterDamage / boss.maxHp * 100) - 15 + '%';
+        bossHpBarDamage.style.top = '-20px';
         bossHpBarDamage.style.color = isCrit ? '#ff4444' : '#ffffff';
         bossHpBarDamage.innerText = (isCrit ? 'CRIT! ' : '') + '-' + Math.floor(damage);
 
