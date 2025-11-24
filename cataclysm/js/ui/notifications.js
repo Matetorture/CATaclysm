@@ -10,8 +10,9 @@ function getOrCreateContainer() {
     return notificationContainer;
 }
 
-export function showNotification(message, type = 'info', duration = 10000) {
+export function showNotification(message, type = 'info') {
     const container = getOrCreateContainer();
+    const duration = 10000;
     
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
@@ -83,22 +84,22 @@ function getNotificationIcon(type) {
     }
 }
 
-export function notifySuccess(message, duration = 10000) {
-    showNotification(message, 'success', duration);
+export function notifySuccess(message) {
+    showNotification(message, 'success');
 }
 
-export function notifyError(message, duration = 10000) {
-    showNotification(message, 'error', duration);
+export function notifyError(message) {
+    showNotification(message, 'error');
 }
 
-export function notifyWarning(message, duration = 10000) {
-    showNotification(message, 'warning', duration);
+export function notifyWarning(message) {
+    showNotification(message, 'warning');
 }
 
-export function notifyInfo(message, duration = 10000) {
-    showNotification(message, 'info', duration);
+export function notifyInfo(message) {
+    showNotification(message, 'info');
 }
 
-export function notifyAchievement(message, duration = 10000) {
-    showNotification(message, 'achievement', duration);
+export function notifyAchievement(message) {
+    showNotification(message, 'achievement');
 }
