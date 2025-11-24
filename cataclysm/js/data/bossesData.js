@@ -2,7 +2,7 @@ import { Boss, BossCategory } from '../models/Boss.js';
 
 export const bossCategories = [
     new BossCategory(1, 'Toys', 'img/bosses/1.png', [
-        new Boss(1, 'Yarn Ball', 100, [], false, 1000),
+        new Boss(1, 'Yarn Ball', 100, [], false, 1000000000),
         new Boss(2, 'Wool String', 100, [], false, 1000),
         new Boss(3, 'Plush Mouse', 100, [], false, 1000),
         new Boss(4, 'Rubber Ball', 100, [], false, 1000),
@@ -32,23 +32,23 @@ export const bossCategories = [
         new Boss(19, 'Continent', 100, [], false, 1000)
     ]),
 
-    new BossCategory(501, 'Earth', 'img/bosses/20.png', [
+    new BossCategory(5, 'Earth', 'img/bosses/20.png', [
         new Boss(20, 'Earth', 100, [], false, 1000)
     ]),
 
-    new BossCategory(502, 'Solar System', 'img/bosses/21.png', [
+    new BossCategory(6, 'Solar System', 'img/bosses/21.png', [
         new Boss(21, 'Solar System', 100, [], false, 1000)
     ]),
 
-    new BossCategory(503, 'Black Hole', 'img/bosses/22.png', [
+    new BossCategory(7, 'Black Hole', 'img/bosses/22.png', [
         new Boss(22, 'Black Hole', 100, [], false, 1000)
     ]),
 
-    new BossCategory(504, 'Milky Way', 'img/bosses/23.png', [
+    new BossCategory(8, 'Milky Way', 'img/bosses/23.png', [
         new Boss(23, 'Milky Way', 100, [], false, 1000)
     ]),
 
-    new BossCategory(505, 'Universe', 'img/bosses/24.png', [
+    new BossCategory(9, 'Universe', 'img/bosses/24.png', [
         new Boss(24, 'Universe', 100, [], false, 1000)
     ])
 ];
