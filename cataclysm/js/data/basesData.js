@@ -1,7 +1,7 @@
 export const basesData = [
     {
         id: 1,
-        name: "Wooden Shelter",
+        name: "Cardboard",
         unlocked: true,
         maxDeckSlots: 1,
         unlockedModifiers: 0,
@@ -10,7 +10,7 @@ export const basesData = [
     },
     {
         id: 2,
-        name: "Toys",
+        name: "Bucket",
         baseBuildTime: 600,
         cost: 1000,
         unlocked: false,
@@ -21,7 +21,7 @@ export const basesData = [
     },
     {
         id: 3,
-        name: "House Items",
+        name: "Cat Bed",
         baseBuildTime: 6000,
         cost: 2500,
         unlocked: false,
@@ -32,7 +32,7 @@ export const basesData = [
     },
     {
         id: 4,
-        name: "Buildings",
+        name: "Scratching Post",
         baseBuildTime: 10000,
         cost: 15000,
         unlocked: false,
@@ -43,7 +43,7 @@ export const basesData = [
     },
     {
         id: 5,
-        name: "Large Geographies",
+        name: "Cat Tower",
         baseBuildTime: 20000,
         cost: 30000,
         unlocked: false,
@@ -54,7 +54,7 @@ export const basesData = [
     },
     {
         id: 6,
-        name: "Earth",
+        name: "Cat Castle",
         baseBuildTime: 40000,
         cost: 75000,
         unlocked: false,
@@ -65,7 +65,7 @@ export const basesData = [
     },
     {
         id: 7,
-        name: "Solar System",
+        name: "Cat Fortress",
         baseBuildTime: 60000,
         cost: 200000,
         unlocked: false,
@@ -76,7 +76,7 @@ export const basesData = [
     },
     {
         id: 8,
-        name: "Black Hole",
+        name: "Capsule",
         baseBuildTime: 100000,
         cost: 500000,
         unlocked: false,
@@ -87,7 +87,7 @@ export const basesData = [
     },
     {
         id: 9,
-        name: "Milky Way",
+        name: "Control Panel",
         baseBuildTime: 1000000,
         cost: 1000000,
         unlocked: false,
@@ -98,7 +98,7 @@ export const basesData = [
     },
     {
         id: 10,
-        name: "Universe",
+        name: "Everything",
         baseBuildTime: 10000000,
         cost: 10000000,
         unlocked: false,
