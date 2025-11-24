@@ -13,7 +13,7 @@ export function unlockAchievement(achievementId) {
     
     const achievement = achievementsData.find(a => a.id === achievementId);
     if (achievement) {
-        notifyAchievement(`Achievement unlocked: ${achievement.name}`, achievementId, 4000);
+        notifyAchievement(`Achievement unlocked: ${achievement.name}`);
     }
     
     import('./saveManager.js').then(({ saveGame }) => {
