@@ -1,7 +1,6 @@
 import { achievementsData } from '../data/achievementsData.js';
 import { gameState } from '../data/gameState.js';
 import { categoryProgress } from '../data/gameState.js';
-import { cloneSlots } from '../ui/basePanel.js';
 import { notifyAchievement } from '../ui/notifications.js';
 
 export function unlockAchievement(achievementId) {
@@ -92,12 +91,8 @@ export function checkAchievement(achievement) {
             return gameState.ownedCards.some(card => card.rarity === req.rarity);
         }
         
-        case 'all_clone_slots_unlocked': {
-            return cloneSlots && cloneSlots.length >= 4;
-        }
-        
-        case 'modifier_count': {
-            return gameState.ownedModifiers.length >= req.count;
+        case 'base_level': {
+            return gameState.currentBaseId >= req.level;
         }
         
         default:
@@ -205,4 +200,18 @@ export function onCardMaxed(card) {
             unlockAchievement(collectionMaster.id);
         }
     }
+}
+
+export function checkBaseAchievements() {
+    const baseAchievements = achievementsData.filter(a => 
+        a.requirements.type === 'base_level'
+    );
+    
+    baseAchievements.forEach(achievement => {
+        if (!gameState.unlockedAchievements.has(achievement.id)) {
+            if (checkAchievement(achievement)) {
+                unlockAchievement(achievement.id);
+            }
+        }
+    });
 }

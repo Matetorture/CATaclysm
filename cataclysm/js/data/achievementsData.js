@@ -200,19 +200,20 @@ export const achievementsData = [
     },
     {
         id: 24,
-        name: "Clone Master",
-        description: "Unlock all 4 cloning slots",
+        name: "Base Builder",
+        description: "Reach base level 5",
         requirements: {
-            type: "all_clone_slots_unlocked"
+            type: "base_level",
+            level: 5
         }
     },
     {
         id: 25,
-        name: "Modifier Collector",
-        description: "Unlock 5 deck slot modifiers",
+        name: "Base Master",
+        description: "Reach base level 10",
         requirements: {
-            type: "modifier_count",
-            count: 5
+            type: "base_level",
+            level: 10
         }
     },
     {

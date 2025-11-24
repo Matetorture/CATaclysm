@@ -5,7 +5,7 @@ import { applyCurrentFilter } from './filters.js';
 import { showTooltip, removeTooltip } from './tooltips.js';
 import { CatCard } from '../models/CatCard.js';
 import { setupTiltEffect } from '../helpers/utils.js';
-import { onCardCloned } from '../helpers/achievementChecker.js';
+import { onCardCloned, checkBaseAchievements } from '../helpers/achievementChecker.js';
 import { bossCategories } from '../data/bossesData.js';
 import { notifySuccess, notifyError, notifyInfo, notifyWarning } from './notifications.js';
 
@@ -425,6 +425,7 @@ function completeBaseUpgrade() {
     renderBaseUpgradeTab();
     renderCardCloneTab();
     renderDeckSlots();
+    checkBaseAchievements();
     
     triggerManualSave();
 }
