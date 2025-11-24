@@ -50,7 +50,7 @@ export const cardsData = [
 
     //4
     new CatCard(37, '4.1', 'Santa Claus', 'Event', 'Ultimate', 1200, 100000, 5, ['Water','Air','Ice'], 0),
-    new CatCard(38, '4.2', 'Christmas Tree', 'Event', 'Ultimate', 1300, 100000, 5, ['Stone','Plant','Electric'], 0),
+    new CatCard(38, '4.2', 'Christmas Tree', 'Event', 'Ultimate', 1300, 100000, 5, ['Plant', 'Holy'], 0),
     new CatCard(39, '4.3', 'Purple Gift', 'Event', 'Uncommon', 90, 300000, 10, ['Fire'], 0),
     new CatCard(40, '4.4', 'Blue Gift', 'Event', 'Uncommon', 90, 300000, 10, ['Water'], 0),
     new CatCard(41, '4.5', 'Green Gift', 'Event', 'Uncommon', 90, 300000, 10, ['Stone'], 0),
@@ -61,7 +61,7 @@ export const cardsData = [
     new CatCard(46, '4.10', 'Green Firework', 'Event', 'Uncommon', 90, 300000, 10, ['Fire'], 0),
     new CatCard(47, '4.11', 'Yellow Firework', 'Event', 'Uncommon', 90, 300000, 10, ['Water'], 0),
     new CatCard(48, '4.12', 'Red Firework', 'Event', 'Uncommon', 90, 300000, 10, ['Stone'], 0),
-    new CatCard(49, '4.13', 'Shining Heart', 'Event', 'Ultimate', 1250, 100000, 5, ['Fire'], 0),
+    new CatCard(49, '4.13', 'Shining Heart', 'Event', 'Ultimate', 1250, 100000, 5, ['Fire', 'Stone', 'Electric'], 0),
     new CatCard(50, '4.14', 'Vampir', 'Event', 'Ultimate', 1950, 150000, 5, ['Dark'], 0),
 
     //5
