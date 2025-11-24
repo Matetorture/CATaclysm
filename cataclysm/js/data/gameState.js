@@ -58,7 +58,7 @@ export function setBossListVisible(value) {
     bossListVisible = value;
 }
 
-function formatMoneyWithSpaces(number) {
+export function formatMoneyWithSpaces(number) {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 }
 

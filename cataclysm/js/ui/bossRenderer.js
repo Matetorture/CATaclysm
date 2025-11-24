@@ -11,7 +11,8 @@ import {
     setCurrentBossHp,
     setCategoryCompleted,
     setBossListVisible,
-    updateMoneyDisplay
+    updateMoneyDisplay,
+    formatMoneyWithSpaces
 } from '../data/gameState.js';
 import { openCenteredIframe } from '../helpers/utils.js';
 import { checkBossAchievements } from '../helpers/achievementChecker.js';
@@ -160,7 +161,7 @@ export function changeBossHp(amount) {
         gameState.money += rewardMoney;
         updateMoneyDisplay();
         
-        notifySuccess(`${boss.name} defeated! +$${rewardMoney}`);
+        notifySuccess(`${boss.name} defeated! + $ ${formatMoneyWithSpaces(rewardMoney)}`);
 
         import('./basePanel.js').then(({ renderBaseUpgradeTab }) => {
             if (typeof renderBaseUpgradeTab === 'function') {
