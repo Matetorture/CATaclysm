@@ -389,7 +389,7 @@ function openCardSelectionModal(rarity) {
     const cardsOfRarity = getCardsByRarity(rarity);
     
     if (cardsOfRarity.length === 0) {
-        modalCardsGrid.innerHTML = '<p style="color: gold; font-size: 18px; text-align: center;">All cards of this rarity are at max level!</p>';
+        modalCardsGrid.innerHTML = '<div style="color: gold; font-size: 18px; text-align: center; width: 100%; margin: 30px;">All cards of this rarity are at MAX level!</div>';
         modal.classList.add('show');
         return;
     }

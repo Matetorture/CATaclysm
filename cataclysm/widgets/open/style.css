@@ -150,12 +150,11 @@ button:hover {
     background-color: var(--dark-secondary);
     border-radius: var(--card-border-radius);
     padding: 40px;
-    max-width: 1200px;
-    width: 90vw;
+    width: 85vw;
+    min-height: 300px;
     max-height: 85vh;
-    overflow-y: auto;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-    overflow-y: hidden;
+    overflow-x: hidden;
 }
 
 .modal-header {
@@ -181,8 +180,8 @@ button:hover {
 }
 
 .modal-cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 20px;
     justify-items: center;
 }
@@ -193,6 +192,9 @@ button:hover {
     border: 2px solid transparent;
     border-radius: 8px;
     padding: 5px;
+}
+.modal-card div{
+    overflow: hidden;
 }
 
 .card-tilt-wrapper,
