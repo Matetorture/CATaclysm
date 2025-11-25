@@ -6,7 +6,7 @@ const sounds = {
     cardDamage: new Audio(audioPath + 'card-damage.mp3'),
     moneySpent: new Audio(audioPath + 'money.mp3'),
     buttonClick: new Audio(audioPath + 'button-click.mp3'),
-    cardOpen: new Audio(audioPath + 'card-open.mp3'),//x
+    cardOpen: new Audio(audioPath + 'card-open.mp3'),
     bossDefeated: new Audio(audioPath + 'boss-defeated.mp3'),//x
     cardHover: new Audio(audioPath + 'card-hover.mp3')
 };
