@@ -17,6 +17,7 @@ import {
 import { openCenteredIframe } from '../helpers/utils.js';
 import { checkBossAchievements } from '../helpers/achievementChecker.js';
 import { notifySuccess, notifyInfo } from './notifications.js';
+import { playBossDefeatedSound } from '../helpers/audioManager.js';
 
 export function getCategoryById(catId) {
     return bossCategories.find(cat => cat.id === catId);
@@ -156,6 +157,7 @@ export function changeBossHp(amount) {
     setCurrentBossHp(newHp);
 
     if (newHp === 0) {
+        playBossDefeatedSound();
         const rewardMoney = calculateRewardMoney(boss.baseRewardMoney);
         openCenteredIframe('widgets/reward/index.html?amount=' + rewardMoney, 10);
         gameState.money += rewardMoney;

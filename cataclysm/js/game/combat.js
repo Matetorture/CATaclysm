@@ -2,6 +2,7 @@ import { gameState, currentBossHp } from '../data/gameState.js';
 import { getModifiedStats } from '../helpers/modifiers.js';
 import { getCurrentBoss, changeBossHp } from '../ui/bossRenderer.js';
 import { notifyWarning } from '../ui/notifications.js';
+import { playCardDamageSound } from '../helpers/audioManager.js';
 
 let attackIntervals = [];
 const cardAttackTimers = new Map();
@@ -62,7 +63,7 @@ export function attackWithCard(card) {
     }
 
     const bossHpAfterDamage = currentBossHp - damage;
-    
+    playCardDamageSound();
     changeBossHp(-damage);
 
     playAttackAnimation(card);

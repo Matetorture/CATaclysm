@@ -1,10 +1,11 @@
 import { cardsData } from '../../js/data/cardsData.js';
 import { showTooltip, removeTooltip } from '../../js/ui/tooltips.js';
-import { createCardElement } from '../../js/ui/cardRenderer.js';
+import { renderCardWithWrapper } from '../../js/ui/cardRenderer.js';
 import { setupSingleCardTilt } from '../../js/helpers/utils.js';
 import { gameState as localGameState, triggerManualSave as localTriggerManualSave, updateMoneyDisplay as localUpdateMoneyDisplay } from '../../js/data/gameState.js';
 import { CatCard } from '../../js/models/CatCard.js';
 import { checkCardUnlockAchievements, onCardMaxed } from '../../js/helpers/achievementChecker.js';
+import { playCardOpenSound, playMoneySpentSound } from '../../js/helpers/audioManager.js';
 
 // Get gameState from parent window if we're in iframe, otherwise use local
 const gameState = (window.parent && window.parent !== window && window.parent.gameState) 
@@ -243,21 +244,21 @@ function displayDrawnCard(card, isGuarantee = false, guaranteeRarity = null) {
     }
     
     // Display card from ownedCards (with current copy count)
-    const cardElement = createCardElement(ownedCard, 'unused', '../../img/cats/');
-    setupSingleCardTilt(cardElement, cardElement);
+    const { wrapper, cardElement } = renderCardWithWrapper(ownedCard, 'unused', '../../img/cats/');
+    setupSingleCardTilt(wrapper, cardElement);
     
-    cardElement.addEventListener('mouseenter', () => {
-        showTooltip(cardElement, ownedCard, 'bottom', '../../');
+    wrapper.addEventListener('mouseenter', () => {
+        showTooltip(wrapper, ownedCard, 'bottom', '../../');
     });
-    cardElement.addEventListener('mouseleave', () => {
-        removeTooltip(cardElement);
+    wrapper.addEventListener('mouseleave', () => {
+        removeTooltip(wrapper);
     });
     
     if (isGuarantee) {
         const guaranteeLabel = document.createElement('div');
         guaranteeLabel.style.cssText = `
             position: absolute;
-            top: 5px;
+            bottom: -45px;
             left: 50%;
             transform: translateX(-50%);
             background: linear-gradient(135deg, #ff9800 0%, #f44336 100%);
@@ -268,21 +269,22 @@ function displayDrawnCard(card, isGuarantee = false, guaranteeRarity = null) {
             font-weight: bold;
             z-index: 10;
             box-shadow: 0 2px 8px rgba(0,0,0,0.5);
-            width: 80%;
+            width: 90%;
+            height: fit-content;
             text-align: center;
         `;
         guaranteeLabel.textContent = `${guaranteeRarity.toUpperCase()} GUARANTEED!`;
-        cardElement.appendChild(guaranteeLabel);
+        wrapper.appendChild(guaranteeLabel);
     }
     
-    drawnCardContainer.appendChild(cardElement);
+    drawnCardContainer.appendChild(wrapper);
     
-    cardElement.style.opacity = '0';
-    cardElement.style.transform = 'scale(0.3) rotateY(1440deg)';
+    wrapper.style.opacity = '0';
+    wrapper.style.transform = 'scale(0.3) rotateY(1440deg)';
     setTimeout(() => {
-        cardElement.style.transition = 'all 3s cubic-bezier(0.34, 1.56, 0.64, 1)';
-        cardElement.style.opacity = '1';
-        cardElement.style.transform = 'scale(1) rotateY(0deg)';
+        wrapper.style.transition = 'all 3s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        wrapper.style.opacity = '1';
+        wrapper.style.transform = 'scale(1) rotateY(0deg)';
     }, 50);
 }
 
@@ -316,12 +318,14 @@ drawButton.addEventListener('click', () => {
     }
     
     // Subtract cost
+    playMoneySpentSound();
     gameState.money -= cost;
     updateMoneyDisplay();
     
     openCardsState.pullCount++;
     updatePullCounter();
     
+    playCardOpenSound();
     const guarantee = checkGuarantee();
     
     if (guarantee && guarantee.card) {
@@ -358,8 +362,8 @@ function updateGuaranteePreview(rarity) {
     
     if (selectedCard) {
         preview.innerHTML = '';
-        const miniCard = createCardElement(selectedCard, 'unused', '../../img/cats/');
-        setupSingleCardTilt(miniCard, miniCard);
+        const { wrapper: miniCard, cardElement: miniCardElement } = renderCardWithWrapper(selectedCard, 'unused', '../../img/cats/');
+        setupSingleCardTilt(miniCard, miniCardElement);
         
         // Rare and Epic (top row) - tooltip at bottom, Legendary and Ultimate (bottom row) - tooltip at top
         const tooltipPosition = (rarity === 'Rare' || rarity === 'Epic') ? 'bottom' : 'top';
@@ -390,18 +394,18 @@ function openCardSelectionModal(rarity) {
     }
     
     cardsOfRarity.forEach(card => {
-        const cardElement = createCardElement(card, 'unused', '../../img/cats/');
-        setupSingleCardTilt(cardElement, cardElement);
-        cardElement.classList.add('modal-card');
+        const { wrapper, cardElement } = renderCardWithWrapper(card, 'unused', '../../img/cats/');
+        setupSingleCardTilt(wrapper, cardElement);
+        wrapper.classList.add('modal-card');
         
-        cardElement.addEventListener('mouseenter', () => {
-            showTooltip(cardElement, card, 'top', '../../');
+        wrapper.addEventListener('mouseenter', () => {
+            showTooltip(wrapper, card, 'top', '../../');
         });
-        cardElement.addEventListener('mouseleave', () => {
-            removeTooltip(cardElement);
+        wrapper.addEventListener('mouseleave', () => {
+            removeTooltip(wrapper);
         });
         
-        cardElement.addEventListener('click', () => {
+        wrapper.addEventListener('click', () => {
             openCardsState.selectedGuaranteeCards[rarity] = card;
             updateGuaranteePreview(rarity);
             modal.classList.remove('show');
@@ -409,7 +413,7 @@ function openCardSelectionModal(rarity) {
             triggerManualSave();
         });
         
-        modalCardsGrid.appendChild(cardElement);
+        modalCardsGrid.appendChild(wrapper);
     });
     
     modal.classList.add('show');

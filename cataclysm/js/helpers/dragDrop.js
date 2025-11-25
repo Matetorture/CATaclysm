@@ -5,6 +5,7 @@ import { removeTooltip, removeDeckComparisonTooltip } from '../ui/tooltips.js';
 import { startDeckContinuousAttacks } from '../game/combat.js';
 import { updateDeckStats } from '../ui/deckStats.js';
 import { checkDeckAchievements } from './achievementChecker.js';
+import { playCardMoveSound } from './audioManager.js';
 
 let draggedCard = null;
 let draggedFrom = null; // 'deck' or 'unused'
@@ -117,6 +118,7 @@ export function dropHandler(e) {
             dragEndHandler(e);
             return;
         }
+        playCardMoveSound();
         if (targetCard === null) {
             gameState.deckCards[slotIndex] = draggedCard;
             gameState.deckCards[draggedFromIndex] = null;
@@ -125,6 +127,7 @@ export function dropHandler(e) {
             gameState.deckCards[draggedFromIndex] = targetCard;
         }
     } else if (draggedFrom === 'unused') {
+        playCardMoveSound();
         if (targetCard === null) {
             gameState.deckCards[slotIndex] = draggedCard;
         } else {
@@ -157,6 +160,7 @@ export function setupUnusedCardsDropZone() {
         unusedCardsGrid.classList.remove('drag-over');
         if (!draggedCard) return;
         if (draggedFrom === 'deck' && draggedFromIndex !== null) {
+            playCardMoveSound();
             gameState.deckCards[draggedFromIndex] = null;
             applyCurrentFilter();
             renderDeckSlots();

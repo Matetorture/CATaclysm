@@ -8,6 +8,7 @@ import { setupTiltEffect } from '../helpers/utils.js';
 import { onCardCloned, checkBaseAchievements } from '../helpers/achievementChecker.js';
 import { bossCategories } from '../data/bossesData.js';
 import { notifySuccess, notifyError, notifyInfo, notifyWarning } from './notifications.js';
+import { playMoneySpentSound, playCardMoveSound } from '../helpers/audioManager.js';
 
 let updateInterval = null;
 export let baseUpgradeCats = [null, null];
@@ -272,6 +273,7 @@ function setupBaseUpgradeControls(isNextBaseUnlocked) {
             } else {
                 const oldCat = baseUpgradeCats[index];
                 baseUpgradeCats[index] = card;
+                playCardMoveSound();
                 renderCatSlot(slot, index);
                 
                 if (gameState.baseUpgradeInProgress) {
@@ -287,6 +289,7 @@ function setupBaseUpgradeControls(isNextBaseUnlocked) {
             if (baseUpgradeCats[index]) {
                 const removedCat = baseUpgradeCats[index];
                 baseUpgradeCats[index] = null;
+                playCardMoveSound();
                 renderCatSlot(slot, index);
                 
                 removeTooltip();
@@ -377,6 +380,7 @@ function startBaseUpgrade() {
         buildTime = Math.max(1, baseBuildTime / totalCritDPS);
     }
     
+    playMoneySpentSound();
     gameState.money -= nextBase.cost;
     updateMoneyDisplay();
     
@@ -576,6 +580,7 @@ function setupCardCloneControls() {
                 totalTime: cloneTime * 1000
             };
             
+            playCardMoveSound();
             renderCardCloneTab();
             applyCurrentFilter();
         });
@@ -585,6 +590,7 @@ function setupCardCloneControls() {
             if (slot.card) {
                 removeTooltip();
                 
+                playCardMoveSound();
                 cloneSlots[index] = { card: null, startTime: null, totalTime: null };
                 renderCardCloneTab();
                 applyCurrentFilter();

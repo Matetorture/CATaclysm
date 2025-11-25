@@ -19,6 +19,7 @@ import { setupUnusedCardsDropZone } from './js/helpers/dragDrop.js';
 import { toggleCombatPause } from './js/helpers/pauseManager.js';
 import { loadGame, startAutoSave, setupBeforeUnloadSave } from './js/helpers/saveManager.js';
 import { checkDeckAchievements, checkBaseAchievements, checkMaxCardAchievements } from './js/helpers/achievementChecker.js';
+import { setupButtonHoverSounds, setupCardHoverSounds } from './js/helpers/audioManager.js';
 
 function setupPauseButton() {
     const pauseBtn = document.getElementById('pauseBtn');
@@ -80,6 +81,8 @@ function initGame() {
     checkDeckAchievements();
     checkBaseAchievements();
     checkMaxCardAchievements();
+    setupButtonHoverSounds();
+    setupCardHoverSounds();
     
     startAutoSave();
     setupBeforeUnloadSave();

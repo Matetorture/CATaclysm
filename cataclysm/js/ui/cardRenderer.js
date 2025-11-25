@@ -10,6 +10,7 @@ import { allModifiers } from '../helpers/modifiers.js';
 import { checkSlotAchievements, checkDeckAchievements } from '../helpers/achievementChecker.js';
 import { applyCurrentFilter } from './filters.js';
 import { notifySuccess, notifyError } from './notifications.js';
+import { playCardMoveSound, playMoneySpentSound } from '../helpers/audioManager.js';
 
 export function renderAvailableCards(cardsToRender = gameState.ownedCards) {
     const container = document.getElementById('availableCardsGrid');
@@ -251,6 +252,7 @@ export function addCardToDeck(card) {
     
     if (emptySlot !== -1) {
         gameState.deckCards[emptySlot] = card;
+        playCardMoveSound();
 
         const tooltips = document.querySelectorAll('[data-tooltip-active="true"]');
         tooltips.forEach(el => removeTooltip(el));
@@ -266,6 +268,7 @@ export function addCardToDeck(card) {
 export function removeCardFromDeck(slotIndex) {
     gameState.deckCards[slotIndex] = null;
     gameState.deckModifiers[slotIndex] = '';
+    playCardMoveSound();
 
     const tooltips = document.querySelectorAll('[data-tooltip-active="true"]');
     tooltips.forEach(el => removeTooltip(el));
@@ -282,6 +285,7 @@ function unlockSlot(slotIndex) {
     const price = gameState.slotPrices[slotIndex];
     
     if (gameState.money >= price) {
+        playMoneySpentSound();
         gameState.money -= price;
         gameState.unlockedSlots[slotIndex] = true;
         updateMoneyDisplay();
