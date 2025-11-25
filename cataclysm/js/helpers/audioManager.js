@@ -38,6 +38,7 @@ function unlockAudio() {
                 sound.currentTime = 0;
             }).catch(() => {});
         });
+        startBackgroundMusic();
         document.removeEventListener('click', unlockAudio);
         document.removeEventListener('keydown', unlockAudio);
         document.removeEventListener('touchstart', unlockAudio);
@@ -104,4 +105,57 @@ export function setupCardHoverSounds() {
             playCardHoverSound();
         }
     }, true);
+}
+
+// --- Background music system ---
+const musicTracks = [
+    audioPath + 'music/track1.mp3',
+    audioPath + 'music/track2.mp3',
+    audioPath + 'music/track3.mp3',
+    audioPath + 'music/track4.mp3'
+];
+let musicVolume = 0.05;
+let currentMusic = null;
+let availableTracks = [...musicTracks];
+let isMusicPlaying = false;
+
+function getRandomTrack() {
+    if (availableTracks.length === 0) {
+        availableTracks = [...musicTracks];
+    }
+    const randomIndex = Math.floor(Math.random() * availableTracks.length);
+    const track = availableTracks[randomIndex];
+    availableTracks.splice(randomIndex, 1);
+    return track;
+}
+
+function playNextMusicTrack() {
+    if (currentMusic) {
+        currentMusic.pause();
+        currentMusic.currentTime = 0;
+        currentMusic.removeEventListener('ended', playNextMusicTrack);
+    }
+    const trackPath = getRandomTrack();
+    currentMusic = new Audio(trackPath);
+    currentMusic.volume = musicVolume;
+    currentMusic.loop = false;
+    currentMusic.play().catch(() => {});
+    currentMusic.addEventListener('ended', playNextMusicTrack);
+}
+
+function startBackgroundMusic() {
+    if (!isMusicPlaying) {
+        isMusicPlaying = true;
+        playNextMusicTrack();
+    }
+}
+
+function stopBackgroundMusic() {
+    if (currentMusic) {
+        isMusicPlaying = false;
+        currentMusic.pause();
+        currentMusic.currentTime = 0;
+        currentMusic.removeEventListener('ended', playNextMusicTrack);
+        currentMusic = null;
+    }
 }
