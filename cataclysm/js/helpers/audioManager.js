@@ -25,9 +25,32 @@ Object.values(sounds).forEach(sound => {
     sound.preload = 'auto';
 });
 
+let audioUnlocked = false;
+
+// Unlock audio on first user interaction
+function unlockAudio() {
+    if (!audioUnlocked) {
+        audioUnlocked = true;
+        // Play and immediately pause each sound to unlock them
+        Object.values(sounds).forEach(sound => {
+            sound.play().then(() => {
+                sound.pause();
+                sound.currentTime = 0;
+            }).catch(() => {});
+        });
+        document.removeEventListener('click', unlockAudio);
+        document.removeEventListener('keydown', unlockAudio);
+        document.removeEventListener('touchstart', unlockAudio);
+    }
+}
+
+document.addEventListener('click', unlockAudio);
+document.addEventListener('keydown', unlockAudio);
+document.addEventListener('touchstart', unlockAudio);
+
 function playSound(soundName) {
     const sound = sounds[soundName];
-    if (sound) {
+    if (sound && audioUnlocked) {
         sound.currentTime = 0;
         sound.play().catch(err => {
             console.warn(`Could not play sound ${soundName}:`, err);
