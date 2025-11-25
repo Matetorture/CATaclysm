@@ -12,11 +12,11 @@ const sounds = {
 };
 
 // Set default volumes
-sounds.cardMove.volume = 0.7;
+sounds.cardMove.volume = 0.85;
 sounds.cardDamage.volume = 0.4;
 sounds.moneySpent.volume = 0.5;
 sounds.buttonClick.volume = 0.3;
-sounds.cardOpen.volume = 0.6;
+sounds.cardOpen.volume = 0.005;
 sounds.bossDefeated.volume = 0.7;
 sounds.cardHover.volume = 0.1;
 
