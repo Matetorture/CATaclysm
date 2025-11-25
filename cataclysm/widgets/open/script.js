@@ -5,7 +5,7 @@ import { setupSingleCardTilt } from '../../js/helpers/utils.js';
 import { gameState as localGameState, triggerManualSave as localTriggerManualSave, updateMoneyDisplay as localUpdateMoneyDisplay } from '../../js/data/gameState.js';
 import { CatCard } from '../../js/models/CatCard.js';
 import { checkCardUnlockAchievements, onCardMaxed } from '../../js/helpers/achievementChecker.js';
-import { playCardOpenSound, playMoneySpentSound } from '../../js/helpers/audioManager.js';
+import { playCardOpenSound, playMoneySpentSound, playCardMoveSound, setupCardHoverSounds, setupButtonHoverSounds } from '../../js/helpers/audioManager.js';
 
 // Get gameState from parent window if we're in iframe, otherwise use local
 const gameState = (window.parent && window.parent !== window && window.parent.gameState) 
@@ -382,6 +382,7 @@ function updateGuaranteePreview(rarity) {
 }
 
 function openCardSelectionModal(rarity) {
+    playCardMoveSound();
     modalTitle.textContent = `Select ${rarity} Guarantee Card`;
     modalCardsGrid.innerHTML = '';
     
@@ -406,6 +407,7 @@ function openCardSelectionModal(rarity) {
         });
         
         wrapper.addEventListener('click', () => {
+            playCardMoveSound();
             openCardsState.selectedGuaranteeCards[rarity] = card;
             updateGuaranteePreview(rarity);
             modal.classList.remove('show');
@@ -439,3 +441,7 @@ updatePullCounter();
 ['Rare', 'Epic', 'Legendary', 'Ultimate'].forEach(rarity => {
     updateGuaranteePreview(rarity);
 });
+
+// Initialize audio event listeners
+setupCardHoverSounds();
+setupButtonHoverSounds();
