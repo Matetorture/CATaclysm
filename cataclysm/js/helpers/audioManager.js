@@ -31,13 +31,7 @@ let audioUnlocked = false;
 function unlockAudio() {
     if (!audioUnlocked) {
         audioUnlocked = true;
-        // Play and immediately pause each sound to unlock them
-        Object.values(sounds).forEach(sound => {
-            sound.play().then(() => {
-                sound.pause();
-                sound.currentTime = 0;
-            }).catch(() => {});
-        });
+        playSound("buttonClick");
         startBackgroundMusic();
         document.removeEventListener('click', unlockAudio);
         document.removeEventListener('keydown', unlockAudio);
@@ -114,7 +108,7 @@ const musicTracks = [
     audioPath + 'music/track3.mp3',
     audioPath + 'music/track4.mp3'
 ];
-let musicVolume = 0.05;
+let musicVolume = 0.03;
 let currentMusic = null;
 let availableTracks = [...musicTracks];
 let isMusicPlaying = false;
