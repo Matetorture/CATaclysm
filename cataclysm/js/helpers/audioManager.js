@@ -108,7 +108,7 @@ const musicTracks = [
     audioPath + 'music/track3.mp3',
     audioPath + 'music/track4.mp3'
 ];
-let musicVolume = 0.03;
+let musicVolume = 0.01;
 let currentMusic = null;
 let availableTracks = [...musicTracks];
 let isMusicPlaying = false;
