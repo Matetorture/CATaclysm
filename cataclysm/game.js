@@ -57,6 +57,15 @@ function setupAchievementsButton() {
     });
 }
 
+function setupOptionsButton() {
+    const optionsBtn = document.getElementById('optionsBtn');
+    if (!optionsBtn) return;
+    
+    optionsBtn.addEventListener('click', () => {
+        openCenteredIframe('/widgets/options/', -1, true);
+    });
+}
+
 function initGame() {
     const saveLoaded = loadGame();
 
@@ -70,6 +79,7 @@ function initGame() {
     setupOpenCardsButton();
     setupTutorialsButton();
     setupAchievementsButton();
+    setupOptionsButton();
     applyCurrentFilter();
     renderDeckSlots();
     createDeckStatsDisplay();
