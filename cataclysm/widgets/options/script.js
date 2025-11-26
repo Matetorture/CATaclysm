@@ -1,11 +1,4 @@
-// Simple localStorage-based options persistence
 const optionKeys = [
-    'notif-success',
-    'notif-error',
-    'notif-achievement',
-    'notif-boss',
-    'audio-sound',
-    'audio-music',
     'boss-reward'
 ];
 
@@ -25,7 +18,6 @@ function saveOptions() {
             localStorage.setItem('option-' + key, el.checked ? 'true' : 'false');
         }
     });
-    // Optionally: send message to parent to update settings live
     if (window.parent && window.parent !== window && window.parent.applyOptions) {
         window.parent.applyOptions(getOptions());
     }
@@ -40,5 +32,12 @@ function getOptions() {
     return opts;
 }
 
-document.getElementById('saveOptionsBtn').addEventListener('click', saveOptions);
-window.addEventListener('DOMContentLoaded', loadOptions);
+optionKeys.forEach(key => {
+    const el = document.getElementById(key);
+    if (el) {
+        el.addEventListener('change', saveOptions);
+    }
+});
+window.addEventListener('DOMContentLoaded', () => {
+    loadOptions();
+});

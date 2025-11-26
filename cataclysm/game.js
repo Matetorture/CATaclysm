@@ -21,6 +21,24 @@ import { loadGame, startAutoSave, setupBeforeUnloadSave } from './js/helpers/sav
 import { checkDeckAchievements, checkBaseAchievements, checkMaxCardAchievements } from './js/helpers/achievementChecker.js';
 import { setupButtonHoverSounds, setupCardHoverSounds } from './js/helpers/audioManager.js';
 
+export const appOptions = {
+    'boss-reward': true
+};
+
+function loadAppOptions() {
+    Object.keys(appOptions).forEach(key => {
+        const val = localStorage.getItem('option-' + key);
+        if (val !== null) appOptions[key] = val === 'true';
+    });
+}
+
+export function applyOptions(opts) {
+    Object.keys(appOptions).forEach(key => {
+        if (opts[key] !== undefined) appOptions[key] = opts[key];
+        localStorage.setItem('option-' + key, appOptions[key] ? 'true' : 'false');
+    });
+}
+
 function setupPauseButton() {
     const pauseBtn = document.getElementById('pauseBtn');
     if (!pauseBtn) return;
@@ -67,6 +85,8 @@ function setupOptionsButton() {
 }
 
 function initGame() {
+    loadAppOptions();
+    
     const saveLoaded = loadGame();
 
     if (!saveLoaded) {
@@ -101,6 +121,7 @@ function initGame() {
     window.gameState = gameState;
     window.triggerManualSave = triggerManualSave;
     window.updateMoneyDisplay = updateMoneyDisplay;
+    window.applyOptions = applyOptions;
     
     console.log('Game initialized!', saveLoaded ? 'Save loaded' : 'New game started');
 }
