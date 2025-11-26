@@ -16,7 +16,7 @@ const baseVolumes = {
     cardMove: 0.85,
     cardDamage: 0.4,
     moneySpent: 0.5,
-    buttonClick: 0.3,
+    buttonClick: 0.15,
     cardOpen: 0.005,
     bossDefeated: 0.7,
     cardHover: 0.1
