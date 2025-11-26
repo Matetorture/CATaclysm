@@ -11,14 +11,29 @@ const sounds = {
     cardHover: new Audio(audioPath + 'card-hover.mp3')
 };
 
-// Set default volumes
-sounds.cardMove.volume = 0.85;
-sounds.cardDamage.volume = 0.4;
-sounds.moneySpent.volume = 0.5;
-sounds.buttonClick.volume = 0.3;
-sounds.cardOpen.volume = 0.005;
-sounds.bossDefeated.volume = 0.7;
-sounds.cardHover.volume = 0.1;
+// Default base volumes
+const baseVolumes = {
+    cardMove: 0.85,
+    cardDamage: 0.4,
+    moneySpent: 0.5,
+    buttonClick: 0.3,
+    cardOpen: 0.005,
+    bossDefeated: 0.7,
+    cardHover: 0.1
+};
+
+let soundMultiplier = parseFloat(localStorage.getItem('setting-audio-sound-multiplier') || '1');
+let musicMultiplier = parseFloat(localStorage.getItem('setting-audio-music-multiplier') || '1');
+
+function clampVolume(v) {
+    return Math.max(0, Math.min(1, v));
+}
+function applySoundVolumes() {
+    Object.keys(baseVolumes).forEach(key => {
+        if (sounds[key]) sounds[key].volume = clampVolume(baseVolumes[key] * soundMultiplier);
+    });
+}
+applySoundVolumes();
 
 // Preload all sounds
 Object.values(sounds).forEach(sound => {
@@ -108,7 +123,8 @@ const musicTracks = [
     audioPath + 'music/track3.mp3',
     audioPath + 'music/track4.mp3'
 ];
-let musicVolume = 0.01;
+let baseMusicVolume = 0.01;
+let musicVolume = clampVolume(baseMusicVolume * musicMultiplier);
 let currentMusic = null;
 let availableTracks = [...musicTracks];
 let isMusicPlaying = false;
@@ -136,6 +152,15 @@ function playNextMusicTrack() {
     currentMusic.play().catch(() => {});
     currentMusic.addEventListener('ended', playNextMusicTrack);
 }
+
+// Expose for settings widget
+window.setAudioMultipliers = function(soundMult, musicMult) {
+    soundMultiplier = soundMult;
+    musicMultiplier = musicMult;
+    applySoundVolumes();
+    musicVolume = clampVolume(baseMusicVolume * musicMultiplier);
+    if (currentMusic) currentMusic.volume = musicVolume;
+};
 
 function startBackgroundMusic() {
     if (!isMusicPlaying) {

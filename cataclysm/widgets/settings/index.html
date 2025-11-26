@@ -14,6 +14,18 @@
             <h3>Boss Reward</h3>
             <label><input type="checkbox" id="boss-reward"> Show boss reward popup</label>
         </div>
+        <div class="setting-group">
+            <h3>Audio Volume</h3>
+            <label for="audio-sound-multiplier">Sound effects volume</label>
+            <input type="range" id="audio-sound-multiplier" min="0" max="5" step="0.01" value="1">
+            <span id="audio-sound-multiplier-value">1.00</span>
+        </div>
+        <div class="setting-group">
+            <h3>Music Volume</h3>
+            <label for="audio-music-multiplier">Music volume</label>
+            <input type="range" id="audio-music-multiplier" min="0" max="5" step="0.01" value="1">
+            <span id="audio-music-multiplier-value">1.00</span>
+        </div>
     </div>
     <script type="module" src="script.js"></script>
 </body>

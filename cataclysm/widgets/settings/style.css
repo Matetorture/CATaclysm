@@ -1,3 +1,15 @@
+.settings-widget input[type="range"] {
+    width: 100%;
+    margin: 8px 0 4px 0;
+}
+.settings-widget span {
+    display: inline-block;
+    min-width: 32px;
+    text-align: right;
+    margin-left: 8px;
+    font-size: 1rem;
+    color: var(--accent);
+}
 .settings-widget {
     max-width: 400px;
     margin: 40px auto;
