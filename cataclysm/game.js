@@ -21,21 +21,21 @@ import { loadGame, startAutoSave, setupBeforeUnloadSave } from './js/helpers/sav
 import { checkDeckAchievements, checkBaseAchievements, checkMaxCardAchievements } from './js/helpers/achievementChecker.js';
 import { setupButtonHoverSounds, setupCardHoverSounds } from './js/helpers/audioManager.js';
 
-export const appOptions = {
+export const appSettings = {
     'boss-reward': true
 };
 
-function loadAppOptions() {
-    Object.keys(appOptions).forEach(key => {
-        const val = localStorage.getItem('option-' + key);
-        if (val !== null) appOptions[key] = val === 'true';
+function loadAppSettings() {
+    Object.keys(appSettings).forEach(key => {
+        const val = localStorage.getItem('setting-' + key);
+        if (val !== null) appSettings[key] = val === 'true';
     });
 }
 
-export function applyOptions(opts) {
-    Object.keys(appOptions).forEach(key => {
-        if (opts[key] !== undefined) appOptions[key] = opts[key];
-        localStorage.setItem('option-' + key, appOptions[key] ? 'true' : 'false');
+export function applySettings(settings) {
+    Object.keys(appSettings).forEach(key => {
+        if (settings[key] !== undefined) appSettings[key] = settings[key];
+        localStorage.setItem('setting-' + key, appSettings[key] ? 'true' : 'false');
     });
 }
 
@@ -75,17 +75,17 @@ function setupAchievementsButton() {
     });
 }
 
-function setupOptionsButton() {
-    const optionsBtn = document.getElementById('optionsBtn');
-    if (!optionsBtn) return;
+function setupSettingsButton() {
+    const settingsBtn = document.getElementById('settingsBtn');
+    if (!settingsBtn) return;
     
-    optionsBtn.addEventListener('click', () => {
-        openCenteredIframe('/widgets/options/', -1, true);
+    settingsBtn.addEventListener('click', () => {
+        openCenteredIframe('/widgets/settings/', -1, true);
     });
 }
 
 function initGame() {
-    loadAppOptions();
+    loadAppSettings();
     
     const saveLoaded = loadGame();
 
@@ -99,7 +99,7 @@ function initGame() {
     setupOpenCardsButton();
     setupTutorialsButton();
     setupAchievementsButton();
-    setupOptionsButton();
+    setupSettingsButton();
     applyCurrentFilter();
     renderDeckSlots();
     createDeckStatsDisplay();
@@ -121,7 +121,7 @@ function initGame() {
     window.gameState = gameState;
     window.triggerManualSave = triggerManualSave;
     window.updateMoneyDisplay = updateMoneyDisplay;
-    window.applyOptions = applyOptions;
+    window.applySettings = applySettings;
     
     console.log('Game initialized!', saveLoaded ? 'Save loaded' : 'New game started');
 }

@@ -18,7 +18,7 @@ import { openCenteredIframe } from '../helpers/utils.js';
 import { checkBossAchievements } from '../helpers/achievementChecker.js';
 import { notifySuccess, notifyInfo } from './notifications.js';
 import { playBossDefeatedSound } from '../helpers/audioManager.js';
-import { appOptions } from '../../game.js';
+import { appSettings } from '../../game.js';
 
 export function getCategoryById(catId) {
     return bossCategories.find(cat => cat.id === catId);
@@ -252,7 +252,7 @@ function animateLagHpBar(targetPercent) {
 }
 
 function showBossReward(rewardMoney) {
-    if (!appOptions['boss-reward']) return;
+    if (!appSettings['boss-reward']) return;
 
     openCenteredIframe(`widgets/reward/index.html?amount=${rewardMoney}`, 10);
 }
