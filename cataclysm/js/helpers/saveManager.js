@@ -23,7 +23,6 @@ let autoSaveIntervalId = null;
 export function saveGame() {
     try {
         const saveData = {
-            version: '0.1.0',
             timestamp: Date.now(),
             money: gameState.money,
             currentBaseId: gameState.currentBaseId,
