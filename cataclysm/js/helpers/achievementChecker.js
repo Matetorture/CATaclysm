@@ -63,7 +63,7 @@ export function checkAchievement(achievement) {
         
         case 'defeat_boss_category': {
             const progress = categoryProgress[req.categoryId];
-            return progress && progress.currentBossIndex > 0;
+            return progress && progress.completed === true;
         }
         
         case 'clone_card_count': {

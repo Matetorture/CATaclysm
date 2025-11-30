@@ -138,10 +138,10 @@ export const achievementsData = [
     {
         id: 17,
         name: "Master Collector",
-        description: "Unlock 100 different cards",
+        description: "Unlock 70 different cards",
         requirements: {
             type: "unlock_card_count",
-            count: 100
+            count: 70
         }
     },
     {
