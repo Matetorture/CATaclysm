@@ -143,6 +143,10 @@ body {
     color: white;
 }
 
+.unlocked img{
+    filter: invert(1);
+}
+
 .achievement-status.locked {
     background: var(--dark-tertiary);
     color: var(--text-secondary);
