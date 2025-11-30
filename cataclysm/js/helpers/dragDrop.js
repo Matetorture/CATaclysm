@@ -144,7 +144,7 @@ export function dropHandler(e) {
 
 export function setupUnusedCardsDropZone() {
     const unusedCardsGrid = document.getElementById('availableCardsGrid');
-    
+        if (!unusedCardsGrid) return;
     unusedCardsGrid.addEventListener('dragover', (e) => {
         e.preventDefault();
         e.dataTransfer.dropEffect = 'move';

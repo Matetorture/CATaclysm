@@ -442,6 +442,10 @@ updatePullCounter();
     updateGuaranteePreview(rarity);
 });
 
+// Remove deck stats display if present (iframe)
+const deckStatsEl = document.getElementById('deck-stats-display');
+if (deckStatsEl) deckStatsEl.remove();
+
 // Initialize audio event listeners
 setupCardHoverSounds();
 setupButtonHoverSounds();
