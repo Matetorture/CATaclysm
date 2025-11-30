@@ -1,5 +1,6 @@
 import { achievementsData } from '../../js/data/achievementsData.js';
 import { gameState as localGameState } from '../../js/data/gameState.js';
+import { setupButtonHoverSounds } from '../../js/helpers/audioManager.js';
 
 const gameState = (window.parent && window.parent !== window && window.parent.gameState) 
     ? window.parent.gameState 
@@ -96,3 +97,5 @@ if (window.parent && window.parent !== window) {
         }
     });
 }
+
+setupButtonHoverSounds();

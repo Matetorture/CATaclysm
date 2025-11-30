@@ -1,5 +1,6 @@
 import { basesData, cloneTimeByRarity } from '../../js/data/basesData.js';
 import { cardRarities, attackTypes } from '../../js/data/constants.js';
+import { setupButtonHoverSounds } from '../../js/helpers/audioManager.js';
 
 const cardLevelRequirements = [
     { level: 0, totalCopies: 0, copiesNeeded: 0 },
@@ -144,3 +145,5 @@ function setupTabs() {
         });
     });
 }
+
+setupButtonHoverSounds();

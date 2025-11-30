@@ -1,9 +1,11 @@
 import { notifyInfo } from "../ui/notifications.js";
 
 // Detect if we're in a widget subfolder (e.g., widgets/open/)
-const audioPath = window.location.pathname.includes('/widgets/') ? '../../audio/' : 'audio/';
+const isWidget = window.location.pathname.includes('/widgets/');
 
-if (!window.location.pathname.includes('/widgets/')) {
+const audioPath = isWidget ? '../../audio/' : 'audio/';
+
+if (!isWidget) {
     notifyInfo(`Due to browser restrictions, audio will start after your first interaction with the page.`);
 }
 
@@ -53,7 +55,9 @@ function unlockAudio() {
     if (!audioUnlocked) {
         audioUnlocked = true;
         playSound("buttonClick");
-        startBackgroundMusic();
+        if(!isWidget){
+            startBackgroundMusic();
+        }
         document.removeEventListener('click', unlockAudio);
         document.removeEventListener('keydown', unlockAudio);
         document.removeEventListener('touchstart', unlockAudio);
