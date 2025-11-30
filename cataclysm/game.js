@@ -133,6 +133,14 @@ function initGame() {
     window.applySettings = applySettings;
     
     console.log('Game initialized!', saveLoaded ? 'Save loaded' : 'New game started');
+
+    function setRandomFavicon() {
+        const card = cardsData[Math.floor(Math.random() * cardsData.length)];
+        const faviconUrl = `/img/cats/${card.number}.png`;
+        let link = document.querySelector("link[rel~='icon']");
+        link.href = faviconUrl;
+    }
+    setInterval(setRandomFavicon, 1000);
 }
 
 if (document.readyState === 'loading') {
