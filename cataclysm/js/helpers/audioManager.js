@@ -1,5 +1,11 @@
+import { notifyInfo } from "../ui/notifications.js";
+
 // Detect if we're in a widget subfolder (e.g., widgets/open/)
 const audioPath = window.location.pathname.includes('/widgets/') ? '../../audio/' : 'audio/';
+
+if (!window.location.pathname.includes('/widgets/')) {
+    notifyInfo(`Due to browser restrictions, audio will start after your first interaction with the page.`);
+}
 
 const sounds = {
     cardMove: new Audio(audioPath + 'card-move.mp3'),
@@ -118,10 +124,36 @@ export function setupCardHoverSounds() {
 
 // --- Background music system ---
 const musicTracks = [
-    audioPath + 'music/track1.mp3',
-    audioPath + 'music/track2.mp3',
-    audioPath + 'music/track3.mp3',
-    audioPath + 'music/track4.mp3'
+    {
+        src: audioPath + 'music/track1.mp3',
+        title: 'Cat Walk',
+        author: 'Sakura Girl'
+    },
+    {
+        src: audioPath + 'music/track2.mp3',
+        title: 'Daisy',
+        author: 'Sakura Girl'
+    },
+    {
+        src: audioPath + 'music/track3.mp3',
+        title: 'Yay',
+        author: 'Sakura Girl'
+    },
+    {
+        src: audioPath + 'music/track4.mp3',
+        title: 'Lights',
+        author: 'Sakura Girl'
+    },
+    {
+        src: audioPath + 'music/track5.mp3',
+        title: 'Go To The Picnic',
+        author: 'Loyalty Freak Music'
+    },
+    {
+        src: audioPath + 'music/track6.mp3',
+        title: 'Yippee !',
+        author: 'Loyalty Freak Music'
+    }
 ];
 let baseMusicVolume = 0.01;
 let musicVolume = clampVolume(baseMusicVolume * musicMultiplier);
@@ -145,12 +177,14 @@ function playNextMusicTrack() {
         currentMusic.currentTime = 0;
         currentMusic.removeEventListener('ended', playNextMusicTrack);
     }
-    const trackPath = getRandomTrack();
-    currentMusic = new Audio(trackPath);
+    const trackObj = getRandomTrack();
+    currentMusic = new Audio(trackObj.src);
     currentMusic.volume = musicVolume;
     currentMusic.loop = false;
     currentMusic.play().catch(() => {});
     currentMusic.addEventListener('ended', playNextMusicTrack);
+
+    notifyInfo(`Now playing: ${trackObj.title} by ${trackObj.author}`);
 }
 
 // Expose for settings widget
@@ -166,15 +200,5 @@ function startBackgroundMusic() {
     if (!isMusicPlaying) {
         isMusicPlaying = true;
         playNextMusicTrack();
-    }
-}
-
-function stopBackgroundMusic() {
-    if (currentMusic) {
-        isMusicPlaying = false;
-        currentMusic.pause();
-        currentMusic.currentTime = 0;
-        currentMusic.removeEventListener('ended', playNextMusicTrack);
-        currentMusic = null;
     }
 }

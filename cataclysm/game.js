@@ -84,6 +84,14 @@ function setupSettingsButton() {
     });
 }
 
+function setupCreditsButton() {
+    const creditsBtn = document.getElementById('creditsBtn');
+    if (!creditsBtn) return;
+    creditsBtn.addEventListener('click', () => {
+        openCenteredIframe('/widgets/credits/', -1, true);
+    });
+}
+
 function initGame() {
     loadAppSettings();
     
@@ -100,6 +108,7 @@ function initGame() {
     setupTutorialsButton();
     setupAchievementsButton();
     setupSettingsButton();
+    setupCreditsButton();
     applyCurrentFilter();
     renderDeckSlots();
     createDeckStatsDisplay();
