@@ -135,10 +135,17 @@ function initGame() {
     console.log('Game initialized!', saveLoaded ? 'Save loaded' : 'New game started');
 
     function setRandomFavicon() {
+        if (!cardsData || !cardsData.length) return;
         const card = cardsData[Math.floor(Math.random() * cardsData.length)];
         const faviconUrl = `/img/cats/${card.number}.png`;
         let link = document.querySelector("link[rel~='icon']");
-        link.href = faviconUrl;
+        if (!link) {
+            link = document.createElement('link');
+            link.rel = 'icon';
+            link.type = 'image/png';
+            document.head.appendChild(link);
+        }
+        if (link) link.href = faviconUrl;
     }
     setInterval(setRandomFavicon, 1000);
 }
