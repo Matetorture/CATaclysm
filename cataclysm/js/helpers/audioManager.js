@@ -15,7 +15,7 @@ const sounds = {
     moneySpent: new Audio(audioPath + 'money.mp3'),
     buttonClick: new Audio(audioPath + 'button-click.mp3'),
     cardOpen: new Audio(audioPath + 'card-open.mp3'),
-    bossDefeated: new Audio(audioPath + 'boss-defeated.mp3'),//x
+    bossDefeated: new Audio(audioPath + 'boss-defeated.mp3'),
     cardHover: new Audio(audioPath + 'card-hover.mp3')
 };
 
@@ -26,7 +26,7 @@ const baseVolumes = {
     moneySpent: 0.5,
     buttonClick: 0.15,
     cardOpen: 0.005,
-    bossDefeated: 0.7,
+    bossDefeated: 1.5,
     cardHover: 0.1
 };
 
