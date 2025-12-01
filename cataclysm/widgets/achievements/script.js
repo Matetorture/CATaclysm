@@ -14,7 +14,16 @@ let currentSort = 'id';
 
 function renderAchievements() {
     const container = document.getElementById('achievementsList');
+    const progressEl = document.getElementById('achievement-progress');
     if (!container) return;
+
+    // Calculate progress
+    const unlockedCount = achievementsData.filter(a => gameState.unlockedAchievements.has(a.id)).length;
+    const totalCount = achievementsData.length;
+    const percent = Math.round((unlockedCount / totalCount) * 100);
+    if (progressEl) {
+        progressEl.innerHTML = `<span style="font-size:18px;font-weight:bold;color:var(--primary-color);">${unlockedCount} / ${totalCount} <span style="color:var(--text-secondary);font-size:15px;">( ${percent}% )</span></span>`;
+    }
 
     let sortedAchievements = [...achievementsData];
 

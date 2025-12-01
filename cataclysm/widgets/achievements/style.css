@@ -1,3 +1,9 @@
+.achievement-progress {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--primary-color);
+    letter-spacing: 1px;
+}
 body {
     overflow-y: auto;
 }
