@@ -224,3 +224,7 @@ button:hover {
 .card-info {
     display: none;
 }
+
+#notification-container{
+    display: none;
+}
