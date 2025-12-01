@@ -26,10 +26,20 @@ export function dragStartHandler(e, card, from, index = null) {
     }
     removeDeckComparisonTooltip();
 
-    const crt = document.createElement('canvas');
-    crt.width = 0;
-    crt.height = 0;
-    e.dataTransfer.setDragImage(crt, 0, 0);
+    // Use an off-screen div as drag image to hide default drag image in Chrome
+    let dragGhost = document.getElementById('dragGhost');
+    if (!dragGhost) {
+        dragGhost = document.createElement('div');
+        dragGhost.id = 'dragGhost';
+        dragGhost.style.position = 'absolute';
+        dragGhost.style.top = '-9999px';
+        dragGhost.style.left = '-9999px';
+        dragGhost.style.width = '1px';
+        dragGhost.style.height = '1px';
+        dragGhost.style.opacity = '0';
+        document.body.appendChild(dragGhost);
+    }
+    e.dataTransfer.setDragImage(dragGhost, 0, 0);
     
     // Set card ID for base slots to access
     e.dataTransfer.setData('cardId', card.id);
