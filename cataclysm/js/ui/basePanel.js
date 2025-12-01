@@ -5,7 +5,7 @@ import { applyCurrentFilter } from './filters.js';
 import { showTooltip, removeTooltip } from './tooltips.js';
 import { CatCard } from '../models/CatCard.js';
 import { setupTiltEffect } from '../helpers/utils.js';
-import { onCardCloned, checkBaseAchievements } from '../helpers/achievementChecker.js';
+import { checkMaxCardAchievements, checkBaseAchievements } from '../helpers/achievementChecker.js';
 import { bossCategories } from '../data/bossesData.js';
 import { notifySuccess, notifyError, notifyInfo, notifyWarning } from './notifications.js';
 import { playMoneySpentSound, playCardMoveSound } from '../helpers/audioManager.js';
@@ -643,7 +643,7 @@ function completeCardCloning(slotIndex) {
     const card = slot.card;
     card.copies += 1;
     
-    onCardCloned(card);
+    checkMaxCardAchievements();
     
     triggerManualSave();
     

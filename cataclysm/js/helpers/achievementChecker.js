@@ -66,10 +66,6 @@ export function checkAchievement(achievement) {
             return progress && progress.completed === true;
         }
         
-        case 'clone_card_count': {
-            return false;
-        }
-        
         case 'max_card_count': {
             const maxedCount = gameState.ownedCards.filter(c => c.copies >= 62).length;
             return maxedCount >= req.count;
@@ -81,14 +77,6 @@ export function checkAchievement(achievement) {
         
         case 'max_card_rarity': {
             return gameState.ownedCards.some(c => c.rarity === req.rarity && c.copies >= 62);
-        }
-        
-        case 'unlock_card_count': {
-            return gameState.ownedCards.length >= req.count;
-        }
-        
-        case 'unlock_card_rarity': {
-            return gameState.ownedCards.some(card => card.rarity === req.rarity);
         }
         
         case 'base_level': {
@@ -127,21 +115,6 @@ export function checkSlotAchievements() {
     });
 }
 
-export function checkCardUnlockAchievements() {
-    const unlockAchievements = achievementsData.filter(a => 
-        a.requirements.type === 'unlock_card_count' || 
-        a.requirements.type === 'unlock_card_rarity'
-    );
-    
-    unlockAchievements.forEach(achievement => {
-        if (!gameState.unlockedAchievements.has(achievement.id)) {
-            if (checkAchievement(achievement)) {
-                unlockAchievement(achievement.id);
-            }
-        }
-    });
-}
-
 export function checkBossAchievements() {
     const bossAchievements = achievementsData.filter(a => 
         a.requirements.type === 'defeat_boss_category'
@@ -154,28 +127,6 @@ export function checkBossAchievements() {
             }
         }
     });
-}
-
-export function onCardCloned(card) {
-    const cloneCount = achievementsData.find(a => 
-        a.requirements.type === 'clone_card_count' && a.requirements.count === 1
-    );
-    if (cloneCount && !gameState.unlockedAchievements.has(cloneCount.id)) {
-        unlockAchievement(cloneCount.id);
-    }
-    
-    if (card.rarity === 'Ultimate') {
-        const ultimateClone = achievementsData.find(a => 
-            a.requirements.type === 'clone_card_rarity' && a.requirements.rarity === 'Ultimate'
-        );
-        if (ultimateClone && !gameState.unlockedAchievements.has(ultimateClone.id)) {
-            unlockAchievement(ultimateClone.id);
-        }
-    }
-}
-
-export function onCardMaxed(card) {
-    checkMaxCardAchievements();
 }
 
 export function checkMaxCardAchievements() {

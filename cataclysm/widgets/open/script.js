@@ -4,7 +4,7 @@ import { renderCardWithWrapper } from '../../js/ui/cardRenderer.js';
 import { setupSingleCardTilt } from '../../js/helpers/utils.js';
 import { gameState as localGameState, triggerManualSave as localTriggerManualSave, updateMoneyDisplay as localUpdateMoneyDisplay } from '../../js/data/gameState.js';
 import { CatCard } from '../../js/models/CatCard.js';
-import { checkCardUnlockAchievements, onCardMaxed } from '../../js/helpers/achievementChecker.js';
+import { checkMaxCardAchievements } from '../../js/helpers/achievementChecker.js';
 import { playCardOpenSound, playMoneySpentSound, playCardMoveSound, setupCardHoverSounds, setupButtonHoverSounds } from '../../js/helpers/audioManager.js';
 
 // Get gameState from parent window if we're in iframe, otherwise use local
@@ -139,7 +139,6 @@ function drawRandomCard() {
             if (rarity === targetRarity) continue;
             possibleCards = getCardsByRarity(rarity);
             if (possibleCards.length > 0) {
-                console.log(`Drawing from ${rarity} instead`);
                 break;
             }
         }
@@ -170,7 +169,6 @@ function checkGuarantee() {
                 const ownedCard = gameState.ownedCards.find(c => c.id === selectedCard.id);
                 
                 if (ownedCard && ownedCard.copies >= MAX_LEVEL_COPIES) {
-                    console.log(`Selected ${rarity} card is at max level, drawing random`);
                     // Selected card is at max, draw another one
                     const cardsOfRarity = getCardsByRarity(rarity);
                     if (cardsOfRarity.length > 0) {
@@ -198,7 +196,6 @@ function displayDrawnCard(card, isGuarantee = false, guaranteeRarity = null) {
     // Check if card exists
     if (!card) {
         drawnCardContainer.innerHTML = '<p style="color: gold; font-size: 20px; text-align: center;">🎉 All cards are at max level! 🎉</p>';
-        console.log('All available cards are at max level');
         return;
     }
     
@@ -207,9 +204,8 @@ function displayDrawnCard(card, isGuarantee = false, guaranteeRarity = null) {
     
     if (ownedCard) {
         ownedCard.copies += 1;
-        console.log(`Added copy to ${ownedCard.name}, now has ${ownedCard.copies} copies`);
         if (ownedCard.copies >= 62) {
-            onCardMaxed(ownedCard);
+            checkMaxCardAchievements();
         }
     } else {
         ownedCard = new CatCard(
@@ -225,11 +221,8 @@ function displayDrawnCard(card, isGuarantee = false, guaranteeRarity = null) {
             1
         );
         gameState.ownedCards.push(ownedCard);
-        console.log(`Added new card: ${ownedCard.name}`);
-        checkCardUnlockAchievements();
     }
     
-    // Save game after adding card
     triggerManualSave();
     
     // Refresh card view in main window (if window.parent exists)
