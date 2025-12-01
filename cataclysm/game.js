@@ -98,7 +98,7 @@ function initGame() {
     const saveLoaded = loadGame();
 
     if (!saveLoaded) {
-        gameState.ownedCards = [...cardsData];
+        gameState.ownedCards = [];
     }
     
     setupBottomPanelToggle();
