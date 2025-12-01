@@ -70,6 +70,10 @@ export function checkAchievement(achievement) {
             return gameState.ownedCards.some(c => c.rarity === req.rarity && c.copies >= 62);
         }
         
+        case 'max_card_count': {
+            const maxedCount = gameState.ownedCards.filter(card => card.copies >= 62).length;
+            return maxedCount >= req.count;
+        }
         case 'base_level': {
             return gameState.currentBaseId >= req.level;
         }
@@ -112,6 +116,21 @@ export function checkBossAchievements() {
     );
     
     bossAchievements.forEach(achievement => {
+        if (!gameState.unlockedAchievements.has(achievement.id)) {
+            if (checkAchievement(achievement)) {
+                unlockAchievement(achievement.id);
+            }
+        }
+    });
+}
+
+export function checkMaxCardAchievements() {
+    const maxCardAchievements = achievementsData.filter(a => 
+        a.requirements.type === 'max_card_count' || 
+        a.requirements.type === 'max_card_rarity'
+    );
+    
+    maxCardAchievements.forEach(achievement => {
         if (!gameState.unlockedAchievements.has(achievement.id)) {
             if (checkAchievement(achievement)) {
                 unlockAchievement(achievement.id);
