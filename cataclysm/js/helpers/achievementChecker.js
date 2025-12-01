@@ -66,15 +66,6 @@ export function checkAchievement(achievement) {
             return progress && progress.completed === true;
         }
         
-        case 'max_card_count': {
-            const maxedCount = gameState.ownedCards.filter(c => c.copies >= 62).length;
-            return maxedCount >= req.count;
-        }
-        
-        case 'clone_card_rarity': {
-            return false;
-        }
-        
         case 'max_card_rarity': {
             return gameState.ownedCards.some(c => c.rarity === req.rarity && c.copies >= 62);
         }

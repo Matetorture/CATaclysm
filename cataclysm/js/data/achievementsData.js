@@ -73,24 +73,6 @@ export const achievementsData = [
         }
     },
     {
-        id: 9,
-        name: "Cloning Beginner",
-        description: "Clone your first card",
-        requirements: {
-            type: "clone_card_count",
-            count: 1
-        }
-    },
-    {
-        id: 10,
-        name: "Ultimate Clone",
-        description: "Clone an Ultimate card",
-        requirements: {
-            type: "clone_card_rarity",
-            rarity: "Ultimate"
-        }
-    },
-    {
         id: 11,
         name: "Maxed Out",
         description: "Max out a card (62 copies)",
