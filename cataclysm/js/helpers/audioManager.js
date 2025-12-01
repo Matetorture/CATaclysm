@@ -1,7 +1,7 @@
 import { notifyInfo } from "../ui/notifications.js";
 
 // Detect if we're in a widget subfolder (e.g., widgets/open/)
-const isWidget = window.location.pathname.includes('/widgets/');
+const isWidget = window.location.pathname.includes('widgets/');
 
 const audioPath = isWidget ? '../../audio/' : 'audio/';
 
