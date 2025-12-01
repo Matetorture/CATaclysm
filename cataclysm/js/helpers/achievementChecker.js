@@ -120,21 +120,6 @@ export function checkBossAchievements() {
     });
 }
 
-export function checkMaxCardAchievements() {
-    const maxCardAchievements = achievementsData.filter(a => 
-        a.requirements.type === 'max_card_count' || 
-        a.requirements.type === 'max_card_rarity'
-    );
-    
-    maxCardAchievements.forEach(achievement => {
-        if (!gameState.unlockedAchievements.has(achievement.id)) {
-            if (checkAchievement(achievement)) {
-                unlockAchievement(achievement.id);
-            }
-        }
-    });
-}
-
 export function checkBaseAchievements() {
     const baseAchievements = achievementsData.filter(a => 
         a.requirements.type === 'base_level'

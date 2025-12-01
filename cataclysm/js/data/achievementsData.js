@@ -216,60 +216,6 @@ export const achievementsData = [
   },
   {
     id: 24,
-    name: "First Perfection",
-    description: "Max out 1 card",
-    requirements: {
-      type: "max_card_count",
-      count: 1
-    }
-  },
-  {
-    id: 25,
-    name: "Small Collection",
-    description: "Max out 5 cards",
-    requirements: {
-      type: "max_card_count",
-      count: 5
-    }
-  },
-  {
-    id: 26,
-    name: "Growing Collection",
-    description: "Max out 10 cards",
-    requirements: {
-      type: "max_card_count",
-      count: 10
-    }
-  },
-  {
-    id: 27,
-    name: "Big Collection",
-    description: "Max out 20 cards",
-    requirements: {
-      type: "max_card_count",
-      count: 20
-    }
-  },
-  {
-    id: 28,
-    name: "Mass Collection",
-    description: "Max out 50 cards",
-    requirements: {
-      type: "max_card_count",
-      count: 50
-    }
-  },
-  {
-    id: 29,
-    name: "Complete Collection",
-    description: "Max out all 78 cards",
-    requirements: {
-      type: "max_card_count",
-      count: 78
-    }
-  },
-  {
-    id: 30,
     name: "Base",
     description: "Reach base level 2",
     requirements: {
@@ -278,7 +224,7 @@ export const achievementsData = [
     }
   },
   {
-    id: 31,
+    id: 25,
     name: "Real Base",
     description: "Reach base level 4",
     requirements: {
@@ -287,7 +233,7 @@ export const achievementsData = [
     }
   },
   {
-    id: 32,
+    id: 26,
     name: "Base Builder",
     description: "Reach base level 7",
     requirements: {
@@ -296,7 +242,7 @@ export const achievementsData = [
     }
   },
   {
-    id: 33,
+    id: 27,
     name: "Everything Owner",
     description: "Reach base level 10",
     requirements: {
