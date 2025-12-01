@@ -53,7 +53,7 @@ function setupOpenCardsButton() {
     if (!openCardsBtn) return;
     
     openCardsBtn.addEventListener('click', () => {
-        openCenteredIframe('/widgets/open/', -1, true);
+        openCenteredIframe('/widgets/open/index.html', -1, true);
     });
 }
 
@@ -62,7 +62,7 @@ function setupTutorialsButton() {
     if (!tutorialsBtn) return;
     
     tutorialsBtn.addEventListener('click', () => {
-        openCenteredIframe('/widgets/tutorials/', -1, true);
+        openCenteredIframe('/widgets/tutorials/index.html', -1, true);
     });
 }
 
@@ -71,7 +71,7 @@ function setupAchievementsButton() {
     if (!achievementsBtn) return;
     
     achievementsBtn.addEventListener('click', () => {
-        openCenteredIframe('/widgets/achievements/', -1, true);
+        openCenteredIframe('/widgets/achievements/index.html', -1, true);
     });
 }
 
@@ -80,7 +80,7 @@ function setupSettingsButton() {
     if (!settingsBtn) return;
     
     settingsBtn.addEventListener('click', () => {
-        openCenteredIframe('/widgets/settings/', -1, true);
+        openCenteredIframe('/widgets/settings/index.html', -1, true);
     });
 }
 
@@ -88,7 +88,7 @@ function setupCreditsButton() {
     const creditsBtn = document.getElementById('creditsBtn');
     if (!creditsBtn) return;
     creditsBtn.addEventListener('click', () => {
-        openCenteredIframe('/widgets/credits/', -1, true);
+        openCenteredIframe('/widgets/credits/index.html', -1, true);
     });
 }
 
