@@ -109,7 +109,7 @@ export function playCardHoverSound() {
 // Setup button click sounds for all buttons
 export function setupButtonHoverSounds() {
     document.addEventListener('click', (e) => {
-        const button = e.target.closest('button');
+        const button = (e.target instanceof Element) ? e.target.closest('button') : null;
         if (button && !button.hasAttribute('data-sound-disabled')) {
             playButtonClickSound();
         }
@@ -119,7 +119,7 @@ export function setupButtonHoverSounds() {
 // Setup card hover sounds for all cards
 export function setupCardHoverSounds() {
     document.addEventListener('mouseenter', (e) => {
-        const card = e.target.closest('.card-tilt-wrapper, .unused-card, .card');
+        const card = (e.target instanceof Element) ? e.target.closest('.card-tilt-wrapper, .unused-card, .card') : null;
         if (card && !card.hasAttribute('data-sound-disabled')) {
             playCardHoverSound();
         }
