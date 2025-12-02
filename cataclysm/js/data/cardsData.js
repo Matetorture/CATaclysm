@@ -36,7 +36,7 @@ export const cardsData = [
     new CatCard(25, '2.4', 'Yellowcrest', 'Color', 'Uncommon', 40, 150000, 6, ['Plant','Air', 'Electric'], 0),
     new CatCard(26, '2.5', 'Redburst', 'Color', 'Uncommon', 40, 150000, 6, ['Air','Electric', 'Ice'], 0),
     new CatCard(27, '2.6', 'Pinkflair', 'Color', 'Uncommon', 40, 150000, 6, ['Fire','Electric', 'Ice'], 0),
-    new CatCard(28, '2.7', 'Rainbow', 'Color', 'Ultimate', 1000, 65000, 1, ['Fire','Water', 'Stone','Plant','Air','Electric', 'Ice'], 62),
+    new CatCard(28, '2.7', 'Rainbow', 'Color', 'Ultimate', 1000, 65000, 1, ['Fire','Water', 'Stone','Plant','Air','Electric', 'Ice'], 0),
 
     //3
     new CatCard(29, '3.1', 'Gold', 'Treasure', 'Legendary', 700, 300000, 10, ['Fire','Water','Plant','Air','Electric'], 0),
