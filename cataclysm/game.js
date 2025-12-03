@@ -66,6 +66,15 @@ function setupTutorialsButton() {
     });
 }
 
+function setupTutorialsVideoButton() {
+    const tutorialsVideoBtn = document.getElementById('tutorialsVideoBtn');
+    if (!tutorialsVideoBtn) return;
+    
+    tutorialsVideoBtn.addEventListener('click', () => {
+        openCenteredIframe('widgets/tutorials_video/', -1, true);
+    });
+}
+
 function setupAchievementsButton() {
     const achievementsBtn = document.getElementById('achievementsBtn');
     if (!achievementsBtn) return;
@@ -106,6 +115,7 @@ function initGame() {
     setupPauseButton();
     setupOpenCardsButton();
     setupTutorialsButton();
+    setupTutorialsVideoButton();
     setupAchievementsButton();
     setupSettingsButton();
     setupCreditsButton();
