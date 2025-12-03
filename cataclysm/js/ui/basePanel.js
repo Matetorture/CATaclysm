@@ -322,19 +322,19 @@ function recalculateUpgradeTime(oldCat, newCat) {
     const oldCDPS = oldCat ? ensureCatCard(oldCat).calculateCritDPS() : 0;
     const newCDPS = newCat ? ensureCatCard(newCat).calculateCritDPS() : 0;
     
-    if (oldCat && !newCat && oldCDPS > 0) {
+    if (oldCat && !newCat && oldCDPS > 1) {
         gameState.baseUpgradeInProgress.remainingTime *= oldCDPS;
         gameState.baseUpgradeInProgress.startTime = Date.now();
     }
-    else if (!oldCat && newCat && newCDPS > 0) {
+    else if (!oldCat && newCat && newCDPS > 1) {
         gameState.baseUpgradeInProgress.remainingTime = Math.max(100, gameState.baseUpgradeInProgress.remainingTime / newCDPS);
         gameState.baseUpgradeInProgress.startTime = Date.now();
     }
     else if (oldCat && newCat) {
-        if (oldCDPS > 0) {
+        if (oldCDPS > 1) {
             gameState.baseUpgradeInProgress.remainingTime *= oldCDPS;
         }
-        if (newCDPS > 0) {
+        if (newCDPS > 1) {
             gameState.baseUpgradeInProgress.remainingTime = Math.max(100, gameState.baseUpgradeInProgress.remainingTime / newCDPS);
         }
         gameState.baseUpgradeInProgress.startTime = Date.now();
