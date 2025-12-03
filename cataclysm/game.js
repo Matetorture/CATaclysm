@@ -108,6 +108,7 @@ function initGame() {
 
     if (!saveLoaded) {
         gameState.ownedCards = [];
+        openCenteredIframe('widgets/tutorials_video/', -1, true);
     }
     
     setupBottomPanelToggle();
