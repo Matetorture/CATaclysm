@@ -45,3 +45,10 @@
     border-radius: 8px;
     box-shadow: 0 2px 8px #0003;
 }
+
+.red { color: #e53935; }
+.green { color: #2e7d32; }
+.orange { color: #fb8c00; }
+.gold { color: #FFD700; }
+.gray { color: #797979; }
+.indigo { color: #7e57c2; }
