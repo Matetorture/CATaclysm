@@ -303,5 +303,86 @@ export const achievementsData = [
       type: "base_level",
       level: 10
     }
+  },
+  {
+    id: 34,
+    name: "Color Rainbow",
+    description: "Have cards with IDs 22, 23, 24, 25, 26, 27, 28 in your deck",
+    requirements: {
+        type: "deck_specific_cards",
+        cardIds: [22, 23, 24, 25, 26, 27, 28]
+    }
+  },
+  {
+    id: 35,
+    name: "Gift Collector",
+    description: "Have cards with IDs 39, 40, 41, 42, 43 in your deck",
+    requirements: {
+        type: "deck_specific_cards",
+        cardIds: [39, 40, 41, 42, 43]
+    }
+  },
+  {
+    id: 36,
+    name: "Firework Show",
+    description: "Have cards with IDs 44, 45, 46, 47 and 48 in your deck",
+    requirements: {
+        type: "deck_specific_cards",
+        cardIds: [44, 45, 46, 47, 48]
+    }
+  },
+  {
+    id: 37,
+    name: "Solar System",
+    description: "Have cards with IDs 51, 54, 60 and 61 in your deck",
+    requirements: {
+        type: "deck_specific_cards",
+        cardIds: [51, 54, 60, 61]
+    }
+  },
+  {
+    id: 38,
+    name: "Treasure Hoarder",
+    description: "Have cards with IDs 29, 30, 31, 32, 33, 34, 35, 36 in your deck",
+    requirements: {
+        type: "deck_specific_cards",
+        cardIds: [29, 30, 31, 32, 33, 34, 35, 36]
+    }
+  },
+  {
+    id: 39,
+    name: "Holiday Spirit",
+    description: "Have cards with IDs 37 and 38 in your deck",
+    requirements: {
+        type: "deck_specific_cards",
+        cardIds: [37, 38]
+    }
+  },
+  {
+    id: 40,
+    name: "Holiday Spirit",
+    description: "Have cards with IDs 37 and 38 in your deck",
+    requirements: {
+        type: "deck_specific_cards",
+        cardIds: [37, 38]
+    }
+  },
+  {
+    id: 41,
+    name: "Heaven and Hell",
+    description: "Have cards with IDs 76 and 77 in your deck",
+    requirements: {
+        type: "deck_specific_cards",
+        cardIds: [76, 77]
+    }
+  },
+  {
+    id: 42,
+    name: "You Can't See Me",
+    description: "Have card with ID 78 in your deck",
+    requirements: {
+        type: "deck_specific_cards",
+        cardIds: [78]
+    }
   }
 ];
