@@ -1,7 +1,7 @@
 # CATaclysm  
 *A strategic card-collecting game built with pure HTML, CSS, and JavaScript.*
 
-<img src="README_img/9.gif" alt="CATaclysm cards showcase" width="70%"/>
+<img src="README_img/9.gif" alt="CATaclysm cards showcase" width="100%"/>
 
 ## 📚 Table of Contents
 
@@ -38,25 +38,25 @@ The project is fully handcrafted — from gameplay logic to visuals and audio as
 - Collect cats, assemble powerful decks, and defeat bosses to progress.  
 - Earn **Money ($)** to unlock deck slots, pull new cards, and upgrade your base. 
 
-<img src="README_img/0.png" alt="Game introduction tutorial" width="30%"/>
+<img src="README_img/0.png" alt="Game introduction tutorial" width="70%"/>
 
 ### Open Cards
 Cards are obtained by opening pulls in the **OPEN**.  
 There you can **randomly pull** new cards or select **guaranteed cards** at appropriate pulls for strategic picks.
 
-<img src="README_img/1.gif" alt="Card open tutorial" width="70%"/>
+<img src="README_img/1.gif" alt="Card open tutorial" width="100%"/>
 
 ### Deck Building
 Place cards into the **deck slots** by **dragging** or **clicking** them.  
 Once inserted, cards become **active** and start attacking automatically based on their Speed.
 
-<img src="README_img/2.gif" alt="Card usage tutorial" width="70%"/>
+<img src="README_img/2.gif" alt="Card usage tutorial" width="100%"/>
 
 ### Combat
 - Cards have 4 main stats: **Attack**, **Speed**, **Crit Rate**, and **Attack Type**.  
 - Collect duplicates to level up cards (each level doubles the card's stats).  
 
-<img src="README_img/3.gif" alt="Combat attack tutorial" width="70%"/>
+<img src="README_img/3.gif" alt="Combat attack tutorial" width="100%"/>
 
 ### Boss System
 - Cards attack automatically based on their Speed.  
@@ -64,20 +64,20 @@ Once inserted, cards become **active** and start attacking automatically based o
 - Exploit **Type Advantage** to deal 2× damage against enemy weaknesses.  
 - Defeat boss categories to unlock the next tier and earn rewards.
 
-<img src="README_img/5.gif" alt="Boss selection tutorial" width="70%"/>
+<img src="README_img/5.gif" alt="Boss selection tutorial" width="100%"/>
 
 ### Base Upgrades
 - Expand and improve your base to unlock new features like cloning and modifiers.  
 - Upgrade speed depends on your cats' **Crit DPS**:
 - New Time = Base Time ÷ Total Crit DPS
 
-<img src="README_img/6.gif" alt="Base upgrade tutorial" width="70%"/>
+<img src="README_img/6.gif" alt="Base upgrade tutorial" width="100%"/>
 
 ### Card Cloning
 Place the **card to clone** in the **cloning slot**.  
 It will automatically clone and upgrade its level. Cloning speed unlocks and improves through base upgrades.
 
-<img src="README_img/7.gif" alt="Card cloning tutorial" width="70%"/>
+<img src="README_img/7.gif" alt="Card cloning tutorial" width="100%"/>
 
 ### Modifiers
 Unlock powerful **slot modifiers** through base upgrades to supercharge your cards:
@@ -90,7 +90,7 @@ Unlock powerful **slot modifiers** through base upgrades to supercharge your car
 | **R (Rainbow)** | **Attack** ×2, **Speed** ÷2, **Crit** ×1.5 |
 | **N (Negative)** | Changes attack type to boss weakness |
 
-<img src="README_img/8.gif" alt="Modifiers tutorial" width="70%"/>
+<img src="README_img/8.gif" alt="Modifiers tutorial" width="100%"/>
 
 ---
 
